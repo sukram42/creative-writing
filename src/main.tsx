@@ -5,7 +5,7 @@ import RequireAuth from './app/AuthProvider.tsx';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { LoginView } from './views/login.view.tsx';
 import { MainView } from './views/main.view.tsx';
-import { Layout } from './views/layout/Layout.tsx';
+import { Layout } from './views/layout/layout.view.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

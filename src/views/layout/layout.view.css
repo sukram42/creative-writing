@@ -1,0 +1,14 @@
+.layoutContainer {
+    display: grid;
+    height: 100vh;
+    grid-template-rows: auto 2em;
+    grid-template-areas: "content" "footer";
+}
+
+.footer {
+    grid-area: footer;
+}
+
+.content {
+    grid-area: content;
+}

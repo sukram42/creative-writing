@@ -1,7 +1,8 @@
 
 import { Outlet, useNavigate } from "react-router-dom"
 
-import "./layout.css"
+import "./layout.view.css"
+import { FooterComponent } from "../../components/footer/footer.component"
 
 export function Layout() {
     const history = useNavigate()
@@ -10,12 +11,13 @@ export function Layout() {
     }
     console.log("test")
     return (
-        <div className="test">
             <div className="layoutContainer">
                 <div className="content">
                     <Outlet />
                 </div>
-            </div>
+                <div className="footer">
+                    <FooterComponent></FooterComponent>
+                </div>
         </div>
     )
 }
