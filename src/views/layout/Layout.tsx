@@ -8,12 +8,13 @@ export function Layout() {
     const setRouteActive = (value: string) => {
         history(value)
     }
+    console.log("test")
     return (
         <div className="test">
             <div className="layoutContainer">
                 <div className="content">
                     <Outlet />
-                </div> 
+                </div>
             </div>
         </div>
     )
