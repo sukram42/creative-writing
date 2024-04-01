@@ -1,4 +1,4 @@
-import { Input, Typography } from "antd";
+import { Divider, Input, Typography } from "antd";
 import { Chapter, Item } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
 
@@ -15,7 +15,6 @@ export interface ChapterComponentProps {
 }
 
 export function ChapterComponent(props: ChapterComponentProps) {
-
     const dispatch = useDispatch<AppDispatch>()
 
     const onLocalTitleChange = (newTitle: string) => {
@@ -34,21 +33,43 @@ export function ChapterComponent(props: ChapterComponentProps) {
     }
 
     return (
-        <MoveableObject type={"Chapter"}>
+        <div>
             <div className="chapterComponent">
-                <Input
-                    size="small"
-                    placeholder="Chapter Title"
-                    className="chapterTitle"
-                    value={props.chapter.title || ""}
-                    variant="borderless"
-                    onChange={(e) => onLocalTitleChange(e.target.value)}
-                    onBlur={(e) => onTitleChange(e.target.value)
-                    }
-                />
-                {props.items.map(i=>(<ItemsComponent item={i}/>))}
+                <div className="doubleSide">
+                    <MoveableObject type={"Chapter"}>
+                        <Input
+                            size="small"
+                            placeholder="Chapter Title"
+                            className="chapterTitle"
+                            value={props.chapter.title || ""}
+                            variant="borderless"
+                            onChange={(e) => onLocalTitleChange(e.target.value)}
+                            onBlur={(e) => onTitleChange(e.target.value)
+                            }
+                        />
+                    </MoveableObject>
+                    <MoveableObject type={"Chapter"}>
+                        <Input
+                            size="small"
+                            placeholder="Chapter Title"
+                            className="chapterTitle"
+                            value={props.chapter.title || ""}
+                            variant="borderless"
+                            onChange={(e) => onLocalTitleChange(e.target.value)}
+                            onBlur={(e) => onTitleChange(e.target.value)
+                            }
+                        />
+                    </MoveableObject>
+                </div>
+                {/* # Children */}
+                {props.items.map(i => {
+                    return (
+                        <><div className="doubleSide">
+                            <ItemsComponent item={i} final={false}/>
+                            <ItemsComponent item={i} final={true}/>
+                        </div><Divider /></>)
+                })}
             </div>
-
-        </MoveableObject>
+        </div>
     )
 }

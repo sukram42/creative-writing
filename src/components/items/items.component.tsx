@@ -2,22 +2,37 @@ import { Input } from "antd";
 import { Item } from "../../app/supabaseClient";
 import TextArea from "antd/es/input/TextArea";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../app/store";
+import { upsertItemText } from "../../app/ui.slice/ui.slice.async";
+import { locallyUpdateItemText } from "../../app/ui.slice/ui.slice";
 
 interface ItemsComponentProps {
-    item: Item
+    item: Item,
+    final: boolean
 }
 
 export function ItemsComponent(props: ItemsComponentProps) {
+    const dispatch = useDispatch<AppDispatch>()
 
+    const onTextChange = (newText: string, final: boolean) => {
+        dispatch(upsertItemText({ itemId: props.item.id+"", newText, field: final ? "final" : "outline" }))
+    }
+    const onLocalTextChange = (newText: string, final: boolean, item: Item) => {
+        dispatch(locallyUpdateItemText({item, newText: newText, field:final?"final":"outline"}))
+    }
+
+    const content = props.final ? props.item.final : props.item.outline
     return <>
-    {/* <TextArea variant="borderless" placeholder="Autosize height based on content lines" autoSize /> */}
-    <MoveableObject type={props.item.type}>
-    <TextArea
-        autoSize
-        size="small"
-        placeholder="Chapter Title"
-        value={props.item.outline || ""}
-        variant="borderless"
-    /></MoveableObject>
+        <MoveableObject type={props.item.type || "1"}>
+            <TextArea
+                autoSize
+                size="small"
+                placeholder="Text"
+                value={content || ""}
+                variant="borderless"
+                onBlur={(e) => onTextChange(e.target.value, props.final)}
+                onChange={(e)=>onLocalTextChange(e.target.value, props.final, props.item)}
+            /></MoveableObject>
     </>
 }

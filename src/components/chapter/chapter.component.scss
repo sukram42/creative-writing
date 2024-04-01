@@ -1,7 +1,14 @@
-.chapterComponent {
-    
-    
+.chapterComponent { 
+    .doubleSide {
+        display: flex;
+        & > * {
+            flex-grow: 1;
+        }
+    }
     .chapterTitle {
         font-size: 1.5em;
+    }
+    .sideSwitch {
+        display: flex;
     }
 }
