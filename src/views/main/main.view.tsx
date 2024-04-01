@@ -1,3 +1,4 @@
+import { EditorPaneComponent } from "../../components/archieve/editor-pane/editor-pane.component"
 import { NotesPaneComponent } from "../../components/notes-pane/notes-pane.component"
 import { TextOutlinePane } from "../../components/text-outline-pane/text-outline-pane.component"
 import "./main.view.scss"
@@ -10,6 +11,7 @@ export function MainView() {
             </div>
             <div className="contentPane">
                 <TextOutlinePane/>
+                {/* <EditorPaneComponent></EditorPaneComponent> */}
             </div>
         </div>)
 }

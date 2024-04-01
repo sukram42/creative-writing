@@ -14,6 +14,7 @@ export type Database = {
           chapter_id: string
           created_at: string
           descriptions: string | null
+          index: number | null
           project: string | null
           title: string | null
         }
@@ -21,6 +22,7 @@ export type Database = {
           chapter_id?: string
           created_at?: string
           descriptions?: string | null
+          index?: number | null
           project?: string | null
           title?: string | null
         }
@@ -28,6 +30,7 @@ export type Database = {
           chapter_id?: string
           created_at?: string
           descriptions?: string | null
+          index?: number | null
           project?: string | null
           title?: string | null
         }
@@ -124,7 +127,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      incrementchapterindex: {
+        Args: {
+          minrank: number
+          project_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

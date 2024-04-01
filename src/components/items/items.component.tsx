@@ -16,7 +16,7 @@ export function ItemsComponent(props: ItemsComponentProps) {
     const dispatch = useDispatch<AppDispatch>()
 
     const onTextChange = (newText: string, final: boolean) => {
-        dispatch(upsertItemText({ itemId: props.item.id+"", newText, field: final ? "final" : "outline" }))
+        dispatch(upsertItemText({ itemId: props.item.item_id+"", newText, field: final ? "final" : "outline" }))
     }
     const onLocalTextChange = (newText: string, final: boolean, item: Item) => {
         dispatch(locallyUpdateItemText({item, newText: newText, field:final?"final":"outline"}))
@@ -28,7 +28,7 @@ export function ItemsComponent(props: ItemsComponentProps) {
             <TextArea
                 autoSize
                 size="small"
-                placeholder="Text"
+                placeholder={props.item.item_id}
                 value={content || ""}
                 variant="borderless"
                 onBlur={(e) => onTextChange(e.target.value, props.final)}

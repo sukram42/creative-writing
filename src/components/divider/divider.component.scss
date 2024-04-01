@@ -1,0 +1,28 @@
+.dividerComponent {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "divider divider";
+    justify-items: center;
+    align-items: center;
+
+    .dividerLine {
+        background-color: #ddd;
+        height: 2px;
+        width: 100%;
+        grid-area: divider;
+        opacity: 0;
+    }
+
+    .dividerButtons {
+        grid-area: divider;
+        opacity: 0;
+    } 
+    &:hover {
+        * {
+            opacity: 1;
+        }
+    }
+
+}
