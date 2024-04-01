@@ -19,7 +19,7 @@ export interface ChapterComponentProps {
 export function ChapterComponent(props: ChapterComponentProps) {
     const dispatch = useDispatch<AppDispatch>()
 
-    const createNewItem= (idx: number) => {
+    const createNewItem = (idx: number) => {
         {
             const newItem: Item = {
                 rank_in_chapter: idx + 1,
@@ -29,62 +29,63 @@ export function ChapterComponent(props: ChapterComponentProps) {
             }
             dispatch(upsertNewItem({ index: idx, item: newItem, project_id: props.chapter.project }))
         }
-
-        const onLocalTitleChange = (newTitle: string) => {
-            const updatePayload = {
-                chapterId: props.chapter.chapter_id,
-                newTitle
-            }
-            dispatch(locallyUpdateChapterTitle(updatePayload))
-        }
-        const onTitleChange = (newTitle: string) => {
-            const updatePayload = {
-                chapterId: props.chapter.chapter_id,
-                newTitle
-            }
-            dispatch(upsertChapterTitle(updatePayload))
-        }
-
-        return (
-            <div>
-                <div className="chapterComponent">
-                    <div className="doubleSide">
-                        <MoveableObject type={"Chapter"}>
-                            <Input
-                                size="small"
-                                placeholder="Chapter Title"
-                                className="chapterTitle"
-                                value={props.chapter.title || ""}
-                                variant="borderless"
-                                onChange={(e) => onLocalTitleChange(e.target.value)}
-                                onBlur={(e) => onTitleChange(e.target.value)
-                                }
-                            />
-                        </MoveableObject>
-                        <MoveableObject type={"Chapter"}>
-                            <Input
-                                size="small"
-                                placeholder="Chapter Title"
-                                className="chapterTitle"
-                                value={props.chapter.title || ""}
-                                variant="borderless"
-                                onChange={(e) => onLocalTitleChange(e.target.value)}
-                                onBlur={(e) => onTitleChange(e.target.value)
-                                }
-                            />
-                        </MoveableObject>
-                    </div>
-                    {/* # Children */}
-                    {props.items.map((i, idx) => {
-                        return (
-                            <><div className="doubleSide">
-                                <ItemsComponent item={i} final={false} />
-                                <ItemsComponent item={i} final={true} />
-                            </div>
-                                <DividerComponent onButtonClick={() => createNewItem(idx)} buttonCaption={"Paragraph"} index={idx} />
-                            </>)
-                    })}
-                </div>
-            </div>
-        )
     }
+
+    const onLocalTitleChange = (newTitle: string) => {
+        const updatePayload = {
+            chapterId: props.chapter.chapter_id,
+            newTitle
+        }
+        dispatch(locallyUpdateChapterTitle(updatePayload))
+    }
+    const onTitleChange = (newTitle: string) => {
+        const updatePayload = {
+            chapterId: props.chapter.chapter_id,
+            newTitle
+        }
+        dispatch(upsertChapterTitle(updatePayload))
+    }
+
+    return (
+        <div>
+            <div className="chapterComponent">
+                <div className="doubleSide">
+                    <MoveableObject type={"Chapter"}>
+                        <Input
+                            size="small"
+                            placeholder="Chapter Title"
+                            className="chapterTitle"
+                            value={props.chapter.title || ""}
+                            variant="borderless"
+                            onChange={(e) => onLocalTitleChange(e.target.value)}
+                            onBlur={(e) => onTitleChange(e.target.value)
+                            }
+                        />
+                    </MoveableObject>
+                    <MoveableObject type={"Chapter"}>
+                        <Input
+                            size="small"
+                            placeholder="Chapter Title"
+                            className="chapterTitle"
+                            value={props.chapter.title || ""}
+                            variant="borderless"
+                            onChange={(e) => onLocalTitleChange(e.target.value)}
+                            onBlur={(e) => onTitleChange(e.target.value)
+                            }
+                        />
+                    </MoveableObject>
+                </div>
+                {/* # Children */}
+                {props.items.map((i, idx) => {
+                    return (
+                        <><div className="doubleSide">
+                            <ItemsComponent item={i} final={false} />
+                            <ItemsComponent item={i} final={true} />
+                        </div>
+                            <DividerComponent onButtonClick={() => createNewItem(idx)} buttonCaption={"Paragraph"} index={idx} />
+                        </>)
+                })}
+            </div>
+        </div>
+    )
+}
