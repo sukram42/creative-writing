@@ -1,16 +1,25 @@
 import { useDispatch, useSelector } from "react-redux"
-import { getCounter } from "../../app/ui.slice/ui.slice.selectors"
-import { Button } from "antd"
+import { getActiveProject, getChapters, getCounter, getItems } from "../../app/ui.slice/ui.slice.selectors"
 import { AppDispatch } from "../../app/store"
-import { addToCount } from "../../app/ui.slice/ui.slice"
+import { getChaptersByProject } from "../../app/ui.slice/ui.slice.async"
+import { useEffect } from "react"
+import { ChapterComponent } from "../chapter/chapter.component"
 
 export function TextOutlinePane() {
 
-    const count = useSelector(getCounter)
+    const activeProject = useSelector(getActiveProject)
+
+    const items = useSelector(getItems)
+    const chapters = useSelector(getChapters)
+
     const dispatch = useDispatch<AppDispatch>()
 
+    // useEffect(() => store.dispatch(handleAppInit()), []);
+    useEffect(() => {
+        dispatch(getChaptersByProject(activeProject))
+    }, [dispatch])
+
     return <>
-        content {count}
-        <Button onClick={() => { dispatch(addToCount(3)) }}>Test</Button>
+      {chapters.map((c)=><ChapterComponent chapter={c} items={items[c.chapter_id]}></ChapterComponent>)}  
     </>
 }

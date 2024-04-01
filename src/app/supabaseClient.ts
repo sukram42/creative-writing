@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
+import { Database } from "./supabase"
 
 const supabaseUrl = 'https://lsxgepyhuhidvpsdsnli.supabase.co'
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzeGdlcHlodWhpZHZwc2RzbmxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE5MTA3NDIsImV4cCI6MjAyNzQ4Njc0Mn0.GQkXKqCACbYgDx8WKch_qUg9NYgEdjmoVxiL_DaEO0A"
@@ -7,4 +8,6 @@ const aa = "eyJhbGciOiJIUzI1NiIsImtpZCI6IjY2R1I2UkZCOEtwMnZ6bEEiLCJ0eXAiOiJKV1Qi
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Types
-import {  } from './supabase';
+
+export type Chapter = Database["public"]["Tables"]["chapters"]["Row"]
+export type Item = Database["public"]["Tables"]["items"]["Row"]

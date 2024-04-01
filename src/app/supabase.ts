@@ -9,7 +9,116 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      chapters: {
+        Row: {
+          chapter_id: string
+          created_at: string
+          descriptions: string | null
+          project: string | null
+          title: string | null
+        }
+        Insert: {
+          chapter_id?: string
+          created_at?: string
+          descriptions?: string | null
+          project?: string | null
+          title?: string | null
+        }
+        Update: {
+          chapter_id?: string
+          created_at?: string
+          descriptions?: string | null
+          project?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_chapters_project_fkey"
+            columns: ["project"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      "item-types-enum": {
+        Row: {
+          id: number
+          type: string | null
+        }
+        Insert: {
+          id?: number
+          type?: string | null
+        }
+        Update: {
+          id?: number
+          type?: string | null
+        }
+        Relationships: []
+      }
+      items: {
+        Row: {
+          chapter: string
+          created_at: string
+          final: string | null
+          id: number
+          outline: string | null
+          rank_in_chapter: number
+          type: number | null
+        }
+        Insert: {
+          chapter: string
+          created_at?: string
+          final?: string | null
+          id?: number
+          outline?: string | null
+          rank_in_chapter?: number
+          type?: number | null
+        }
+        Update: {
+          chapter?: string
+          created_at?: string
+          final?: string | null
+          id?: number
+          outline?: string | null
+          rank_in_chapter?: number
+          type?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_items_chapter_fkey"
+            columns: ["chapter"]
+            isOneToOne: false
+            referencedRelation: "chapters"
+            referencedColumns: ["chapter_id"]
+          },
+          {
+            foreignKeyName: "public_items_type_fkey"
+            columns: ["type"]
+            isOneToOne: false
+            referencedRelation: "item-types-enum"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          created_at: string
+          name: string
+          project_id: string
+        }
+        Insert: {
+          created_at?: string
+          name: string
+          project_id?: string
+        }
+        Update: {
+          created_at?: string
+          name?: string
+          project_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,0 +1,14 @@
+.moveableObject{
+    &:hover {
+        & > .objectName{
+            opacity: 100%;
+        }
+    }
+
+    & > .objectName {
+        font-size: 0.7em;
+        color: #888;
+        opacity: 0;
+        cursor: default;
+    }
+}
