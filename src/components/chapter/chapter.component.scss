@@ -1,8 +1,17 @@
 .chapterComponent { 
     .doubleSide {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "left right";
+
         & > * {
             flex-grow: 1;
+        }
+        &:first-child {
+            grid-area: left;
+        }
+        &:nth-child(2) {
+            grid-area: right;
         }
     }
     .chapterTitle {

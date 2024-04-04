@@ -1,8 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, supabase } from "../supabaseClient";
-import { StringGradients } from "antd/es/progress/progress";
-import { OmitProps } from "antd/es/transfer/ListBody";
-import { createECDH } from "crypto";
+import { updateItems } from "./ui.slice";
+
 
 export const getChaptersByProject = createAsyncThunk(
     "ui/getChaptersByProject",
@@ -64,7 +63,7 @@ export const upsertNewChapter = createAsyncThunk(
                 minrank: payload.index,
                 project_id: payload.chapter.project
             })
-        
+
         if (incrementError) console.error(incrementError)
         else console.log(incrementData)
 
@@ -83,13 +82,13 @@ export const upsertNewChapter = createAsyncThunk(
 export const upsertNewItem = createAsyncThunk(
     "ui/upsertNewItem",
     async (payload: { index: number, item: Item, project_id: string }, thunkAPI) => {
- 
+
         let { data: incrementData, error: incrementError } = await supabase
             .rpc('incrementitemindex', {
                 minrank: payload.index,
                 chapter_id: payload.item.chapter
             })
-        
+
         if (incrementError) console.error(incrementError)
         else console.log(incrementData)
 
@@ -100,10 +99,39 @@ export const upsertNewItem = createAsyncThunk(
             .order("rank_in_chapter")
         if (error) console.error(error)
         else console.log(data)
-        
 
-        
         thunkAPI.dispatch(getChaptersByProject(payload.project_id))
     }
+)
 
+
+export const deleteItem = createAsyncThunk(
+    "ui/deleteItem",
+    async (payload: Item, thunkAPI) => {
+        console.log(thunkAPI.getState())
+        const chapter = thunkAPI.getState().ui.items[payload.chapter]
+        let newChapter = chapter.filter((elem) => elem.item_id !== payload.item_id)
+
+        thunkAPI.dispatch(updateItems({items: newChapter, chapter: payload.chapter}))
+
+        supabase.from("items")
+            .delete()
+            .eq("item_id", payload.item_id)
+            .then((data) => {
+                if (data.error) {
+                    thunkAPI.dispatch(updateItems({items: chapter, chapter: payload.chapter}))
+                }
+            })
+    })
+
+
+
+export const testEdgeFunctions = createAsyncThunk(
+    "ui/testEdgeFunctions",
+    async (payload: { paragraph: string }) => {
+
+        const { data, error } = await supabase.functions.invoke('mistral', {
+            body: { paragraph: payload.paragraph },
+        })
+    }
 )

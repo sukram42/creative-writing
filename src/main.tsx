@@ -8,6 +8,7 @@ import { MainView } from './views/main/main.view.tsx';
 import { Layout } from './views/layout/layout.view.tsx';
 import { Provider } from 'react-redux';
 import { store } from './app/store.ts';
+import { supabase } from './app/supabaseClient.ts';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,8 +22,8 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 
 )

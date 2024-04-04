@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText, upsertNewChapter } from "./ui.slice.async"
-import { Item } from "../supabaseClient"
+import { Item, supabase } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -59,6 +59,11 @@ export const uiSlice = createSlice({
           return
         }
       })
+    },
+
+    updateItems(state, action: {payload: {items: Item[], chapter: string}}){
+      console.log("hallo")
+      state.items[action.payload.chapter] = action.payload.items
     }
   },
   extraReducers: (builder) => {
@@ -95,4 +100,4 @@ export const uiSlice = createSlice({
 })
 
 export default uiSlice.reducer
-export const { addToCount, locallyUpdateChapterTitle, locallyUpdateItemText, locallyAddChapterAtIndex } = uiSlice.actions
+export const { addToCount, locallyUpdateChapterTitle, locallyUpdateItemText, locallyAddChapterAtIndex, updateItems } = uiSlice.actions

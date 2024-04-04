@@ -79,8 +79,8 @@ export function ChapterComponent(props: ChapterComponentProps) {
                 {props.items.map((i, idx) => {
                     return (
                         <><div className="doubleSide">
-                            <ItemsComponent item={i} final={false} />
-                            <ItemsComponent item={i} final={true} />
+                            <ItemsComponent item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
+                            <ItemsComponent item={i} final={true} index={idx} />
                         </div>
                             <DividerComponent onButtonClick={() => createNewItem(idx)} buttonCaption={"Paragraph"} index={idx} />
                         </>)
