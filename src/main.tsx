@@ -1,14 +1,14 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import RequireAuth from './app/AuthProvider.tsx';
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createHashRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { LoginView } from './views/login.view.tsx';
 import { MainView } from './views/main/main.view.tsx';
 import { Layout } from './views/layout/layout.view.tsx';
 import { Provider } from 'react-redux';
 import { store } from './app/store.ts';
 
-const router = createBrowserRouter(
+const router = createHashRouter(
   createRoutesFromElements(
     <>
       <Route path="" element={<RequireAuth><Layout /></RequireAuth>}>
