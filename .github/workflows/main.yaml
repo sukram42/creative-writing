@@ -23,6 +23,11 @@ jobs:
 
       - name: Build application
         run: npm run build
+      
+      - name: Archive dist folder
+        uses: actions/upload-artifact@v2
+        with:
+          path: dist
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
