@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import RequireAuth from './app/AuthProvider.tsx';
-import { createBrowserRouter, createHashRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import { createHashRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { LoginView } from './views/login.view.tsx';
 import { MainView } from './views/main/main.view.tsx';
 import { Layout } from './views/layout/layout.view.tsx';
