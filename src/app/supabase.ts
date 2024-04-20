@@ -12,7 +12,7 @@ export type Database = {
       chapters: {
         Row: {
           chapter_id: string
-          created_at: string
+          created_at: string | null
           descriptions: string | null
           index: number | null
           project: string | null
@@ -62,9 +62,9 @@ export type Database = {
       items: {
         Row: {
           chapter: string
-          created_at: string
+          created_at: string | null
           final: string | null
-          id: number
+          item_id: string
           outline: string | null
           rank_in_chapter: number
           type: number | null
@@ -73,7 +73,7 @@ export type Database = {
           chapter: string
           created_at?: string
           final?: string | null
-          id?: number
+          item_id?: string
           outline?: string | null
           rank_in_chapter?: number
           type?: number | null
@@ -82,7 +82,7 @@ export type Database = {
           chapter?: string
           created_at?: string
           final?: string | null
-          id?: number
+          item_id?: string
           outline?: string | null
           rank_in_chapter?: number
           type?: number | null
@@ -122,15 +122,50 @@ export type Database = {
         }
         Relationships: []
       }
+      prompts: {
+        Row: {
+          id: string
+          model_name: string
+          prompt: string
+          temperature: number
+        }
+        Insert: {
+          id: string
+          model_name?: string
+          prompt: string
+          temperature?: number
+        }
+        Update: {
+          id?: string
+          model_name?: string
+          prompt?: string
+          temperature?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      decrementitemindex: {
+        Args: {
+          minrank: number
+          chapter_id: string
+        }
+        Returns: undefined
+      }
       incrementchapterindex: {
         Args: {
           minrank: number
           project_id: string
+        }
+        Returns: undefined
+      }
+      incrementitemindex: {
+        Args: {
+          minrank: number
+          chapter_id: string
         }
         Returns: undefined
       }

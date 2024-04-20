@@ -20,10 +20,11 @@ Deno.serve(async (req: Request) => {
     return new Response('ok', { headers: corsHeaders })
   }
 
-  let content = await req.json()
+  const content = await req.json()
 
   const mistral_key = Deno.env.get("MISTRAL_API_KEY")
   const mistral_client = new MistralClient(mistral_key);
+
 
   try {
     // Create a Supabase client with the Auth context of the logged in user.
@@ -56,17 +57,18 @@ Deno.serve(async (req: Request) => {
       .eq("item_id", content.paragraph)
 
     // Create prompt
+    console.log(prompt[0].model_name)
     const finalPrompt = prompt[0].prompt.replace("${outline}", data[0].outline)
 
     // const Create the response
     const chatResponse = await mistral_client.chat({
-      model: prompt[0].model,
+      model: prompt[0].model_name,
       temperature: prompt[0].temperature,
       messages: [{ role: 'system', content: finalPrompt }],
     });
 
     // Update the  item
-    const { res, error } = await supabaseClient
+    const { error } = await supabaseClient
       .from('items')
       .update({ final: chatResponse.choices[0].message.content })
       .eq("item_id", content.paragraph)

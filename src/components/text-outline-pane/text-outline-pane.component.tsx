@@ -5,7 +5,6 @@ import { getChaptersByProject,  upsertNewChapter } from "../../app/ui.slice/ui.s
 import { useEffect } from "react"
 import { ChapterComponent } from "../chapter/chapter.component"
 import { DividerComponent } from "../divider/divider.component"
-import { locallyAddChapterAtIndex } from "../../app/ui.slice/ui.slice"
 import { v4 } from "uuid"
 
 export function TextOutlinePane() {
@@ -19,7 +18,7 @@ export function TextOutlinePane() {
 
   useEffect(() => {
     dispatch(getChaptersByProject(activeProject))
-  }, [dispatch])
+  }, [dispatch, activeProject])
 
   return <>
     {chapters.map((c, idx) =>

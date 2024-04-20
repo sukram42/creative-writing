@@ -1,13 +1,13 @@
-import { ReactElement } from "react"
+
 import "./moveable-object.component.scss"
 import { DeleteOutlined, RedoOutlined } from "@ant-design/icons"
 import { Button } from "antd"
 
 interface MoveableObjectProps {
-    children: ReactElement
+    children: JSX.Element|JSX.Element[]
     type: string
-    onDelete: () => {}
-    onRedo: () => {}
+    onDelete?: () => void
+    onRedo?: () => void
     showRedo?: boolean
 }
 
@@ -20,14 +20,14 @@ export function MoveableObject(props: MoveableObjectProps) {
                     type="text"
                     shape="circle"
                     size="small"
-                    onClick={() => { props.onDelete() }}
+                    onClick={() => { if(!!props.onDelete) props.onDelete() }}
                     icon={<DeleteOutlined />} />
 
                 {props.showRedo ? <Button
                     type="text"
                     size="small"
                     shape="circle"
-                    onClick={() => { props.onRedo() }}
+                    onClick={() => { if(props.onRedo) props.onRedo() }}
                     icon={<RedoOutlined />} /> : ""}
 
 

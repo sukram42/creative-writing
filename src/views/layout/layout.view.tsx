@@ -1,15 +1,14 @@
 
-import { Outlet, useNavigate } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 
 import "./layout.view.css"
 import { FooterComponent } from "../../components/footer/footer.component"
 
 export function Layout() {
-    const history = useNavigate()
-    const setRouteActive = (value: string) => {
-        history(value)
-    }
-    console.log("test")
+    //const history = useNavigate()
+    //const setRouteActive = (value: string) => {
+      //  history(value)
+    //}
     return (
             <div className="layoutContainer">
                 <div className="content">

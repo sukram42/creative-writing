@@ -1,10 +1,10 @@
-import { Divider, Input, Typography } from "antd";
+import { Input } from "antd";
 import { Chapter, Item } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
 
 import "./chapter.component.scss"
 import { useDispatch } from "react-redux";
-import { upsertChapterTitle, upsertNewItem } from "../../app/ui.slice/ui.slice.async";
+import { deleteChapter, upsertChapterTitle, upsertNewItem } from "../../app/ui.slice/ui.slice.async";
 import { locallyUpdateChapterTitle } from "../../app/ui.slice/ui.slice";
 import { AppDispatch } from "../../app/store";
 import { ItemsComponent } from "../items/items.component";
@@ -21,16 +21,15 @@ export function ChapterComponent(props: ChapterComponentProps) {
 
     const createNewItem = (idx: number) => {
         {
-            const newItem: Item = {
+            const newItem: Partial<Item> = {
                 rank_in_chapter: idx + 1,
                 item_id: v4(),
                 outline: "",
                 chapter: props.chapter.chapter_id
             }
-            dispatch(upsertNewItem({ index: idx, item: newItem, project_id: props.chapter.project }))
+            dispatch(upsertNewItem({ index: idx, item: newItem, project_id: props.chapter.project +"" }))
         }
     }
-
     const onLocalTitleChange = (newTitle: string) => {
         const updatePayload = {
             chapterId: props.chapter.chapter_id,
@@ -46,11 +45,14 @@ export function ChapterComponent(props: ChapterComponentProps) {
         dispatch(upsertChapterTitle(updatePayload))
     }
 
+    const rmChapter = (chapterId: string)=>{
+        dispatch(deleteChapter(chapterId))
+    }
     return (
         <div>
             <div className="chapterComponent">
                 <div className="doubleSide">
-                    <MoveableObject type={"Chapter"}>
+                    <MoveableObject type={"Chapter"} onDelete={()=>rmChapter(props.chapter.chapter_id)}>
                         <Input
                             size="small"
                             placeholder="Chapter Title"
@@ -76,11 +78,11 @@ export function ChapterComponent(props: ChapterComponentProps) {
                     </MoveableObject>
                 </div>
                 {/* # Children */}
-                {props.items.map((i, idx) => {
+                {props.items && props.items.map((i, idx) => {
                     return (
                         <><div className="doubleSide">
-                            <ItemsComponent item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
-                            <ItemsComponent item={i} final={true} index={idx} />
+                            <ItemsComponent key={idx} item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
+                            <ItemsComponent key={idx} item={i} final={true} onNewItem={() => createNewItem(idx + 1)} />
                         </div>
                             <DividerComponent onButtonClick={() => createNewItem(idx)} buttonCaption={"Paragraph"} index={idx} />
                         </>)

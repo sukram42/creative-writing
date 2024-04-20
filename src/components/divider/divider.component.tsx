@@ -3,7 +3,7 @@ import { PlusOutlined } from "@ant-design/icons"
 import "./divider.component.scss"
 
 interface DividerComponentProps {
-    onButtonClick: (index: number) => {}
+    onButtonClick: (index: number) => void
     buttonCaption: string,
     index: number
 }

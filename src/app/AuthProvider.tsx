@@ -1,9 +1,10 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "./supabaseClient";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
 
-export default function RequireAuth({ children }) {
-  const [stateUser, setUser] = useState()
+export default function RequireAuth({ children }: {children: ReactNode}) {
+  const [stateUser, setUser] = useState<User | null>()
   const [loading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate();
 
@@ -11,7 +12,6 @@ export default function RequireAuth({ children }) {
     setLoading(true)
     const { data: { user } } = await supabase.auth.getUser()
 
-    console.log("user", user)
 
     setUser(user)
     setLoading(false)
@@ -21,7 +21,7 @@ export default function RequireAuth({ children }) {
   }
   useEffect(() => {
     if (!loading && !stateUser) getUser()
-  }, [])
+  }, [getUser, loading, stateUser])
 
   return <>
     {(!loading && stateUser) ? children : "not logined"}

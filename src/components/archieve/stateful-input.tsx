@@ -1,13 +1,17 @@
 import { Input } from "antd"
 import { useState } from "react"
 
+interface StatefulInputProps {
+    onChange: (e: React.ChangeEvent) => void
+    initialValue?: string
+    variant?: "filled"
+}
 
+export function StatefulInput(props: StatefulInputProps) {
+    const [value, setValue] = useState(props.initialValue || "")
 
-export function StatefulInput(props) {
-    const [value, setValue] = useState(props.initalValue)
-
-    const onChange = (e) => {
-        setValue(e.target.value)
+    const onChange = (e: React.ChangeEvent) => {
+        setValue((e.target as HTMLTextAreaElement).value)
         props.onChange(e)
     }
 

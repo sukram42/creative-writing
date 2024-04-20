@@ -5,13 +5,14 @@ import { TextOutlinePane } from "../../components/text-outline-pane/text-outline
 import "./main.view.scss"
 import { getChaptersByProject } from "../../app/ui.slice/ui.slice.async"
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors"
+import { AppDispatch } from "../../app/store"
 
 export function MainView() {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const activeProject = useSelector(getActiveProject)
 
-    const items = supabase.channel('custom-update-channel')
+    supabase.channel('custom-update-channel')
         .on(
             'postgres_changes',
             { event: 'UPDATE', schema: 'public', table: 'items' },

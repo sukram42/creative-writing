@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
-import { getChaptersByProject, upsertChapterTitle, upsertItemText, upsertNewChapter } from "./ui.slice.async"
-import { Item, supabase } from "../supabaseClient"
+import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
+import { Chapter, Item, } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -28,14 +28,18 @@ export const uiSlice = createSlice({
         }
       }))
     },
+    updateChapters(state, action: { payload: { chapters: Chapter[] } }) {
+      state.chapters = action.payload.chapters
+    },
     locallyAddChapterAtIndex: (state, action: {
       payload: {
         index: number,
-        projectId: string
+        projectId: string,
+        chapter?: Chapter
       }
     }) => {
       const newId = uuidv4()
-      state.chapters.push({
+      state.chapters.push(action.payload.chapter || {
         title: "",
         chapter_id: newId,
         created_at: "pending",
@@ -46,11 +50,20 @@ export const uiSlice = createSlice({
 
       state.items[newId] = []
     },
+    locallyRemoveChapter: (state, action: { payload: string }) => {
+      // delete state.chapters[action.payload]
+      const chapters = state.chapters.filter(c => c.chapter_id !== action.payload)
+      state.chapters = chapters
+
+      const items = state.items
+      delete items[action.payload]
+      state.items = items
+    },
     locallyUpdateItemText: (state, action: {
       payload: {
         item: Item,
         newText: string,
-        field: string
+        field: "final" | "outline"
       }
     }) => {
       state.items[action.payload.item.chapter].forEach((i: Item) => {
@@ -60,22 +73,30 @@ export const uiSlice = createSlice({
         }
       })
     },
-
-    updateItems(state, action: {payload: {items: Item[], chapter: string}}){
-      console.log("hallo")
+    updateItem(state, action: { payload: { item: Item } }) {
+      state.items[action.payload.item.chapter].forEach((i: Item) => {
+        if (i.item_id === action.payload.item.item_id) {
+          i = action.payload.item
+          return
+        }
+      })
+    },
+    updateItems(state, action: { payload: { items: Item[], chapter: string } }) {
       state.items[action.payload.chapter] = action.payload.items
     }
   },
   extraReducers: (builder) => {
     builder.addCase(
       getChaptersByProject.fulfilled, (state, action) => {
+        if(!action.payload) return
         state.chapters = action.payload.chapters
+        //@ts-ignore
         state.items = action.payload.items
       }),
       builder.addCase(
         upsertChapterTitle.fulfilled, (state, action) => {
           state.chapters.forEach((c) => {
-            if (c.chapter_id === action.payload[0].chapter_id) {
+            if (action.payload!==null && c.chapter_id === action.payload[0].chapter_id) {
               c.title = action.payload[0].title
               return
             }
@@ -84,15 +105,16 @@ export const uiSlice = createSlice({
       ),
       builder.addCase(
         upsertItemText.fulfilled, (state, action) => {
-          if (!action.payload) return
-          console.log(action.payload)
-          state.items[action.payload[0].chapter].forEach(i => {
-            if (i.item_id === action.payload[0].item_id) {
-              i.final = action.payload[0].final
-              i.outline = action.payload[0].outline
-              return
-            }
-          })
+          if (action.payload !== null) {
+            state.items[action.payload[0].chapter].forEach(i => {
+              if(action.payload===null) return
+              if (i.item_id === action.payload[0].item_id) {
+                i.final = action.payload[0].final
+                i.outline = action.payload[0].outline
+                return
+              }
+            })
+          }
         }
       )
   }
@@ -100,4 +122,10 @@ export const uiSlice = createSlice({
 })
 
 export default uiSlice.reducer
-export const { addToCount, locallyUpdateChapterTitle, locallyUpdateItemText, locallyAddChapterAtIndex, updateItems } = uiSlice.actions
+export const { addToCount,
+  locallyUpdateChapterTitle,
+  locallyUpdateItemText,
+  locallyAddChapterAtIndex,
+  locallyRemoveChapter,
+  updateChapters,
+  updateItems } = uiSlice.actions

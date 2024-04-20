@@ -1,7 +1,8 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import { useState } from "react";
 import { supabase } from "../app/supabaseClient";
 import { Navigate } from "react-router-dom";
+import { User } from "@supabase/supabase-js";
 
 
 interface LoginInformation {
@@ -10,15 +11,11 @@ interface LoginInformation {
 }
 
 export function LoginView() {
-    const [user, setUser] = useState()
-    const [loginError, setLoginError] = useState()
-
-    async function getUser() {
-        const { data } = await supabase.auth.getUser()
-        setUser(data.user)
-    }
+    const [user, setUser] = useState<User>()
+    const [loginError, setLoginError] = useState<Error>()
+    console.log(loginError)
     async function logIn(values: LoginInformation) {
-        let { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
             email: values.username,
             password: values.password
         })

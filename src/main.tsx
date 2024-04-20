@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import RequireAuth from './app/AuthProvider.tsx';
@@ -8,7 +7,6 @@ import { MainView } from './views/main/main.view.tsx';
 import { Layout } from './views/layout/layout.view.tsx';
 import { Provider } from 'react-redux';
 import { store } from './app/store.ts';
-import { supabase } from './app/supabaseClient.ts';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
