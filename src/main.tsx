@@ -11,10 +11,10 @@ import { store } from './app/store.ts';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/creative-writing" element={<RequireAuth><Layout /></RequireAuth>}>
+      <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
         <Route index element={<MainView />} />
       </Route>
-      <Route path="/creative-writing/login" element={<LoginView />} />
+      <Route path="/login" element={<LoginView />} />
     </>
   )
 );
