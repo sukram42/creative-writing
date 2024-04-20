@@ -4,8 +4,5 @@ import react from '@vitejs/plugin-react-swc'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/creative-writing/",
-  plugins: [react()],
-  server: {
-    host: true
-  }
+  plugins: [react()]
 })
