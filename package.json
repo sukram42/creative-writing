@@ -1,6 +1,7 @@
 {
   "name": "creative-writing-app",
   "private": true,
+  "homepage": "https://sukram42.github.io/creative-writing/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
