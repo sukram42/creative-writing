@@ -29,3 +29,5 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
