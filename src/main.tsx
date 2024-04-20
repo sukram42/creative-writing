@@ -11,7 +11,7 @@ import { store } from './app/store.ts';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
+      <Route path="" element={<RequireAuth><Layout /></RequireAuth>}>
         <Route index element={<MainView />} />
       </Route>
       <Route path="/login" element={<LoginView />} />
