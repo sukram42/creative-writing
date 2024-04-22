@@ -40,7 +40,6 @@ export function TextOutlinePane() {
               index: idx + 1
             }
             dispatch(upsertNewChapter({ index: idx + 1, chapter: newChapter }))
-            // dispatch(locallyAddChapterAtIndex({ index: idx, projectId: activeProject }))
           }} />
       </div>
     )}
