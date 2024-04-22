@@ -1,9 +1,10 @@
-import { Chapter, Item } from "../supabaseClient";
+import { Chapter, Item, Project } from "../supabaseClient";
 
 export interface UiState {
-    count: number, 
-    
-    activeProject: string,
+    count: number,
+    projects: Project[]
+    activeProject: string | null,
+    loadingProjects: boolean,
     chapters: Chapter[]
     items: Record<string, Item[]>
 }

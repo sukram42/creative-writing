@@ -6,25 +6,29 @@ import "./main.view.scss"
 import { getChaptersByProject } from "../../app/ui.slice/ui.slice.async"
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors"
 import { AppDispatch } from "../../app/store"
+import { Navigate, useParams } from "react-router-dom"
+import { act } from "react-dom/test-utils"
 
 export function MainView() {
-
     const dispatch = useDispatch<AppDispatch>()
-    const activeProject = useSelector(getActiveProject)
+    const { id: activeProject } = useParams();
+    console.log("Active", activeProject)
 
-    supabase.channel('custom-update-channel')
-        .on(
-            'postgres_changes',
-            { event: 'UPDATE', schema: 'public', table: 'items' },
-            (payload) => {
-                console.log('Change received!', payload)
-                dispatch(getChaptersByProject(activeProject))
-            }
-        )
-        .subscribe()
+    if (activeProject) {
+        supabase.channel('custom-update-channel')
+            .on(
+                'postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'items' },
+                (payload) => {
+                    dispatch(getChaptersByProject(activeProject))
+                }
+            )
+            .subscribe()
+    }
 
     return (
         <div className="mainView">
+            {!activeProject? <Navigate to={"/"}></Navigate>:""}
             <div className="notesPane">
                 <NotesPaneComponent />
             </div>

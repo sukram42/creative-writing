@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, updateChapters, updateItems } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, setLoadingProjects, updateChapters, updateItems, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
+import create from "@ant-design/icons/lib/components/IconFont";
 
 
 export const getChaptersByProject = createAsyncThunk(
@@ -87,6 +88,17 @@ export const upsertItemText = createAsyncThunk(
 
         return updatedChapter
     }
+)
+
+export const loadProjects = createAsyncThunk(
+        "ui/loadProjects",
+        async (_0, thunkAPI) => {
+            
+            thunkAPI.dispatch(setLoadingProjects(true))
+            const {data: projects} = await supabase.from("projects").select()
+            thunkAPI.dispatch(updateProjects(projects))
+            thunkAPI.dispatch(setLoadingProjects(false))
+        }
 )
 
 export const upsertNewChapter = createAsyncThunk(

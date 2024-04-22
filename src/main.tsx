@@ -7,12 +7,14 @@ import { MainView } from './views/main/main.view.tsx';
 import { Layout } from './views/layout/layout.view.tsx';
 import { Provider } from 'react-redux';
 import { store } from './app/store.ts';
+import { ProjectView } from './views/projects/projects.view.tsx';
 
 const router = createHashRouter(
   createRoutesFromElements(
     <>
       <Route path="" element={<RequireAuth><Layout /></RequireAuth>}>
-        <Route index element={<MainView />} />
+        <Route path='project/:id' element={<MainView />} />
+        <Route index element={<ProjectView/>} />
       </Route>
       <Route path="/login" element={<LoginView />} />
     </>

@@ -1,14 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
-import { Chapter, Item, } from "../supabaseClient"
+import { Chapter, Item, Project, } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
 
 
 
 const initialState: UiState = {
   count: 0,
-  activeProject: "34cf04e5-2ba0-41ba-ac44-705c33065481",
+  activeProject: null,
+  
+  projects: [],
+  loadingProjects: true,
+
   chapters: [],
   items: {}
 }
@@ -28,8 +32,11 @@ export const uiSlice = createSlice({
         }
       }))
     },
-    updateChapters(state, action: { payload: { chapters: Chapter[] } }) {
+    updateChapters: (state, action: { payload: { chapters: Chapter[] } }) => {
       state.chapters = action.payload.chapters
+    },
+    setLoadingProjects: (state, action: {payload: boolean})=>{
+      state.loadingProjects = action.payload
     },
     locallyAddChapterAtIndex: (state, action: {
       payload: {
@@ -49,6 +56,9 @@ export const uiSlice = createSlice({
       })
 
       state.items[newId] = []
+    },
+    updateProjects: (state, action: {payload: Project[]}) => {
+      state.projects = [...action.payload]
     },
     locallyRemoveChapter: (state, action: { payload: string }) => {
       // delete state.chapters[action.payload]
@@ -72,6 +82,9 @@ export const uiSlice = createSlice({
           return
         }
       })
+    },
+    updateActiveProject(state, action: {payload: string}){
+      state.activeProject = action.payload
     },
     updateItem(state, action: { payload: { item: Item } }) {
       state.items[action.payload.item.chapter].forEach((i: Item) => {
@@ -128,4 +141,6 @@ export const { addToCount,
   locallyAddChapterAtIndex,
   locallyRemoveChapter,
   updateChapters,
+  setLoadingProjects,
+  updateProjects,
   updateItems } = uiSlice.actions
