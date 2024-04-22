@@ -49,7 +49,7 @@ export function ChapterComponent(props: ChapterComponentProps) {
         dispatch(deleteChapter(chapterId))
     }
     return (
-        <div>
+        <div key={props.chapter.chapter_id}>
             <div className="chapterComponent">
                 <div className="doubleSide">
                     <MoveableObject type={"Chapter"} onDelete={()=>rmChapter(props.chapter.chapter_id)}>
@@ -80,12 +80,12 @@ export function ChapterComponent(props: ChapterComponentProps) {
                 {/* # Children */}
                 {props.items && props.items.map((i, idx) => {
                     return (
-                        <><div className="doubleSide">
-                            <ItemsComponent key={idx} item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
-                            <ItemsComponent key={idx} item={i} final={true} onNewItem={() => createNewItem(idx + 1)} />
+                        <div key={idx}><div className="doubleSide">
+                            <ItemsComponent key={"1"+ idx} item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
+                            <ItemsComponent key={"2´"+idx} item={i} final={true} onNewItem={() => createNewItem(idx + 1)} />
                         </div>
                             <DividerComponent onButtonClick={() => createNewItem(idx)} buttonCaption={"Paragraph"} index={idx} />
-                        </>)
+                        </div>)
                 })}
             </div>
         </div>

@@ -1,14 +1,25 @@
+
 .layoutContainer {
     display: grid;
     height: 100vh;
     grid-template-rows: auto 2em;
-    grid-template-areas: "content" "footer";
-}
+    grid-template-columns: 3em auto;
+    grid-template-areas: "sidebar content" " sidebar footer";
 
-.footer {
-    grid-area: footer;
-}
 
-.content {
-    grid-area: content;
+    .footer {
+        grid-area: footer;
+    }
+
+    .sidebar {
+        grid-area: sidebar;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        width: 3em;
+        border-right: 1px solid #eee;
+    }
+    .content {
+        grid-area: content;
+    }
 }

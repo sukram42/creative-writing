@@ -25,7 +25,7 @@ export function TextOutlinePane() {
 
   return <>
     {chapters.map((c, idx) =>
-      <div>
+      <div key={idx}>
         {!activeProject?<Navigate to={"/"}></Navigate>:""}
         <ChapterComponent chapter={c} items={items[c.chapter_id]} />
         <DividerComponent

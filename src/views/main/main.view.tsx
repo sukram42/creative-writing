@@ -8,6 +8,7 @@ import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors"
 import { AppDispatch } from "../../app/store"
 import { Navigate, useParams } from "react-router-dom"
 import { act } from "react-dom/test-utils"
+import Sidebar from "../../components/sidebar/sidebar.component"
 
 export function MainView() {
     const dispatch = useDispatch<AppDispatch>()
@@ -29,9 +30,9 @@ export function MainView() {
     return (
         <div className="mainView">
             {!activeProject? <Navigate to={"/"}></Navigate>:""}
-            <div className="notesPane">
+            {/* <div className="notesPane">
                 <NotesPaneComponent />
-            </div>
+            </div> */}
             <div className="contentPane">
                 <TextOutlinePane />
                 {/* <EditorPaneComponent></EditorPaneComponent> */}
