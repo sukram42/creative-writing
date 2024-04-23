@@ -2,13 +2,19 @@
 import { ArrowLeftOutlined, LogoutOutlined } from "@ant-design/icons"
 import "./sidebar.component.scss"
 import { Button } from "antd"
+import { supabase } from "../../app/supabaseClient"
 
+import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
     showBack?: boolean
 }
 export default function Sidebar(props: SidebarProps) {
-
+    const navigate = useNavigate()
+    const logOut = () => {
+        supabase.auth.signOut()
+        navigate("/login")
+    }
     return (
         <div className="sidebarComponent">
             <div className="topIcons">
@@ -19,7 +25,7 @@ export default function Sidebar(props: SidebarProps) {
                 mid
             </div>
             <div className="bottomIcons">
-                <LogoutOutlined></LogoutOutlined>
+                <Button shape="circle" icon={<LogoutOutlined />}  onClick={()=>logOut()}></Button>
             </div>
 
         </div>)

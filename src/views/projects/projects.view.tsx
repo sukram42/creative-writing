@@ -29,6 +29,7 @@ export function ProjectView() {
                 className="projectList"
                 itemLayout="horizontal"
                 dataSource={projects}
+                loading={areProjectsLoading}
                 renderItem={(item) => (
                     <List.Item
                         actions={[<a key="list-loadmore-edit" href={`#/project/${item.project_id}`}>edit</a>, <a key="list-loadmore-more">more</a>]}
