@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, setLoadingProjects, updateChapters, updateItems, updateProjects } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, setLoadChapter, setLoadingProjects, updateChapters, updateItems, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
-import create from "@ant-design/icons/lib/components/IconFont";
 
 
 export const getChaptersByProject = createAsyncThunk(
     "ui/getChaptersByProject",
-    async (projectId: string) => {
+    async (projectId: string, thunkAPI) => {
+        thunkAPI.dispatch(setLoadChapter(true))
         const { data: chapters } = await supabase
             .from('chapters')
             .select('*')
@@ -24,6 +24,7 @@ export const getChaptersByProject = createAsyncThunk(
             return { [chapter.chapter_id]: items }
 
         })).then(items => {
+            thunkAPI.dispatch(setLoadChapter(false))
             return items.reduce((a, b) => ({ ...a, ...b }), {})
         })
 
@@ -131,7 +132,7 @@ export const upsertNewItem = createAsyncThunk(
 
         const { data: incrementData, error: incrementError } = await supabase
             .rpc('incrementitemindex', {
-                minrank: payload.index + 1,
+                minrank: payload.index,
                 chapter_id: payload.item.chapter
             })
 

@@ -22,12 +22,12 @@ export function ChapterComponent(props: ChapterComponentProps) {
     const createNewItem = (idx: number) => {
         {
             const newItem: Partial<Item> = {
-                rank_in_chapter: idx + 1,
+                rank_in_chapter: idx,
                 item_id: v4(),
                 outline: "",
                 chapter: props.chapter.chapter_id
             }
-            dispatch(upsertNewItem({ index: idx, item: newItem, project_id: props.chapter.project +"" }))
+            dispatch(upsertNewItem({ index: idx, item: newItem, project_id: props.chapter.project + "" }))
         }
     }
     const onLocalTitleChange = (newTitle: string) => {
@@ -45,14 +45,14 @@ export function ChapterComponent(props: ChapterComponentProps) {
         dispatch(upsertChapterTitle(updatePayload))
     }
 
-    const rmChapter = (chapterId: string)=>{
+    const rmChapter = (chapterId: string) => {
         dispatch(deleteChapter(chapterId))
     }
     return (
         <div key={props.chapter.chapter_id}>
             <div className="chapterComponent">
                 <div className="doubleSide">
-                    <MoveableObject type={"Chapter"} onDelete={()=>rmChapter(props.chapter.chapter_id)}>
+                    <MoveableObject type={"Chapter"} onDelete={() => rmChapter(props.chapter.chapter_id)}>
                         <Input
                             size="small"
                             placeholder="Chapter Title"
@@ -78,13 +78,16 @@ export function ChapterComponent(props: ChapterComponentProps) {
                     </MoveableObject>
                 </div>
                 {/* # Children */}
+                <DividerComponent onButtonClick={() => createNewItem(0)} buttonCaption={"Paragraph"} index={0} />
                 {props.items && props.items.map((i, idx) => {
                     return (
-                        <div key={idx}><div className="doubleSide">
-                            <ItemsComponent key={"1"+ idx} item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
-                            <ItemsComponent key={"2´"+idx} item={i} final={true} onNewItem={() => createNewItem(idx + 1)} />
-                        </div>
-                            <DividerComponent onButtonClick={() => createNewItem(idx)} buttonCaption={"Paragraph"} index={idx} />
+                        <div key={idx}>
+                            {idx}
+                            <div className="doubleSide">
+                                <ItemsComponent key={"1" + idx} item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
+                                <ItemsComponent key={"2" + idx} item={i} final={true} onNewItem={() => createNewItem(idx + 1)} />
+                            </div>
+                            <DividerComponent onButtonClick={() => createNewItem(idx+1)} buttonCaption={"Paragraph"} index={idx+1} />
                         </div>)
                 })}
             </div>

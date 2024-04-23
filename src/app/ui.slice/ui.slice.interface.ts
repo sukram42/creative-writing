@@ -5,6 +5,8 @@ export interface UiState {
     projects: Project[]
     activeProject: string | null,
     loadingProjects: boolean,
-    chapters: Chapter[]
+
+    loadChapters: boolean,
+    chapters: Chapter[],
     items: Record<string, Item[]>
 }

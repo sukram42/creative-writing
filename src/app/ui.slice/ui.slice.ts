@@ -12,6 +12,8 @@ const initialState: UiState = {
   
   projects: [],
   loadingProjects: true,
+  
+  loadChapters: false,
 
   chapters: [],
   items: {}
@@ -23,6 +25,9 @@ export const uiSlice = createSlice({
   reducers: {
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
+    },
+    setLoadChapter: (state, action: { payload: boolean}) => {
+      state.loadChapters = action.payload
     },
     locallyUpdateChapterTitle: (state, action: { payload: { chapterId: string, newTitle: string } }) => {
       state.chapters.forEach((c => {
@@ -143,4 +148,5 @@ export const { addToCount,
   updateChapters,
   setLoadingProjects,
   updateProjects,
+  setLoadChapter,
   updateItems } = uiSlice.actions
