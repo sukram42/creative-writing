@@ -92,14 +92,14 @@ export const upsertItemText = createAsyncThunk(
 )
 
 export const loadProjects = createAsyncThunk(
-        "ui/loadProjects",
-        async (_0, thunkAPI) => {
-            
-            thunkAPI.dispatch(setLoadingProjects(true))
-            const {data: projects} = await supabase.from("projects").select()
-            thunkAPI.dispatch(updateProjects(projects))
-            thunkAPI.dispatch(setLoadingProjects(false))
-        }
+    "ui/loadProjects",
+    async (_0, thunkAPI) => {
+
+        thunkAPI.dispatch(setLoadingProjects(true))
+        const { data: projects } = await supabase.from("projects").select()
+        thunkAPI.dispatch(updateProjects(projects))
+        thunkAPI.dispatch(setLoadingProjects(false))
+    }
 )
 
 export const upsertNewChapter = createAsyncThunk(
@@ -129,6 +129,19 @@ export const upsertNewChapter = createAsyncThunk(
 export const upsertNewItem = createAsyncThunk(
     "ui/upsertNewItem",
     async (payload: { index: number, item: Partial<Item>, project_id: string }, thunkAPI) => {
+        const state = thunkAPI.getState() as RootState
+        console.log("upsert", payload)
+        if (!payload.item.item_id) return
+
+        let itemsBefore = state.ui.items[payload.item.chapter!]
+        let newItems = [...itemsBefore]
+        newItems.splice(payload.index, 0, payload.item)
+
+        console.log("test", newItems)
+        thunkAPI.dispatch(updateItems({
+            chapter: payload.item.chapter!,
+            items: newItems
+        }))
 
         const { data: incrementData, error: incrementError } = await supabase
             .rpc('incrementitemindex', {
@@ -144,10 +157,17 @@ export const upsertNewItem = createAsyncThunk(
             .upsert(payload.item)
             .select()
             .order("rank_in_chapter")
+
         if (error) console.error(error)
         else console.log(data)
 
-        thunkAPI.dispatch(getChaptersByProject(payload.project_id))
+        let itemsFinal = [...itemsBefore]
+        itemsFinal.splice(payload.index, 0, data![0])
+
+        thunkAPI.dispatch(updateItems({
+            chapter: payload.item.chapter!,
+            items: itemsFinal
+        }))
     }
 )
 
@@ -157,6 +177,8 @@ export const deleteItem = createAsyncThunk(
     async (payload: Item, thunkAPI) => {
         const chapter = (thunkAPI.getState() as RootState).ui.items[payload.chapter]
         const newChapter = chapter.filter((elem) => elem.item_id !== payload.item_id)
+
+        console.log("Delete Item", payload.item_id, newChapter)
 
         thunkAPI.dispatch(updateItems({ items: newChapter, chapter: payload.chapter }))
 
@@ -181,8 +203,10 @@ export const testEdgeFunctions = createAsyncThunk(
     "ui/testEdgeFunctions",
     async (payload: { paragraph: string }) => {
 
-        await supabase.functions.invoke('mistral', {
+        const {data} = await supabase.functions.invoke('mistral', {
             body: { paragraph: payload.paragraph },
         })
+        console.log("daten", data)
+        // Update the data
     }
 )

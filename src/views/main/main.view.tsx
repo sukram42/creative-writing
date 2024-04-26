@@ -16,15 +16,15 @@ export function MainView() {
     console.log("Active", activeProject)
 
     if (activeProject) {
-        supabase.channel('custom-update-channel')
-            .on(
-                'postgres_changes',
-                { event: 'UPDATE', schema: 'public', table: 'items' },
-                (payload) => {
-                    dispatch(getChaptersByProject(activeProject))
-                }
-            )
-            .subscribe()
+        // supabase.channel('custom-update-channel')
+        //     .on(
+        //         'postgres_changes',
+        //         { event: 'UPDATE', schema: 'public', table: 'items' },
+        //         (payload) => {
+        //             dispatch(getChaptersByProject(activeProject))
+        //         }
+        //     )
+        //     .subscribe()
     }
 
     return (

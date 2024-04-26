@@ -82,7 +82,6 @@ export function ChapterComponent(props: ChapterComponentProps) {
                 {props.items && props.items.map((i, idx) => {
                     return (
                         <div key={idx}>
-                            {idx}
                             <div className="doubleSide">
                                 <ItemsComponent key={"1" + idx} item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
                                 <ItemsComponent key={"2" + idx} item={i} final={true} onNewItem={() => createNewItem(idx + 1)} />

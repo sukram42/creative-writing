@@ -101,6 +101,7 @@ export const uiSlice = createSlice({
     },
     updateItems(state, action: { payload: { items: Item[], chapter: string } }) {
       state.items[action.payload.chapter] = action.payload.items
+      console.log(action.payload.items)
     }
   },
   extraReducers: (builder) => {
