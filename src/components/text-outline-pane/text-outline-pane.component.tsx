@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { getActiveProject, getChapters, getItems, getLoadChapter } from "../../app/ui.slice/ui.slice.selectors"
+import { getChapters, getItems, getLoadChapter } from "../../app/ui.slice/ui.slice.selectors"
 import { AppDispatch } from "../../app/store"
 import { getChaptersByProject, upsertNewChapter } from "../../app/ui.slice/ui.slice.async"
 import { useEffect } from "react"

@@ -22,10 +22,9 @@ export default function Sidebar(props: SidebarProps) {
                 </Button> : ""}
             </div>
             <div className="middleIcons">
-                mid
             </div>
             <div className="bottomIcons">
-                <Button shape="circle" icon={<LogoutOutlined />}  onClick={()=>logOut()}></Button>
+                <Button shape="circle" icon={<LogoutOutlined />} onClick={() => logOut()}></Button>
             </div>
 
         </div>)

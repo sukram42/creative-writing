@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import "./project.view.scss"
 import { AppDispatch } from "../../app/store"
 import { List, Skeleton, Button, Drawer } from "antd"
-import { createProject, loadProjects } from "../../app/ui.slice/ui.slice.async"
+import { createProject, deleteProject, loadProjects } from "../../app/ui.slice/ui.slice.async"
 import { getActiveProject, getAreProjectsLoading, getProjects } from "../../app/ui.slice/ui.slice.selectors"
 import { useEffect, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
@@ -50,8 +50,15 @@ export function ProjectView() {
             <Drawer title="Basic Drawer" size={"large"} onClose={() => setNewProjectDrawerOpenState(false)} open={isNewProjectDrawerOpen}>
                 <NewProjectForm onFinish={createProjectFinish} />
             </Drawer>
-            <Drawer size={"large"} title="Project Overview" open={!!activeProjectInfo} onClose={() => setActiveProjectInfo(null)}>
-                {!!activeProjectInfo ? <ProjectInfo onDelete={()=>console.log("Delete")} project={activeProjectInfo!}></ProjectInfo> : ""}
+            <Drawer size={"large"}
+                title="Project Overview"
+                open={!!activeProjectInfo}
+                onClose={() => setActiveProjectInfo(null)}>
+                {
+                    !!activeProjectInfo ? <ProjectInfo onDelete={() => {
+                        dispatch(deleteProject(activeProjectInfo.project_id))
+                        setActiveProjectInfo(null)
+                    }} project={activeProjectInfo!}></ProjectInfo> : ""}
             </Drawer>
             <div>
                 <Button icon={<PlusOutlined />} onClick={() => setNewProjectDrawerOpenState(true)} type="primary"> Project </Button>
@@ -75,12 +82,12 @@ export function ProjectView() {
                                 <List.Item.Meta
                                     // avatar={<Avatar src={item.picture.large} />}
                                     title={<a href={`#/project/${item.project_id}`}>{item.name}</a>}
-                                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                                    description={item.description}
                                 />
 
                             </Skeleton>
                         </List.Item>
                     )}
                 /></div>
-        </div>)
+        </div >)
 }
