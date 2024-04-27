@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Chapter, Item, supabase } from "../supabaseClient";
+import { Chapter, Item, Project, supabase } from "../supabaseClient";
 import { locallyRemoveChapter, locallyUpdateChapterTitle, setLoadChapter, setLoadingProjects, updateChapters, updateItems, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
 
@@ -97,7 +97,7 @@ export const loadProjects = createAsyncThunk(
 
         thunkAPI.dispatch(setLoadingProjects(true))
         const { data: projects } = await supabase.from("projects").select()
-        thunkAPI.dispatch(updateProjects(projects))
+        thunkAPI.dispatch(updateProjects(projects as Project[]))
         thunkAPI.dispatch(setLoadingProjects(false))
     }
 )
@@ -203,10 +203,21 @@ export const testEdgeFunctions = createAsyncThunk(
     "ui/testEdgeFunctions",
     async (payload: { paragraph: string }) => {
 
-        const {data} = await supabase.functions.invoke('mistral', {
+        const { data } = await supabase.functions.invoke('mistral', {
             body: { paragraph: payload.paragraph },
         })
         console.log("daten", data)
         // Update the data
+    }
+)
+
+
+export const createProject = createAsyncThunk(
+    "ui/createProject",
+    async (payload: Partial<Project> ) => {
+
+        const { data, error } = await supabase.from("projects").insert(payload).select()
+        console.log("Error creating project", error, data)
+        return data![0]
     }
 )

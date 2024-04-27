@@ -12,7 +12,7 @@ export type Database = {
       chapters: {
         Row: {
           chapter_id: string
-          created_at: string | null
+          created_at: string
           descriptions: string | null
           index: number | null
           project: string | null
@@ -62,7 +62,7 @@ export type Database = {
       items: {
         Row: {
           chapter: string
-          created_at: string | null
+          created_at: string
           final: string | null
           item_id: string
           outline: string | null
@@ -107,20 +107,37 @@ export type Database = {
       projects: {
         Row: {
           created_at: string
+          created_by: string | null
+          description: string | null
           name: string
           project_id: string
+          target_group: string | null
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
+          description?: string | null
           name: string
           project_id?: string
+          target_group?: string | null
         }
         Update: {
           created_at?: string
+          created_by?: string | null
+          description?: string | null
           name?: string
           project_id?: string
+          target_group?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_projects_createdBy_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       prompts: {
         Row: {
