@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Chapter, Item, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, updateChapters, updateItems } from "./ui.slice";
+import { Chapter, Item, Project, supabase } from "../supabaseClient";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, setLoadChapter, setLoadingProjects, updateChapters, updateItems, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
 
 
 export const getChaptersByProject = createAsyncThunk(
     "ui/getChaptersByProject",
-    async (projectId: string) => {
+    async (projectId: string, thunkAPI) => {
+        thunkAPI.dispatch(setLoadChapter(true))
         const { data: chapters } = await supabase
             .from('chapters')
             .select('*')
@@ -23,6 +24,7 @@ export const getChaptersByProject = createAsyncThunk(
             return { [chapter.chapter_id]: items }
 
         })).then(items => {
+            thunkAPI.dispatch(setLoadChapter(false))
             return items.reduce((a, b) => ({ ...a, ...b }), {})
         })
 
@@ -89,6 +91,17 @@ export const upsertItemText = createAsyncThunk(
     }
 )
 
+export const loadProjects = createAsyncThunk(
+    "ui/loadProjects",
+    async (_0, thunkAPI) => {
+
+        thunkAPI.dispatch(setLoadingProjects(true))
+        const { data: projects } = await supabase.from("projects").select()
+        thunkAPI.dispatch(updateProjects(projects as Project[]))
+        thunkAPI.dispatch(setLoadingProjects(false))
+    }
+)
+
 export const upsertNewChapter = createAsyncThunk(
     "ui/upsertNewChapter",
     async (payload: { index: number, chapter: Partial<Chapter> }, thunkAPI) => {
@@ -116,10 +129,21 @@ export const upsertNewChapter = createAsyncThunk(
 export const upsertNewItem = createAsyncThunk(
     "ui/upsertNewItem",
     async (payload: { index: number, item: Partial<Item>, project_id: string }, thunkAPI) => {
+        const state = thunkAPI.getState() as RootState
+        if (!payload.item.item_id) return
+
+        let itemsBefore = state.ui.items[payload.item.chapter!]
+        let newItems = [...itemsBefore]
+        newItems.splice(payload.index, 0, payload.item as Item)
+
+        thunkAPI.dispatch(updateItems({
+            chapter: payload.item.chapter!,
+            items: newItems
+        }))
 
         const { data: incrementData, error: incrementError } = await supabase
             .rpc('incrementitemindex', {
-                minrank: payload.index + 1,
+                minrank: payload.index,
                 chapter_id: payload.item.chapter
             })
 
@@ -131,10 +155,17 @@ export const upsertNewItem = createAsyncThunk(
             .upsert(payload.item)
             .select()
             .order("rank_in_chapter")
+
         if (error) console.error(error)
         else console.log(data)
 
-        thunkAPI.dispatch(getChaptersByProject(payload.project_id))
+        let itemsFinal = [...itemsBefore]
+        itemsFinal.splice(payload.index, 0, data![0])
+
+        thunkAPI.dispatch(updateItems({
+            chapter: payload.item.chapter!,
+            items: itemsFinal
+        }))
     }
 )
 
@@ -144,6 +175,8 @@ export const deleteItem = createAsyncThunk(
     async (payload: Item, thunkAPI) => {
         const chapter = (thunkAPI.getState() as RootState).ui.items[payload.chapter]
         const newChapter = chapter.filter((elem) => elem.item_id !== payload.item_id)
+
+        console.log("Delete Item", payload.item_id, newChapter)
 
         thunkAPI.dispatch(updateItems({ items: newChapter, chapter: payload.chapter }))
 
@@ -168,8 +201,38 @@ export const testEdgeFunctions = createAsyncThunk(
     "ui/testEdgeFunctions",
     async (payload: { paragraph: string }) => {
 
-        await supabase.functions.invoke('mistral', {
+        const { data } = await supabase.functions.invoke('mistral', {
             body: { paragraph: payload.paragraph },
         })
+        console.log("daten", data)
+        // Update the data
+    }
+)
+
+export const deleteProject = createAsyncThunk(
+    "ui/deleteProject",
+    async (payload: string, thunkAPI) => {
+        const state = thunkAPI.getState() as RootState
+        const projectsBefore = state.ui.projects
+
+        const projectsAfter = projectsBefore.filter((proj) => proj.project_id !== payload)
+        thunkAPI.dispatch(updateProjects(projectsAfter))
+        const { error } = await supabase.from("projects").delete()
+            .eq('project_id', payload)
+
+        if (error) {
+            thunkAPI.dispatch(updateProjects(projectsBefore))
+        }
+
+    }
+)
+
+export const createProject = createAsyncThunk(
+    "ui/createProject",
+    async (payload: Partial<Project>) => {
+
+        const { data, error } = await supabase.from("projects").insert(payload).select()
+        console.log("Error creating project", error, data)
+        return data![0]
     }
 )

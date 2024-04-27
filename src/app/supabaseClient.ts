@@ -9,4 +9,5 @@ export const supabase = createClient(supabaseUrl, supabaseKey)
 // Types
 
 export type Chapter = Database["public"]["Tables"]["chapters"]["Row"]
+export type Project = Database["public"]["Tables"]["projects"]["Row"]
 export type Item = Database["public"]["Tables"]["items"]["Row"]

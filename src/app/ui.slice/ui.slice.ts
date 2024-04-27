@@ -1,14 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
-import { Chapter, Item, } from "../supabaseClient"
+import { Chapter, Item, Project, } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
 
 
 
 const initialState: UiState = {
   count: 0,
-  activeProject: "34cf04e5-2ba0-41ba-ac44-705c33065481",
+  activeProject: null,
+  
+  projects: [],
+  loadingProjects: true,
+  
+  loadChapters: false,
+
   chapters: [],
   items: {}
 }
@@ -20,6 +26,9 @@ export const uiSlice = createSlice({
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
     },
+    setLoadChapter: (state, action: { payload: boolean}) => {
+      state.loadChapters = action.payload
+    },
     locallyUpdateChapterTitle: (state, action: { payload: { chapterId: string, newTitle: string } }) => {
       state.chapters.forEach((c => {
         if (c.chapter_id == action.payload.chapterId) {
@@ -28,8 +37,11 @@ export const uiSlice = createSlice({
         }
       }))
     },
-    updateChapters(state, action: { payload: { chapters: Chapter[] } }) {
+    updateChapters: (state, action: { payload: { chapters: Chapter[] } }) => {
       state.chapters = action.payload.chapters
+    },
+    setLoadingProjects: (state, action: {payload: boolean})=>{
+      state.loadingProjects = action.payload
     },
     locallyAddChapterAtIndex: (state, action: {
       payload: {
@@ -49,6 +61,9 @@ export const uiSlice = createSlice({
       })
 
       state.items[newId] = []
+    },
+    updateProjects: (state, action: {payload: Project[]}) => {
+      state.projects = [...action.payload]
     },
     locallyRemoveChapter: (state, action: { payload: string }) => {
       // delete state.chapters[action.payload]
@@ -73,6 +88,9 @@ export const uiSlice = createSlice({
         }
       })
     },
+    updateActiveProject(state, action: {payload: string}){
+      state.activeProject = action.payload
+    },
     updateItem(state, action: { payload: { item: Item } }) {
       state.items[action.payload.item.chapter].forEach((i: Item) => {
         if (i.item_id === action.payload.item.item_id) {
@@ -83,6 +101,7 @@ export const uiSlice = createSlice({
     },
     updateItems(state, action: { payload: { items: Item[], chapter: string } }) {
       state.items[action.payload.chapter] = action.payload.items
+      console.log(action.payload.items)
     }
   },
   extraReducers: (builder) => {
@@ -128,4 +147,7 @@ export const { addToCount,
   locallyAddChapterAtIndex,
   locallyRemoveChapter,
   updateChapters,
+  setLoadingProjects,
+  updateProjects,
+  setLoadChapter,
   updateItems } = uiSlice.actions
