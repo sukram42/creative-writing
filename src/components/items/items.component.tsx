@@ -23,7 +23,8 @@ export function ItemsComponent(props: ItemsComponentProps) {
 
     const onTextChange = (newText: string, final: boolean) => {
         if (wasChanged) {
-            if (!final && newText.length > 10) {
+            console.log(newText.length)
+            if (!final && newText.length > 20) {
                 dispatch(testEdgeFunctions({ paragraph: props.item.item_id }))
             }
             dispatch(upsertItemText({ itemId: props.item.item_id + "", newText, field: final ? "final" : "outline" }))
@@ -56,10 +57,23 @@ export function ItemsComponent(props: ItemsComponentProps) {
                     }
                 }
                 }
-                onBlur={(_0, _1, c) => onTextChange(c.getHTML(), props.final)}
-                // onBlur={(e, b, c) => console.log(e, b, c)}
+                // onBlur={(_0, _1, c) => onTextChange(c.getHTML(), props.final)}
+                // onBlur={(e, b, c) => console.log("Blur", e, b, c)}
+                onBlur={(range, source, editor) => {
+                    setTimeout(() => {
+                        let fixRange = editor.getSelection()
+                        if (fixRange) {
+                            // paste event or none real blur event
+                            console.log('fake blur')
+                        } else {
+                            onTextChange(editor.getHTML(), props.final)
+                        }
+                    }, 2) // random time
+                }}
+                // onChange={(val) => console.log("Change", val)}
                 placeholder={props.item.item_id}
-                onChange={(val) => onLocalTextChange(val, props.final, props.item)}></ReactQuill>
+                onChange={(val) => onLocalTextChange(val, props.final, props.item)}
+            ></ReactQuill>
         </MoveableObject >
     </>
 }
