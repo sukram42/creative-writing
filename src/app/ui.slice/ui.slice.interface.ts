@@ -9,4 +9,7 @@ export interface UiState {
     loadChapters: boolean,
     chapters: Chapter[],
     items: Record<string, Item[]>
+
+    // The paragraph ids which are loading
+    loadingFinalTexts: string[]
 }

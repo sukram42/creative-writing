@@ -8,3 +8,5 @@ export const getItems = (state: RootState) => state.ui.items
 export const getProjects = (state: RootState) => state.ui.projects
 export const getAreProjectsLoading = (state: RootState) => state.ui.loadingProjects
 export const getLoadChapter = (state: RootState) => state.ui.loadChapters
+
+export const loadingFinalTexts = (state: RootState) => state.ui.loadingFinalTexts

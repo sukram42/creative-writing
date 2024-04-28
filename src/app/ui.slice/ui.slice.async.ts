@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, setLoadChapter, setLoadingProjects, updateChapters, updateItems, updateProjects } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, updateChapters, updateItemText, updateItems, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
 
 
@@ -199,12 +199,20 @@ export const deleteItem = createAsyncThunk(
 
 export const testEdgeFunctions = createAsyncThunk(
     "ui/testEdgeFunctions",
-    async (payload: { paragraph: string }) => {
+    async (payload: { paragraph: Item }, thunkAPI) => {
+
+        thunkAPI.dispatch(setParagraphToLoad(payload.paragraph.item_id))
 
         const { data } = await supabase.functions.invoke('mistral', {
-            body: { paragraph: payload.paragraph },
+            body: { paragraph: payload.paragraph.item_id },
         })
-        console.log("daten", data)
+
+        thunkAPI.dispatch(updateItemText({
+            field: "final",
+            item: payload.paragraph,
+            newText: data.result
+        }))
+        thunkAPI.dispatch(rmParagraphFromLoading(payload.paragraph.item_id))
         // Update the data
     }
 )
