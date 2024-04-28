@@ -23,7 +23,7 @@ export function ItemsComponent(props: ItemsComponentProps) {
 
     const onTextChange = (newText: string, final: boolean) => {
         if (wasChanged) {
-            console.log(newText.length)
+
             if (!final && newText.length > 20) {
                 dispatch(testEdgeFunctions({ paragraph: props.item.item_id }))
             }
@@ -58,7 +58,6 @@ export function ItemsComponent(props: ItemsComponentProps) {
                 }
                 }
                 // onBlur={(_0, _1, c) => onTextChange(c.getHTML(), props.final)}
-                // onBlur={(e, b, c) => console.log("Blur", e, b, c)}
                 onBlur={(range, source, editor) => {
                     setTimeout(() => {
                         let fixRange = editor.getSelection()
@@ -70,7 +69,6 @@ export function ItemsComponent(props: ItemsComponentProps) {
                         }
                     }, 2) // random time
                 }}
-                // onChange={(val) => console.log("Change", val)}
                 placeholder={props.item.item_id}
                 onChange={(val) => onLocalTextChange(val, props.final, props.item)}
             ></ReactQuill>
