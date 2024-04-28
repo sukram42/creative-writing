@@ -1,14 +1,15 @@
 import { Item } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import { deleteItem, testEdgeFunctions, upsertItemText } from "../../app/ui.slice/ui.slice.async";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.core.css';
-import { locallyUpdateItemText } from "../../app/ui.slice/ui.slice";
 
 import './items.component.scss'
+import { updateItemText } from "../../app/ui.slice/ui.slice";
+import { loadingFinalTexts } from "../../app/ui.slice/ui.slice.selectors";
 
 interface ItemsComponentProps {
     item: Item,
@@ -21,11 +22,13 @@ export function ItemsComponent(props: ItemsComponentProps) {
 
     const [wasChanged, setWasChanged] = useState(false)
 
+    const paragraphsLoading = useSelector(loadingFinalTexts)
+
     const onTextChange = (newText: string, final: boolean) => {
         if (wasChanged) {
 
             if (!final && newText.length > 20) {
-                dispatch(testEdgeFunctions({ paragraph: props.item.item_id }))
+                dispatch(testEdgeFunctions({ paragraph: props.item }))
             }
             dispatch(upsertItemText({ itemId: props.item.item_id + "", newText, field: final ? "final" : "outline" }))
             setWasChanged(false)
@@ -34,7 +37,7 @@ export function ItemsComponent(props: ItemsComponentProps) {
     const onLocalTextChange = (newText: string, final: boolean, item: Item) => {
         if (newText !== content) {
             setWasChanged(true)
-            dispatch(locallyUpdateItemText({ item, newText: newText, field: final ? "final" : "outline" }))
+            dispatch(updateItemText({ item, newText: newText, field: final ? "final" : "outline" }))
         }
     }
 
@@ -43,10 +46,11 @@ export function ItemsComponent(props: ItemsComponentProps) {
         <MoveableObject
             type={props.item.type + "" || "Paragraph"}
             onDelete={() => dispatch(deleteItem(props.item))}
-            onRedo={() => dispatch(testEdgeFunctions({ paragraph: props.item.item_id }))}
+            onRedo={() => dispatch(testEdgeFunctions({ paragraph: props.item }))}
             showRedo
+            loading={props.final && new Set(paragraphsLoading).has(props.item.item_id)}   
         >
-            {/* 
+            {/*
             // @ts-ignore */}
             <ReactQuill theme={null}
                 value={content || ""}
@@ -58,13 +62,10 @@ export function ItemsComponent(props: ItemsComponentProps) {
                 }
                 }
                 // onBlur={(_0, _1, c) => onTextChange(c.getHTML(), props.final)}
-                onBlur={(range, source, editor) => {
+                onBlur={(_0,_1, editor) => {
                     setTimeout(() => {
                         let fixRange = editor.getSelection()
-                        if (fixRange) {
-                            // paste event or none real blur event
-                            console.log('fake blur')
-                        } else {
+                        if (fixRange) {} else {
                             onTextChange(editor.getHTML(), props.final)
                         }
                     }, 2) // random time

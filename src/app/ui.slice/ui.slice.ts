@@ -16,13 +16,25 @@ const initialState: UiState = {
   loadChapters: false,
 
   chapters: [],
-  items: {}
+  items: {},
+
+  loadingFinalTexts: []
 }
 
 export const uiSlice = createSlice({
   "name": "ui",
   initialState,
   reducers: {
+    setParagraphToLoad: (state, action: { payload: string}) => {
+      let data = new Set(state.loadingFinalTexts)
+      data.add(action.payload)
+      state.loadingFinalTexts =[...data]
+    },
+    rmParagraphFromLoading: (state, action: {payload: string}) =>{
+      let data = new Set(state.loadingFinalTexts)
+      data.delete(action.payload)
+      state.loadingFinalTexts =[...data]
+    },
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
     },
@@ -74,7 +86,7 @@ export const uiSlice = createSlice({
       delete items[action.payload]
       state.items = items
     },
-    locallyUpdateItemText: (state, action: {
+    updateItemText: (state, action: {
       payload: {
         item: Item,
         newText: string,
@@ -101,7 +113,6 @@ export const uiSlice = createSlice({
     },
     updateItems(state, action: { payload: { items: Item[], chapter: string } }) {
       state.items[action.payload.chapter] = action.payload.items
-      console.log(action.payload.items)
     }
   },
   extraReducers: (builder) => {
@@ -143,11 +154,13 @@ export const uiSlice = createSlice({
 export default uiSlice.reducer
 export const { addToCount,
   locallyUpdateChapterTitle,
-  locallyUpdateItemText,
+  updateItemText,
   locallyAddChapterAtIndex,
   locallyRemoveChapter,
   updateChapters,
   setLoadingProjects,
   updateProjects,
   setLoadChapter,
+  setParagraphToLoad, 
+  rmParagraphFromLoading,
   updateItems } = uiSlice.actions

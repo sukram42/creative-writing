@@ -1,14 +1,40 @@
-.moveableObject{
+.moveableObject {
     &:hover {
-        & > .objectName{
+        &>.objectName {
             opacity: 100%;
         }
     }
 
-    & > .objectName {
+    &>.objectName {
         font-size: 0.8em;
         color: #888;
         opacity: 0;
         cursor: default;
+    }
+
+    .textContent {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: auto;
+        grid-template-areas: "content";
+
+        .moveableContent {
+            grid-area: content;
+        }
+
+        .loadingOverlay {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255);
+
+            font-size: 3em;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+        }
+
     }
 }
