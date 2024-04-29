@@ -36,7 +36,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_chapters_project_fkey"
+            foreignKeyName: "chapters_project_fkey"
             columns: ["project"]
             isOneToOne: false
             referencedRelation: "projects"
@@ -89,7 +89,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_items_chapter_fkey"
+            foreignKeyName: "items_chapter_fkey"
             columns: ["chapter"]
             isOneToOne: false
             referencedRelation: "chapters"
@@ -109,7 +109,10 @@ export type Database = {
           created_at: string
           created_by: string | null
           description: string | null
+          language_description: string | null
           name: string
+          output_language: string | null
+          paragraph_definition: string | null
           project_id: string
           target_group: string | null
         }
@@ -117,7 +120,10 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          language_description?: string | null
           name: string
+          output_language?: string | null
+          paragraph_definition?: string | null
           project_id?: string
           target_group?: string | null
         }
@@ -125,7 +131,10 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          language_description?: string | null
           name?: string
+          output_language?: string | null
+          paragraph_definition?: string | null
           project_id?: string
           target_group?: string | null
         }

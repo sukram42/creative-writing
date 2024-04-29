@@ -2,7 +2,7 @@ import { Item } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../app/store";
-import { deleteItem, testEdgeFunctions, upsertItemText } from "../../app/ui.slice/ui.slice.async";
+import { deleteItem, mistralCompletion, upsertItemText } from "../../app/ui.slice/ui.slice.async";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.core.css';
@@ -10,6 +10,7 @@ import 'react-quill/dist/quill.core.css';
 import './items.component.scss'
 import { updateItemText } from "../../app/ui.slice/ui.slice";
 import { loadingFinalTexts } from "../../app/ui.slice/ui.slice.selectors";
+import { useParams } from "react-router-dom";
 
 interface ItemsComponentProps {
     item: Item,
@@ -21,6 +22,7 @@ export function ItemsComponent(props: ItemsComponentProps) {
     const dispatch = useDispatch<AppDispatch>()
 
     const [wasChanged, setWasChanged] = useState(false)
+    const { id: activeProjectId } = useParams();
 
     const paragraphsLoading = useSelector(loadingFinalTexts)
 
@@ -28,7 +30,7 @@ export function ItemsComponent(props: ItemsComponentProps) {
         if (wasChanged) {
 
             if (!final && newText.length > 20) {
-                dispatch(testEdgeFunctions({ paragraph: props.item }))
+                dispatch(mistralCompletion({ paragraph: props.item, project_id: activeProjectId! }))
             }
             dispatch(upsertItemText({ itemId: props.item.item_id + "", newText, field: final ? "final" : "outline" }))
             setWasChanged(false)
@@ -46,9 +48,9 @@ export function ItemsComponent(props: ItemsComponentProps) {
         <MoveableObject
             type={props.item.type + "" || "Paragraph"}
             onDelete={() => dispatch(deleteItem(props.item))}
-            onRedo={() => dispatch(testEdgeFunctions({ paragraph: props.item }))}
+            onRedo={() => dispatch(mistralCompletion({ paragraph: props.item, project_id: activeProjectId! }))}
             showRedo
-            loading={props.final && new Set(paragraphsLoading).has(props.item.item_id)}   
+            loading={props.final && new Set(paragraphsLoading).has(props.item.item_id)}
         >
             {/*
             // @ts-ignore */}
@@ -62,10 +64,10 @@ export function ItemsComponent(props: ItemsComponentProps) {
                 }
                 }
                 // onBlur={(_0, _1, c) => onTextChange(c.getHTML(), props.final)}
-                onBlur={(_0,_1, editor) => {
+                onBlur={(_0, _1, editor) => {
                     setTimeout(() => {
                         let fixRange = editor.getSelection()
-                        if (fixRange) {} else {
+                        if (fixRange) { } else {
                             onTextChange(editor.getHTML(), props.final)
                         }
                     }, 2) // random time

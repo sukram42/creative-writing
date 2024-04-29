@@ -5,7 +5,7 @@ import "./project.view.scss"
 import { AppDispatch } from "../../app/store"
 import { List, Skeleton, Button, Drawer } from "antd"
 import { createProject, deleteProject, loadProjects } from "../../app/ui.slice/ui.slice.async"
-import { getActiveProject, getAreProjectsLoading, getProjects } from "../../app/ui.slice/ui.slice.selectors"
+import { getActiveProjectId, getAreProjectsLoading, getProjects } from "../../app/ui.slice/ui.slice.selectors"
 import { useEffect, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import { EditOutlined, MoreOutlined, PlusOutlined } from "@ant-design/icons"
@@ -22,7 +22,7 @@ export function ProjectView() {
     const [loading, setLoading] = useState(false)
 
 
-    const activeProject = useSelector(getActiveProject)
+    const activeProject = useSelector(getActiveProjectId)
     const projects = useSelector(getProjects)
     const areProjectsLoading = useSelector(getAreProjectsLoading)
 

@@ -56,9 +56,22 @@ Deno.serve(async (req: Request) => {
       .select("*")
       .eq("item_id", content.paragraph)
 
+    // Get project
+    let {
+      data: project
+    } = await supabaseClient.from("projects").select("*").eq("project_id", content.project_id)
+
+    project = project[0]
+
     // Create prompt
-    console.log(prompt[0].model_name)
-    const finalPrompt = prompt[0].prompt.replace("${outline}", data[0].outline)
+    const finalPrompt = prompt[0].prompt
+      .replace("${outline}", data[0].outline)
+      .replace("${documentTitle}", project.name)
+      .replace("${languageDescription}", project.language_description)
+      .replace("${paragraphDefinition}", project.paragraph_definition)
+      .replace("${documentDescription}", project.description)
+      .replace("${outputLanguage}", project.output_language)
+      .replace("${targetGroup}", project.targetGroup)
 
     // const Create the response
     const chatResponse = await mistral_client.chat({

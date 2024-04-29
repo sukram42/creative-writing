@@ -18,7 +18,7 @@ export default function Sidebar(props: SidebarProps) {
     return (
         <div className="sidebarComponent">
             <div className="topIcons">
-                {props.showBack ? <Button shape="circle" href="/" icon={<ArrowLeftOutlined />}>
+                {props.showBack ? <Button shape="circle" href="/creative-writing" icon={<ArrowLeftOutlined />}>
                 </Button> : ""}
             </div>
             <div className="middleIcons">

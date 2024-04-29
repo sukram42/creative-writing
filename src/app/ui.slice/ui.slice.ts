@@ -1,17 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
-import { Chapter, Item, Project, } from "../supabaseClient"
+import { Chapter, Item, Project } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
 
 
 
 const initialState: UiState = {
   count: 0,
+  activeProjectId: null,
   activeProject: null,
-  
   projects: [],
   loadingProjects: true,
+  
   
   loadChapters: false,
 
@@ -35,6 +36,7 @@ export const uiSlice = createSlice({
       data.delete(action.payload)
       state.loadingFinalTexts =[...data]
     },
+
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
     },
@@ -100,8 +102,11 @@ export const uiSlice = createSlice({
         }
       })
     },
-    updateActiveProject(state, action: {payload: string}){
+    updateActiveProject(state, action: {payload: Project}){
       state.activeProject = action.payload
+    },
+    updateActiveProjectId(state, action: {payload: string}){
+      state.activeProjectId = action.payload
     },
     updateItem(state, action: { payload: { item: Item } }) {
       state.items[action.payload.item.chapter].forEach((i: Item) => {
@@ -162,5 +167,6 @@ export const { addToCount,
   updateProjects,
   setLoadChapter,
   setParagraphToLoad, 
+  updateActiveProject,
   rmParagraphFromLoading,
   updateItems } = uiSlice.actions
