@@ -4,7 +4,7 @@ export interface UiState {
     count: number,
     projects: Project[]
     activeProjectId: string | null,
-    activeProject: Project,
+    activeProject: Project | null,
     loadingProjects: boolean,
 
     loadChapters: boolean,

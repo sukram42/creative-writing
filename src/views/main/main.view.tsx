@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { setActiveProject } from "../../app/ui.slice/ui.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
-import { Button, Drawer, Skeleton } from "antd";
+import { Button, Drawer } from "antd";
 import { ProjectUpdateForm } from "../../components/project-update-form/project-update-form.component";
-import { FileOutlined, InfoCircleOutlined, InfoOutlined } from "@ant-design/icons";
+import { FileOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { RawTextView } from "../../components/raw-text-view/raw-text-view.component";
 
 export function MainView() {
@@ -37,7 +37,7 @@ export function MainView() {
                 <NotesPaneComponent />
             </div> */}
             <Drawer size="large" open={rawDrawerOpen} title={activeProject?activeProject.name:""} onClose={()=>setRawDrawerOpen(false)}>
-                {activeProjectId?<RawTextView projectId={activeProjectId}></RawTextView>:""}
+                {activeProjectId?<RawTextView></RawTextView>:""}
             </Drawer>
             {!!activeProject ?
                 <Drawer open={documentDrawerOpen} onClose={() => setDocumentDrawerOpen(false)} placement="left" size="large" title={activeProject.name}>

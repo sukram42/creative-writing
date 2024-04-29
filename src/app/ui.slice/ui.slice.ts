@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
-import { Chapter, Item, Project, } from "../supabaseClient"
+import { Chapter, Item, Project } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -9,9 +9,10 @@ import { v4 as uuidv4 } from 'uuid';
 const initialState: UiState = {
   count: 0,
   activeProjectId: null,
-  
+  activeProject: null,
   projects: [],
   loadingProjects: true,
+  
   
   loadChapters: false,
 

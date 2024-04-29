@@ -1,4 +1,4 @@
-import { Card, Input, Select } from "antd"
+import { Card, Select } from "antd"
 import { Project } from "../../app/supabaseClient"
 import Meta from "antd/es/card/Meta"
 import { InputTextCard } from "../input-text-card/input-text-card.component"
