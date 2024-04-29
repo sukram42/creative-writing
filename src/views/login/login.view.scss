@@ -1,0 +1,48 @@
+.loginView {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: auto;
+    grid-template-areas: "img login .";
+    height: 100%;
+
+    .img {
+        background-color: green;
+        min-height: 100%;
+        grid-area: img;
+        min-width: 100%;
+    }
+
+    .textInfo {
+        padding: 5em;
+        align-content: stretch;
+        box-sizing: border-box;
+
+        .appName {
+            font-size: 3em;
+            font-family: serif;
+        }
+
+
+        .appDescription {
+            color: #888
+        }
+
+
+    }
+
+    .loginForm {
+        padding: 5em;
+    box-sizing: border-box;
+        grid-area: login;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        align-content: stretch;
+
+        .formElement {
+            width: 100%;
+        }
+    }
+}
