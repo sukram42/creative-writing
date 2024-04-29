@@ -2,10 +2,22 @@
 
     display: flex;
     height: 100%;
+    flex-direction: column;
+
     .notesPane {
         background-color: red;
     }
     .contentPane{
         width: 100%;
+    }
+
+
+    .mainViewHeader {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        font-size: large;
+        border-bottom: 1px #ddd solid;
     }
 }

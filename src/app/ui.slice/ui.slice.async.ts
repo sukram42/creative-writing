@@ -220,14 +220,14 @@ export const deleteItem = createAsyncThunk(
 
 
 
-export const testEdgeFunctions = createAsyncThunk(
+export const mistralCompletion = createAsyncThunk(
     "ui/testEdgeFunctions",
-    async (payload: { paragraph: Item }, thunkAPI) => {
+    async (payload: { paragraph: Item, project_id: string }, thunkAPI) => {
 
         thunkAPI.dispatch(setParagraphToLoad(payload.paragraph.item_id))
 
         const { data } = await supabase.functions.invoke('mistral', {
-            body: { paragraph: payload.paragraph.item_id },
+            body: { paragraph: payload.paragraph.item_id, project_id: payload.project_id },
         })
 
         thunkAPI.dispatch(updateItemText({

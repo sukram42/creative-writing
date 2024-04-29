@@ -5,4 +5,8 @@ export const supportedLanguages = [{
 },{
     label: "German",
     value: "German"
+}, 
+{
+    label: "Russian",
+    value: "Russian"
 }]
