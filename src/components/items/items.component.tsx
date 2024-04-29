@@ -46,7 +46,7 @@ export function ItemsComponent(props: ItemsComponentProps) {
     const content = props.final ? props.item.final : props.item.outline
     return <>
         <MoveableObject
-            type={props.item.type + "" || "Paragraph"}
+            type={"Paragraph"}
             onDelete={() => dispatch(deleteItem(props.item))}
             onRedo={() => dispatch(mistralCompletion({ paragraph: props.item, project_id: activeProjectId! }))}
             showRedo
