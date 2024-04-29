@@ -1,8 +1,12 @@
-
-.sidebarComponent{
+.sidebarComponent {
     display: flex;
-    justify-content: space-between ;
+    justify-content: space-between;
     flex-direction: column;
     align-items: center;
     height: 100%;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0.5em 0;
 }

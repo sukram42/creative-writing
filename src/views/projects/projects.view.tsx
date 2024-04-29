@@ -60,8 +60,9 @@ export function ProjectView() {
                         setActiveProjectInfo(null)
                     }} project={activeProjectInfo!}></ProjectInfo> : ""}
             </Drawer>
-            <div>
-                <Button icon={<PlusOutlined />} onClick={() => setNewProjectDrawerOpenState(true)} type="primary"> Project </Button>
+
+            <div className="projectToolbar">
+                <Button icon={<PlusOutlined />} onClick={() => setNewProjectDrawerOpenState(true)} size="large" type="primary"> Project </Button>
             </div>
 
             {activeProject ? <Navigate to={`/project/${activeProject}`}></Navigate> : ""}
