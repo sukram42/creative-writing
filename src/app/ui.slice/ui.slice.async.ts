@@ -1,8 +1,31 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, updateChapters, updateItemText, updateItems, updateProjects } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
 
+export const setActiveProject = createAsyncThunk(
+    "ui/getActiveProject",
+    async (projectId: string, thunkAPI) => {
+        const { data: activeProject } = await supabase
+            .from("projects").select().eq('project_id', projectId)
+
+        if (!activeProject) return
+        thunkAPI.dispatch(updateActiveProject(activeProject[0] as Project))
+    }
+)
+
+export const updateProjectField = createAsyncThunk(
+    "ui/updateProjectField",
+    async (payload: { field: string, newValue: string, projectId: string }) => {
+        const { data } = await supabase
+            .from("projects")
+            .update({ [payload.field]: payload.newValue })
+            .eq("project_id", payload.projectId)
+            .select()
+        console.log(data)
+        return data
+    }
+)
 
 export const getChaptersByProject = createAsyncThunk(
     "ui/getChaptersByProject",

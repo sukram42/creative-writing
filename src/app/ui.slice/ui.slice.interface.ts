@@ -3,7 +3,8 @@ import { Chapter, Item, Project } from "../supabaseClient";
 export interface UiState {
     count: number,
     projects: Project[]
-    activeProject: string | null,
+    activeProjectId: string | null,
+    activeProject: Project,
     loadingProjects: boolean,
 
     loadChapters: boolean,

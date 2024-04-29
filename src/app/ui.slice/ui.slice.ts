@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const initialState: UiState = {
   count: 0,
-  activeProject: null,
+  activeProjectId: null,
   
   projects: [],
   loadingProjects: true,
@@ -35,6 +35,7 @@ export const uiSlice = createSlice({
       data.delete(action.payload)
       state.loadingFinalTexts =[...data]
     },
+
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
     },
@@ -100,8 +101,11 @@ export const uiSlice = createSlice({
         }
       })
     },
-    updateActiveProject(state, action: {payload: string}){
+    updateActiveProject(state, action: {payload: Project}){
       state.activeProject = action.payload
+    },
+    updateActiveProjectId(state, action: {payload: string}){
+      state.activeProjectId = action.payload
     },
     updateItem(state, action: { payload: { item: Item } }) {
       state.items[action.payload.item.chapter].forEach((i: Item) => {
@@ -162,5 +166,6 @@ export const { addToCount,
   updateProjects,
   setLoadChapter,
   setParagraphToLoad, 
+  updateActiveProject,
   rmParagraphFromLoading,
   updateItems } = uiSlice.actions
