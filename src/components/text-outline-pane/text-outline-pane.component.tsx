@@ -8,7 +8,7 @@ import { DividerComponent } from "../divider/divider.component"
 import { v4 } from "uuid"
 import { Navigate, useParams } from "react-router-dom"
 import { Button } from "antd"
-import { PlusCircleOutlined } from "@ant-design/icons"
+import { LoadingOutlined, PlusCircleOutlined } from "@ant-design/icons"
 
 import "./text-outline-pane.component.scss"
 
@@ -40,7 +40,7 @@ export function TextOutlinePane() {
 
   }
   return <>
-    {isLoadingChapters?"Loading Loading Loading":""}
+    {isLoadingChapters?<div className="loadingBar"><LoadingOutlined color="green" spin={true}></LoadingOutlined></div>:""}
     {chapters.length == 0 && !isLoadingChapters ? <div className="noChapterPlaceholder">
       <div>Hey there! This seems to be a new project! So start by adding a new chapter</div>
       <Button size={"large"} icon={<PlusCircleOutlined />} shape="round" onClick={() => createNewChapter(0)}>Chapter</Button>

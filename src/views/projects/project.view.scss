@@ -1,14 +1,20 @@
 .projectView {
     display: grid;
     grid-template-columns: 1fr 10fr 1fr;
-    grid-template-rows: 3em auto;
+    grid-template-rows: 1em 3em auto;
     height: 100%;
-   
-    grid-template-areas: 
-        "header header header"
+
+    grid-template-areas: ". . ."
+        ". header ."
         ". main .";
 
     .projectList {
         grid-area: main;
+    }
+
+    .projectToolbar {
+        grid-area: header;
+        justify-self: self-end;
+        align-self: center;
     }
 }
