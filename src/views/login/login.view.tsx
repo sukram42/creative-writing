@@ -26,6 +26,10 @@ export function LoginView() {
         }
         setUser(data.user)
     }
+    const formItemLayout = {
+        labelCol: { span: 0 },
+        wrapperCol: { span: 2},
+        };
 
     return (
         <div className="loginView">
@@ -48,7 +52,6 @@ export function LoginView() {
                 >
                     <Form.Item
                         name="username"
-
                         rules={[{ required: true, message: 'Please input your username!' }]}
                     >
                         <Input autoComplete="username" prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
@@ -56,11 +59,11 @@ export function LoginView() {
                     <Form.Item
                         name="password"
                         rules={[{ required: true, message: 'Please input your password!' }]}
-                        
+
                     >
                         <Input.Password prefix={<KeyOutlined className="site-form-item-icon" />} placeholder="Username" autoComplete="current-password" />
                     </Form.Item>
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Form.Item {...formItemLayout}>
                         <Button type="primary" htmlType="submit">
                             Login
                         </Button>
