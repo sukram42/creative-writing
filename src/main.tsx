@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { store } from './app/store.ts';
 import { ProjectView } from './views/projects/projects.view.tsx';
 import { AcceptInvite } from './views/acceptInvite/accept-invite.view.tsx';
-import { PostHogProvider} from 'posthog-js/react'
+// import { PostHogProvider} from 'posthog-js/react'
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -23,18 +23,18 @@ const router = createHashRouter(
     </>
   )
 );
-const options = {
-  api_host: import.meta.env.VITE_REACT_APP_PUBLIC_POSTHOG_HOST,
-}
+// const options = {
+//   api_host: import.meta.env.VITE_REACT_APP_PUBLIC_POSTHOG_HOST,
+// }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <PostHogProvider
-    apiKey={import.meta.env.VITE_REACT_APP_PUBLIC_POSTHOG_HOST}
-    options={options}
-  >
+  // <PostHogProvider
+  //   apiKey={import.meta.env.VITE_REACT_APP_PUBLIC_POSTHOG_HOST}
+  //   options={options}
+  // >
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>
-  </PostHogProvider>
+  // </PostHogProvider>
 
 )
