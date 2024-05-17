@@ -36,7 +36,7 @@ export function LoginView() {
             <div className="img"></div>
             <div className="loginForm">
                 <div className="textInfo">
-                    <div className="appName">Welcome to WrAIter!</div>
+                    <div className="appName">Welcome to OutlAIne!</div>
                     <div className="appDescription">
                         The app which makes you fall in love with texts.</div>
                 </div>
