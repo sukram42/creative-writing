@@ -1,15 +1,24 @@
 .loginView {
     display: grid;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: 50% 50%;
     grid-template-rows: auto;
-    grid-template-areas: "img login .";
+    grid-template-areas: "login img .";
     height: 100%;
 
+    overflow-y: hidden;
+
     .img {
-        background-color: green;
+        background-color: #ddd;
         min-height: 100%;
         grid-area: img;
         min-width: 100%;
+        overflow: auto;
+        box-sizing: border-box;
+        padding: 5em;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .textInfo {
@@ -22,17 +31,50 @@
             font-family: serif;
         }
 
-
         .appDescription {
-            color: #888
+            color: #888;
+            font-size: 1.5em;
         }
 
 
     }
 
+    .paragraph {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: "paragraph";
+
+
+        cursor: default;
+
+        * {
+            grid-area: paragraph;
+        }
+
+        .text {
+            opacity: 1;
+            transition: opacity 0.2s ease-in-out; // Add transition
+        }
+
+        .outline {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out; // Add transition
+        }
+
+        &:hover {
+            .text {
+                opacity: 0;
+            }
+
+            .outline {
+                opacity: 1;
+            }
+        }
+    }
+
     .loginForm {
         padding: 5em;
-    box-sizing: border-box;
+        box-sizing: border-box;
         grid-area: login;
         display: flex;
         flex-direction: column;
@@ -40,6 +82,14 @@
         align-items: center;
         width: 100%;
         align-content: stretch;
+
+        background-color: #ddd;
+
+        position: sticky;
+
+        .loginCard {
+            position: absolute;
+        }
 
         .formElement {
             width: 100%;
