@@ -13,7 +13,7 @@ interface LoginInformation {
 
 export function LoginView() {
     const [user, setUser] = useState<User>()
-    const [loginError, setLoginError] = useState<Error>()
+    const [_0, setLoginError] = useState<Error>()
     async function logIn(values: LoginInformation) {
         const { data, error } = await supabase.auth.signInWithPassword({
             email: values.username,
