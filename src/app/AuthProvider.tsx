@@ -15,9 +15,8 @@ export default function RequireAuth({ children }: { children: ReactNode }) {
     setLoading(true)
     const { data: { user } } = await supabase.auth.getUser()
     const { data: profile } = await supabase.from("profiles").select("*").select()
-    
-    dispatch(setUser(user || undefined))
 
+    dispatch(setUser(user || undefined))
 
     setStateUser(user)
     setLoading(false)

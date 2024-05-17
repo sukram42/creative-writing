@@ -91,7 +91,6 @@ export const deleteChapter = createAsyncThunk(
             .delete()
             .eq("chapter_id", payload)
             .then((data) => {
-                console.log("delete")
                 if (data.error) {
                     thunkAPI.dispatch(updateChapters({ chapters: oldChapter }))
                     thunkAPI.dispatch(updateItems({ items: oldItems[payload], chapter: payload }))
@@ -199,7 +198,6 @@ export const deleteItem = createAsyncThunk(
         const chapter = (thunkAPI.getState() as RootState).ui.items[payload.chapter]
         const newChapter = chapter.filter((elem) => elem.item_id !== payload.item_id)
 
-        console.log("Delete Item", payload.item_id, newChapter)
 
         thunkAPI.dispatch(updateItems({ items: newChapter, chapter: payload.chapter }))
 
@@ -270,7 +268,7 @@ export const createProject = createAsyncThunk(
 
 export const fetchProfile = createAsyncThunk(
     "ui/getProfile",
-    async ($_0, thunkAPI) => {
+    async (_0, thunkAPI) => {
         const { data, error } = await supabase.from("profiles").select("*")
         if (error) {
             console.log("Error getting profile", error)

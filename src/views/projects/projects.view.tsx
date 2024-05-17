@@ -37,7 +37,6 @@ export function ProjectView() {
         setNewProjectDrawerOpenState(false)
         setLoading(true)
 
-        console.log("New Project", values)
         let a = dispatch(createProject(values))
         a.then((a) => {
             setLoading(false)

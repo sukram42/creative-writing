@@ -40,7 +40,7 @@ export const uiSlice = createSlice({
       data.delete(action.payload)
       state.loadingFinalTexts = [...data]
     },
-    setUser: (state, action: { payload?: User }) => {
+    setUser: (state, action: { payload: User | undefined }) => {
       state.user = action.payload
     },
     addToCount: (state, action: { payload: number }) => {

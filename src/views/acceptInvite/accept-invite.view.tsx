@@ -10,6 +10,11 @@ import { fetchProfile } from "../../app/ui.slice/ui.slice.async";
 import { AppDispatch } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 
+interface FormValues {
+    password?: string;
+    privacyPolicy?: string;
+}
+
 export function AcceptInvite() {
 
     const user = useSelector(getUser)
@@ -24,9 +29,7 @@ export function AcceptInvite() {
     }, [])
 
     const profile = useSelector(getProfile)
-    console.log("Error", error)
-    const onRegister = (values) => {
-        console.log("values", values)
+    const onRegister = (values: FormValues) => {
         if (values.privacyPolicy !== undefined && !values.privacyPolicy) {
             form.setFields([
                 {
@@ -53,7 +56,6 @@ export function AcceptInvite() {
             }
             // only the privacy Policy update
             if (!!values.privacyPolicy && !error) {
-                console.log("update policy")
                 supabase.from("profiles")
                     .update({ is_onboarded: true })
                     .eq("user_id", profile?.user_id)

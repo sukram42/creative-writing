@@ -26,7 +26,6 @@ const router = createHashRouter(
 const options = {
   api_host: import.meta.env.VITE_REACT_APP_PUBLIC_POSTHOG_HOST,
 }
-console.log(options)
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <PostHogProvider
