@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjects } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
 
 export const setActiveProject = createAsyncThunk(
@@ -265,5 +265,16 @@ export const createProject = createAsyncThunk(
         const { data, error } = await supabase.from("projects").insert(payload).select()
         console.log("Error creating project", error, data)
         return data![0]
+    }
+)
+
+export const fetchProfile = createAsyncThunk(
+    "ui/getProfile",
+    async ($_0, thunkAPI) => {
+        const { data, error } = await supabase.from("profiles").select("*")
+        if (error) {
+            console.log("Error getting profile", error)
+        }
+        thunkAPI.dispatch(setProfile(data![0]))
     }
 )
