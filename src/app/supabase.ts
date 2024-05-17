@@ -104,6 +104,32 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          is_onboarded: boolean
+          password_set: boolean
+          user_id: string
+        }
+        Insert: {
+          is_onboarded?: boolean
+          password_set?: boolean
+          user_id?: string
+        }
+        Update: {
+          is_onboarded?: boolean
+          password_set?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
           created_at: string
@@ -192,6 +218,12 @@ export type Database = {
         Args: {
           minrank: number
           chapter_id: string
+        }
+        Returns: undefined
+      }
+      insert_user_on_registration: {
+        Args: {
+          new_user_id: string
         }
         Returns: undefined
       }

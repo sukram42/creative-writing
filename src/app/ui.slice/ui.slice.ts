@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
-import { Chapter, Item, Project } from "../supabaseClient"
+import { Chapter, Item, Profile, Project } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
+import { User } from "@supabase/supabase-js";
 
 
 
@@ -12,8 +13,8 @@ const initialState: UiState = {
   activeProject: null,
   projects: [],
   loadingProjects: true,
-  
-  
+
+  user: undefined,
   loadChapters: false,
 
   chapters: [],
@@ -26,21 +27,26 @@ export const uiSlice = createSlice({
   "name": "ui",
   initialState,
   reducers: {
-    setParagraphToLoad: (state, action: { payload: string}) => {
+    setParagraphToLoad: (state, action: { payload: string }) => {
       let data = new Set(state.loadingFinalTexts)
       data.add(action.payload)
-      state.loadingFinalTexts =[...data]
+      state.loadingFinalTexts = [...data]
     },
-    rmParagraphFromLoading: (state, action: {payload: string}) =>{
+    setProfile:(state, action: {payload: Profile}) => {
+      state.profile = action.payload
+    },
+    rmParagraphFromLoading: (state, action: { payload: string }) => {
       let data = new Set(state.loadingFinalTexts)
       data.delete(action.payload)
-      state.loadingFinalTexts =[...data]
+      state.loadingFinalTexts = [...data]
     },
-
+    setUser: (state, action: { payload: User | undefined }) => {
+      state.user = action.payload
+    },
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
     },
-    setLoadChapter: (state, action: { payload: boolean}) => {
+    setLoadChapter: (state, action: { payload: boolean }) => {
       state.loadChapters = action.payload
     },
     locallyUpdateChapterTitle: (state, action: { payload: { chapterId: string, newTitle: string } }) => {
@@ -54,7 +60,7 @@ export const uiSlice = createSlice({
     updateChapters: (state, action: { payload: { chapters: Chapter[] } }) => {
       state.chapters = action.payload.chapters
     },
-    setLoadingProjects: (state, action: {payload: boolean})=>{
+    setLoadingProjects: (state, action: { payload: boolean }) => {
       state.loadingProjects = action.payload
     },
     locallyAddChapterAtIndex: (state, action: {
@@ -76,7 +82,7 @@ export const uiSlice = createSlice({
 
       state.items[newId] = []
     },
-    updateProjects: (state, action: {payload: Project[]}) => {
+    updateProjects: (state, action: { payload: Project[] }) => {
       state.projects = [...action.payload]
     },
     locallyRemoveChapter: (state, action: { payload: string }) => {
@@ -102,10 +108,10 @@ export const uiSlice = createSlice({
         }
       })
     },
-    updateActiveProject(state, action: {payload: Project}){
+    updateActiveProject(state, action: { payload: Project }) {
       state.activeProject = action.payload
     },
-    updateActiveProjectId(state, action: {payload: string}){
+    updateActiveProjectId(state, action: { payload: string }) {
       state.activeProjectId = action.payload
     },
     updateItem(state, action: { payload: { item: Item } }) {
@@ -123,7 +129,7 @@ export const uiSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       getChaptersByProject.fulfilled, (state, action) => {
-        if(!action.payload) return
+        if (!action.payload) return
         state.chapters = action.payload.chapters
         //@ts-ignore
         state.items = action.payload.items
@@ -131,7 +137,7 @@ export const uiSlice = createSlice({
       builder.addCase(
         upsertChapterTitle.fulfilled, (state, action) => {
           state.chapters.forEach((c) => {
-            if (action.payload!==null && c.chapter_id === action.payload[0].chapter_id) {
+            if (action.payload !== null && c.chapter_id === action.payload[0].chapter_id) {
               c.title = action.payload[0].title
               return
             }
@@ -142,7 +148,7 @@ export const uiSlice = createSlice({
         upsertItemText.fulfilled, (state, action) => {
           if (action.payload !== null) {
             state.items[action.payload[0].chapter].forEach(i => {
-              if(action.payload===null) return
+              if (action.payload === null) return
               if (i.item_id === action.payload[0].item_id) {
                 i.final = action.payload[0].final
                 i.outline = action.payload[0].outline
@@ -166,7 +172,9 @@ export const { addToCount,
   setLoadingProjects,
   updateProjects,
   setLoadChapter,
-  setParagraphToLoad, 
+  setParagraphToLoad,
   updateActiveProject,
+  setUser,
   rmParagraphFromLoading,
+  setProfile,
   updateItems } = uiSlice.actions

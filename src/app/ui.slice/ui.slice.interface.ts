@@ -1,4 +1,5 @@
-import { Chapter, Item, Project } from "../supabaseClient";
+import { User } from "@supabase/supabase-js";
+import { Chapter, Item, Profile, Project } from "../supabaseClient";
 
 export interface UiState {
     count: number,
@@ -10,6 +11,10 @@ export interface UiState {
     loadChapters: boolean,
     chapters: Chapter[],
     items: Record<string, Item[]>
+
+    user?: User;
+    profile?: Profile;
+
 
     // The paragraph ids which are loading
     loadingFinalTexts: string[]

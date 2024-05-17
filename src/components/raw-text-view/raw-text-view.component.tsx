@@ -9,8 +9,6 @@ export function RawTextView() {
     const items = useSelector(getItems)
     const chapters = useSelector(getChapters)
 
-    console.log("items", items)
-    console.log("chapters", chapters)
 
     return (<div className="rawTextViewComponent">
         {chapters.map((chapter) => <div>

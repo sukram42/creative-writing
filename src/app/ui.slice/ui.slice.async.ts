@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjects } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
 
 export const setActiveProject = createAsyncThunk(
@@ -91,7 +91,6 @@ export const deleteChapter = createAsyncThunk(
             .delete()
             .eq("chapter_id", payload)
             .then((data) => {
-                console.log("delete")
                 if (data.error) {
                     thunkAPI.dispatch(updateChapters({ chapters: oldChapter }))
                     thunkAPI.dispatch(updateItems({ items: oldItems[payload], chapter: payload }))
@@ -199,7 +198,6 @@ export const deleteItem = createAsyncThunk(
         const chapter = (thunkAPI.getState() as RootState).ui.items[payload.chapter]
         const newChapter = chapter.filter((elem) => elem.item_id !== payload.item_id)
 
-        console.log("Delete Item", payload.item_id, newChapter)
 
         thunkAPI.dispatch(updateItems({ items: newChapter, chapter: payload.chapter }))
 
@@ -265,5 +263,16 @@ export const createProject = createAsyncThunk(
         const { data, error } = await supabase.from("projects").insert(payload).select()
         console.log("Error creating project", error, data)
         return data![0]
+    }
+)
+
+export const fetchProfile = createAsyncThunk(
+    "ui/getProfile",
+    async (_0, thunkAPI) => {
+        const { data, error } = await supabase.from("profiles").select("*")
+        if (error) {
+            console.log("Error getting profile", error)
+        }
+        thunkAPI.dispatch(setProfile(data![0]))
     }
 )
