@@ -1,5 +1,5 @@
 import { UserOutlined, KeyOutlined } from "@ant-design/icons";
-import { Input, Button, Form, Card, Divider, Checkbox, Alert, Space } from "antd";
+import { Input, Button, Form, Card, Checkbox, Alert, Space } from "antd";
 
 import "./first-login-check.view.scss"
 import { useDispatch, useSelector } from "react-redux";
