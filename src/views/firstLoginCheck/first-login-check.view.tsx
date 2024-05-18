@@ -1,7 +1,7 @@
 import { UserOutlined, KeyOutlined } from "@ant-design/icons";
 import { Input, Button, Form, Card, Divider, Checkbox, Alert } from "antd";
 
-import "./accept-invite.view.scss"
+import "./first-login-check.view.scss"
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile, getUser } from "../../app/ui.slice/ui.slice.selectors";
 import { supabase } from "../../app/supabaseClient";
@@ -15,7 +15,7 @@ interface FormValues {
     privacyPolicy?: string;
 }
 
-export function AcceptInvite() {
+export function FirstLoginCheck() {
 
     const user = useSelector(getUser)
     const [form] = Form.useForm();
@@ -79,9 +79,8 @@ if (profile?.is_onboarded && profile?.password_set) {
     navigate("/")
 }
 
-
 return (
-    <div className="acceptInviteView">
+    <div className="firstLoginCheckView">
         {error && <Alert
             message={error}
             type="warning"
