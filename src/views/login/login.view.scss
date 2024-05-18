@@ -1,11 +1,18 @@
 .loginView {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: auto;
-    grid-template-areas: "login img .";
-    height: 100%;
 
-    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (min-width:900px) {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: auto;
+        grid-template-areas: "login img .";
+        overflow-y: hidden;
+    }
+
+    height: 100%;
 
     .img {
         background-color: #ddd;
@@ -14,11 +21,14 @@
         min-width: 100%;
         overflow: auto;
         box-sizing: border-box;
-        padding: 5em;
+        padding: 1em;
 
         display: flex;
         flex-direction: column;
-        justify-content: center;
+
+        @media (min-width:900px) {
+            padding: 5em;
+        }
     }
 
     .textInfo {
@@ -35,15 +45,17 @@
             color: #888;
             font-size: 1.5em;
         }
+    }
 
-
+    h1 {
+        font-weight: 200;
+        padding: 1em;
     }
 
     .paragraph {
         display: grid;
         grid-template-columns: 1fr;
         grid-template-areas: "paragraph";
-
 
         cursor: default;
 
@@ -73,9 +85,9 @@
     }
 
     .loginForm {
-        padding: 5em;
         box-sizing: border-box;
         grid-area: login;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -85,10 +97,15 @@
 
         background-color: #ddd;
 
-        position: sticky;
+        @media (min-width:900px) {
+            padding: 5em;
+            position: sticky;
+        }
 
         .loginCard {
-            position: absolute;
+            @media (min-width:900px) {
+                position: absolute;
+            }
         }
 
         .formElement {
