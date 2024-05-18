@@ -8,7 +8,8 @@ import { Layout } from './views/layout/layout.view.tsx';
 import { Provider } from 'react-redux';
 import { store } from './app/store.ts';
 import { ProjectView } from './views/projects/projects.view.tsx';
-import { AcceptInvite } from './views/acceptInvite/accept-invite.view.tsx';
+import { FirstLoginCheck } from './views/firstLoginCheck/first-login-check.view.tsx';
+import { AcceptInvite } from './views/acceptInvite/acceptInvite.view.tsx';
 // import { PostHogProvider} from 'posthog-js/react'
 
 const router = createHashRouter(
@@ -18,8 +19,9 @@ const router = createHashRouter(
         <Route path='project/:id' element={<MainView />} />
         <Route index element={<ProjectView />} />
       </Route>
-      <Route path="/onboarding" element={<RequireAuth><AcceptInvite /></RequireAuth>} />
+      <Route path="/onboarding" element={<RequireAuth><FirstLoginCheck /></RequireAuth>} />
       <Route path="/login" element={<LoginView />} />
+      <Route path="/accept-invite" element={<AcceptInvite />} />
     </>
   )
 );
