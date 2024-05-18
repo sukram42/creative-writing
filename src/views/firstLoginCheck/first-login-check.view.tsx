@@ -1,5 +1,5 @@
 import { UserOutlined, KeyOutlined } from "@ant-design/icons";
-import { Input, Button, Form, Card, Divider, Checkbox, Alert } from "antd";
+import { Input, Button, Form, Card, Divider, Checkbox, Alert, Space } from "antd";
 
 import "./first-login-check.view.scss"
 import { useDispatch, useSelector } from "react-redux";
@@ -72,87 +72,83 @@ export function FirstLoginCheck() {
             .then(() => supabase.from("profiles").delete().eq("user_id", profile?.user_id))
             .then(() => supabase.auth.signOut())
             .then(() => navigate("/login"))
-}
+    }
 
-// Redirect in case everything is set
-if (profile?.is_onboarded && profile?.password_set) {
-    navigate("/")
-}
+    // Redirect in case everything is set
+    if (profile?.is_onboarded && profile?.password_set) {
+        navigate("/")
+    }
 
-return (
-    <div className="firstLoginCheckView">
-        {error && <Alert
-            message={error}
-            type="warning"
-            showIcon
-            onClose={() => setError(null)}
-            closable
-        />}
-        <Card>
-            <h1>You made it!</h1>
-            <div className="subheader">
-                Someone invited you to <b>Outlain</b>!
-                This platform should help you creating amazing texts based on the underlying ideas!
-                Need more information? Feel free to checkout our introduction documents:
-            </div>
-            <div className="introDocumentation">
-
-            </div>
-            <Divider />
-            <h3>Let's get you on the platform!</h3>
-            <div>
-            </div>
-            <Form
-                form={form}
-                className="formElement"
-                name="basic"
-                variant="filled"
-                size="large"
-                initialValues={{ remember: true }}
-                onFinish={onRegister}
-                autoComplete="off"
-            >
-                {!profile?.password_set ?
-                    <Form.Item
-                        name="username"
+    return (
+        <div className="firstLoginCheckView">
+            <div className="content">
+                {error && <Alert
+                    message={error}
+                    type="warning"
+                    showIcon
+                    onClose={() => setError(null)}
+                    closable
+                />}
+                <Card>
+                    <h1>Welcome to Outl<b>ai</b>ne!</h1>
+                    <div className="subheader text">
+                        This platform should help you creating amazing texts based on the underlying ideas!
+                        Let's get you started directly. For this we would need you to choose a secure password and accept our privacy policy as well as our terms of services. After this you are ready to create!
+                    </div>
+                    <Form
+                        form={form}
+                        className="formElement"
+                        name="basic"
+                        variant="filled"
+                        size="large"
+                        initialValues={{ remember: true }}
+                        onFinish={onRegister}
+                        autoComplete="off"
                     >
-                        <Input disabled={true}
-                            autoComplete="username"
-                            prefix={<UserOutlined className="site-form-item-icon" />}
-                            placeholder={user?.email}
-                        />
-                    </Form.Item> : ""}
-                {!profile?.password_set ?
-                    <Form.Item
-                        name="password"
-                        rules={[{ required: true, message: 'Please input your password!' }]}
+                        {!profile?.password_set ?
+                            <Form.Item
+                                name="username"
+                            >
+                                <Input disabled={true}
+                                    autoComplete="username"
+                                    prefix={<UserOutlined className="site-form-item-icon" />}
+                                    placeholder={user?.email}
+                                />
+                            </Form.Item> : ""}
+                        {!profile?.password_set ?
+                            <Form.Item
+                                name="password"
+                                rules={[{ required: true, message: 'Please input your password!' }]}
 
-                    >
-                        <Input.Password prefix={<KeyOutlined className="site-form-item-icon" />} placeholder="password" autoComplete="current-password" />
-                    </Form.Item> : ""}
-                {!profile?.is_onboarded ? <>
-                    To be able to understand how we can improve this plattform, we need you to accept our privacy policy. We will track some meta information about the way you are using the app! For more information check it out!
-                    <Form.Item
-                        name={"privacyPolicy"}
-                        valuePropName="checked"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please accept the privacy policy",
-                            },
-                        ]}>
-                        <Checkbox
-                        >I accept the usage of my personal data as described in the Privacy Policy.</Checkbox>
-                    </Form.Item></> : ""}
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Register
-                    </Button>
-                    <Button type="dashed" onClick={() => forgetMe()}>
-                        Please just forget me.
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Card>
-    </div>)
+                            >
+                                <Input.Password prefix={<KeyOutlined className="site-form-item-icon" />} placeholder="password" autoComplete="current-password" />
+                            </Form.Item> : ""}
+                        {!profile?.is_onboarded ? <div><div className="text">
+                            To be able to understand how we can improve this plattform, we need you to accept our privacy policy. We will track some meta information about the way you are using the app! For more information check it out! <i>(We are still creating it, so for now just trust me for now)</i></div>
+                            <Form.Item
+                                name={"privacyPolicy"}
+                                valuePropName="checked"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please accept the privacy policy",
+                                    },
+                                ]}>
+                                <Checkbox
+                                >I accept the usage of my personal data as described in the Privacy Policy.</Checkbox>
+                            </Form.Item></div> : ""}
+                        <Form.Item>
+                            <Space>
+                                <Button type="primary" htmlType="submit">
+                                    Register
+                                </Button>
+                                <Button type="dashed" onClick={() => forgetMe()}>
+                                    Please forget me. :(
+                                </Button>
+                            </Space>
+                        </Form.Item>
+                    </Form>
+                </Card>
+            </div>
+        </div >)
 }

@@ -35,6 +35,6 @@ export default function RequireAuth({ children }: { children: ReactNode }) {
   }, [getUser, loading, stateUser])
 
   return <>
-    {(!loading && stateUser) ? children : "not logined"}
+    {(!loading && stateUser) ? children : ""}
   </>
 }
