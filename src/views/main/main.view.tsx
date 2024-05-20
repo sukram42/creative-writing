@@ -7,10 +7,11 @@ import { useEffect, useState } from "react";
 import { setActiveProject } from "../../app/ui.slice/ui.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
-import { Button, Drawer } from "antd";
+import { Button, Drawer, Typography } from "antd";
 import { ProjectUpdateForm } from "../../components/project-update-form/project-update-form.component";
-import { FileOutlined, InfoCircleOutlined, SettingOutlined } from "@ant-design/icons";
+import { FileOutlined, SettingOutlined } from "@ant-design/icons";
 import { RawTextView } from "../../components/raw-text-view/raw-text-view.component";
+import Paragraph from "antd/es/typography/Paragraph";
 
 export function MainView() {
     const { id: activeProjectId } = useParams();
@@ -29,9 +30,16 @@ export function MainView() {
         <div className="mainView">
             {!activeProjectId ? <Navigate to={"/"}></Navigate> : ""}
             <div className="mainViewHeader">
-                {!!activeProject ? activeProject.name : ""}
-                <Button icon={<SettingOutlined />} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
-                <Button icon={<FileOutlined />} onClick={() => setRawDrawerOpen(true)} type="text" shape="round" />
+                <div className="headerElements">
+                    {!!activeProject ?
+                        <Typography.Title className={"projectName"} style={{ minWidth: "30%", margin: 0 }} level={5} editable={{
+                            onChange: () => { },
+                            triggerType: ["text"],
+                        }}>{activeProject.name}</Typography.Title> : ""}
+                    <div className="buttons">
+                        <Button icon={<SettingOutlined />} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
+                        <Button icon={<FileOutlined />} onClick={() => setRawDrawerOpen(true)} type="text" shape="round" /></div>
+                </div>
             </div>
             {/* <div className="notesPane">
                 <NotesPaneComponent />
