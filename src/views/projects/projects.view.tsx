@@ -34,6 +34,10 @@ export function ProjectView() {
     }, []);
 
     const createProjectFinish = (values: NewProjectFormValues) => {
+
+        if(!values.name) {
+            values = {...values, name: "New Unnamed Project" }
+        }
         setNewProjectDrawerOpenState(false)
         setLoading(true)
 

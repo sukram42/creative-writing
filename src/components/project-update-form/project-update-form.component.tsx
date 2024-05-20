@@ -63,8 +63,10 @@ export function ProjectUpdateForm(props: ProjectUpdateFormProps) {
                     title="Output language."
                     description="What language should the text be in"
                 />
-                <div style={{ padding: "1em 0" }}>
+                <div style={{ padding: "1em 0", minWidth:"100%" }}>
                     <Select
+                        style={{ width: "100%" }}
+                        placeholder="Select a language"
                         defaultValue={props.project.output_language}
                         onChange={(val) => { dispatch(updateProjectField({ field: "output_language", newValue: val, projectId: props.project.project_id })) }}
                         options={supportedLanguages}

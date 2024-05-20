@@ -9,7 +9,7 @@ import { AppDispatch } from "../../app/store";
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
 import { Button, Drawer } from "antd";
 import { ProjectUpdateForm } from "../../components/project-update-form/project-update-form.component";
-import { FileOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { FileOutlined, InfoCircleOutlined, SettingOutlined } from "@ant-design/icons";
 import { RawTextView } from "../../components/raw-text-view/raw-text-view.component";
 
 export function MainView() {
@@ -29,15 +29,15 @@ export function MainView() {
         <div className="mainView">
             {!activeProjectId ? <Navigate to={"/"}></Navigate> : ""}
             <div className="mainViewHeader">
-                    {!!activeProject ? activeProject.name : ""}
-                    <Button icon={<InfoCircleOutlined />} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
-                    <Button icon={<FileOutlined />} onClick={() => setRawDrawerOpen(true)} type="text" shape="round" />
+                {!!activeProject ? activeProject.name : ""}
+                <Button icon={<SettingOutlined />} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
+                <Button icon={<FileOutlined />} onClick={() => setRawDrawerOpen(true)} type="text" shape="round" />
             </div>
             {/* <div className="notesPane">
                 <NotesPaneComponent />
             </div> */}
-            <Drawer size="large" open={rawDrawerOpen} title={activeProject?activeProject.name:""} onClose={()=>setRawDrawerOpen(false)}>
-                {activeProjectId?<RawTextView></RawTextView>:""}
+            <Drawer size="large" open={rawDrawerOpen} title={activeProject ? activeProject.name : ""} onClose={() => setRawDrawerOpen(false)}>
+                {activeProjectId ? <RawTextView></RawTextView> : ""}
             </Drawer>
             {!!activeProject ?
                 <Drawer open={documentDrawerOpen} onClose={() => setDocumentDrawerOpen(false)} placement="left" size="large" title={activeProject.name}>
