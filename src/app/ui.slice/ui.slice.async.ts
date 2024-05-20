@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
 import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjectName, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
-import create from "@ant-design/icons/lib/components/IconFont";
 
 export const setActiveProject = createAsyncThunk(
     "ui/getActiveProject",

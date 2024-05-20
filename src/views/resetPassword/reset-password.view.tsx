@@ -3,7 +3,7 @@ import { Input, Button, Form, Card, Alert, Space } from "antd";
 
 import "./reset-password.view.scss"
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile, getUser } from "../../app/ui.slice/ui.slice.selectors";
+import { getUser } from "../../app/ui.slice/ui.slice.selectors";
 import { supabase } from "../../app/supabaseClient";
 import { useEffect, useState } from "react";
 import { fetchProfile } from "../../app/ui.slice/ui.slice.async";
@@ -28,7 +28,6 @@ export function ResetPassword() {
         dispatch(fetchProfile())
     }, [])
 
-    const profile = useSelector(getProfile)
     const onRegister = (values: FormValues) => {
         console.log(values)
         if (values.password1 !== values.password2) {

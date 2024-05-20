@@ -11,8 +11,6 @@ import { Badge, Button, Drawer, Typography } from "antd";
 import { ProjectUpdateForm } from "../../components/project-update-form/project-update-form.component";
 import { FileOutlined, SettingOutlined } from "@ant-design/icons";
 import { RawTextView } from "../../components/raw-text-view/raw-text-view.component";
-import Paragraph from "antd/es/typography/Paragraph";
-import { updateProjectName } from "../../app/ui.slice/ui.slice";
 
 export function MainView() {
     const { id: activeProjectId } = useParams();
