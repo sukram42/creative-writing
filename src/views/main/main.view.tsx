@@ -4,14 +4,15 @@ import "./main.view.scss"
 import { Navigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { setActiveProject } from "../../app/ui.slice/ui.slice.async";
+import { setActiveProject, updateProjectNameAsync } from "../../app/ui.slice/ui.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
-import { Button, Drawer, Typography } from "antd";
+import { Badge, Button, Drawer, Typography } from "antd";
 import { ProjectUpdateForm } from "../../components/project-update-form/project-update-form.component";
 import { FileOutlined, SettingOutlined } from "@ant-design/icons";
 import { RawTextView } from "../../components/raw-text-view/raw-text-view.component";
 import Paragraph from "antd/es/typography/Paragraph";
+import { updateProjectName } from "../../app/ui.slice/ui.slice";
 
 export function MainView() {
     const { id: activeProjectId } = useParams();
@@ -32,12 +33,12 @@ export function MainView() {
             <div className="mainViewHeader">
                 <div className="headerElements">
                     {!!activeProject ?
-                        <Typography.Title className={"projectName"} style={{ minWidth: "30%", margin: 0 }} level={5} editable={{
-                            onChange: () => { },
+                        <Typography.Title className={"projectName"}  level={5} editable={{
+                            onChange: (value) => dispatch(updateProjectNameAsync(value)),
                             triggerType: ["text"],
                         }}>{activeProject.name}</Typography.Title> : ""}
                     <div className="buttons">
-                        <Button icon={<SettingOutlined />} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
+                       <Button icon={<Badge dot={!activeProject?.description}><SettingOutlined /></Badge>} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
                         <Button icon={<FileOutlined />} onClick={() => setRawDrawerOpen(true)} type="text" shape="round" /></div>
                 </div>
             </div>
@@ -47,13 +48,15 @@ export function MainView() {
             <Drawer size="large" open={rawDrawerOpen} title={activeProject ? activeProject.name : ""} onClose={() => setRawDrawerOpen(false)}>
                 {activeProjectId ? <RawTextView></RawTextView> : ""}
             </Drawer>
-            {!!activeProject ?
-                <Drawer open={documentDrawerOpen} onClose={() => setDocumentDrawerOpen(false)} placement="left" size="large" title={activeProject.name}>
-                    <ProjectUpdateForm project={activeProject}></ProjectUpdateForm>
-                </Drawer> : ""}
+            {
+                !!activeProject ?
+                    <Drawer open={documentDrawerOpen} onClose={() => setDocumentDrawerOpen(false)} placement="left" size="large" title={activeProject.name}>
+                        <ProjectUpdateForm project={activeProject}></ProjectUpdateForm>
+                    </Drawer> : ""
+            }
             <div className="contentPane">
                 <TextOutlinePane />
                 {/* <EditorPaneComponent></EditorPaneComponent> */}
             </div>
-        </div>)
+        </div >)
 }

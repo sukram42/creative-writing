@@ -30,11 +30,12 @@
             grid-template-columns: 10em auto 10em;
             grid-template-areas: "left middle right";
             align-items: center;
-            
+
             .projectName {
                 grid-area: middle;
                 text-align: center;
                 justify-content: center;
+                margin:0;
                 & * {
                     text-align: center;
                 }

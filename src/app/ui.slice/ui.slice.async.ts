@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjects } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjectName, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
+import create from "@ant-design/icons/lib/components/IconFont";
 
 export const setActiveProject = createAsyncThunk(
     "ui/getActiveProject",
@@ -188,6 +189,28 @@ export const upsertNewItem = createAsyncThunk(
             chapter: payload.item.chapter!,
             items: itemsFinal
         }))
+    }
+)
+
+export const updateProjectNameAsync = createAsyncThunk(
+    "ui/updateProjectNameAsync",
+    async (payload: string, thunkAPI) => {
+        const state = thunkAPI.getState() as RootState
+        const oldProjectName = state.ui.activeProject?.name
+
+        thunkAPI.dispatch(updateProjectName({name: payload}))
+        
+        const { error } = await supabase
+            .from('projects')
+            .update({name: payload, project_id: state.ui.activeProject?.project_id})
+            .eq('project_id', state.ui.activeProject?.project_id)
+            .select()
+
+        if(error){
+            console.error(error)
+            thunkAPI.dispatch(updateProjectName({name: oldProjectName || ""}))
+        }
+
     }
 )
 
