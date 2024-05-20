@@ -13,18 +13,30 @@ interface LoginInformation {
 
 export function LoginView() {
     const [user, setUser] = useState<User>()
-    const [_0, setLoginError] = useState<Error>()
+
+    const [form] = Form.useForm();
+
     async function logIn(values: LoginInformation) {
         const { data, error } = await supabase.auth.signInWithPassword({
             email: values.username,
             password: values.password
         })
         if (error) {
-            setLoginError(error)
+            showLoginError()
             return
         }
         setUser(data.user)
     }
+
+    const showLoginError = () => {
+        form.setFields([
+            {
+                name: 'password',
+                errors: ['Oh no appearently there was an issue with the password! Maybe wrong?'],
+            },
+        ]);
+    }
+
     const formItemLayout = {
         labelCol: { span: 0 },
         wrapperCol: { span: 2 },
@@ -41,7 +53,9 @@ export function LoginView() {
                         <div className="appDescription">
                             The app which makes you fall in love with texts.</div>
                     </div>
+
                     <Form
+                        form={form}
                         className="formElement"
                         name="basic"
                         variant="filled"
@@ -61,7 +75,10 @@ export function LoginView() {
                             rules={[{ required: true, message: 'Please input your password!' }]}
 
                         >
-                            <Input.Password prefix={<KeyOutlined className="site-form-item-icon" />} placeholder="Username" autoComplete="current-password" />
+                            <Input.Password prefix={<KeyOutlined
+                                className="site-form-item-icon" />}
+                                placeholder="Your password"
+                                autoComplete="current-password" />
                         </Form.Item>
                         <Form.Item {...formItemLayout}>
                             <Button type="primary" htmlType="submit">

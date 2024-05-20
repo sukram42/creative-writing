@@ -29,7 +29,7 @@ export function NewProjectForm(props: NewProjectFormProps) {
                 <Form.Item
                     label="Project Name"
                     name="name"
-                    rules={[{ required: true, message: 'Please input!' }]}>
+                    >
                     <Input />
                 </Form.Item>
                 <Form.Item
@@ -37,7 +37,6 @@ export function NewProjectForm(props: NewProjectFormProps) {
                     tooltip="We will use this description to create better paragraphs"
                     extra="Who will read this text?"
                     name="target_group"
-                    rules={[{ required: true, message: 'Please input!' }]}
                 >
                     <Input.TextArea />
                 </Form.Item>
@@ -46,7 +45,6 @@ export function NewProjectForm(props: NewProjectFormProps) {
                     tooltip="We will use this description to create better paragraphs"
                     extra="What is this text for? What should it show? What is the goal of this text?"
                     name="description"
-                    rules={[{ required: true, message: 'Please input!' }]}
                 >
                     <Input.TextArea />
                 </Form.Item>

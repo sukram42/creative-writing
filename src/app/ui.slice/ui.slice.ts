@@ -32,7 +32,7 @@ export const uiSlice = createSlice({
       data.add(action.payload)
       state.loadingFinalTexts = [...data]
     },
-    setProfile:(state, action: {payload: Profile}) => {
+    setProfile: (state, action: { payload: Profile }) => {
       state.profile = action.payload
     },
     rmParagraphFromLoading: (state, action: { payload: string }) => {
@@ -45,6 +45,21 @@ export const uiSlice = createSlice({
     },
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
+    },
+    updateProjectName: (state, action: { payload: { name: string } }) => {
+      console.log(action.payload, state.activeProject, state.activeProjectId)
+      if (!state.activeProject) {
+        return
+      }
+      const project = { ...state.activeProject }
+      project.name = action.payload.name
+      state.activeProject = project
+      
+      state.projects.forEach((p)=>{
+        if (p.project_id === state.activeProject?.project_id){
+          p.name = action.payload.name
+        }
+      })
     },
     setLoadChapter: (state, action: { payload: boolean }) => {
       state.loadChapters = action.payload
@@ -177,4 +192,5 @@ export const { addToCount,
   setUser,
   rmParagraphFromLoading,
   setProfile,
+  updateProjectName,
   updateItems } = uiSlice.actions
