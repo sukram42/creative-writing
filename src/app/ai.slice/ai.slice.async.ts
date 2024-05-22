@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ItemV2, supabase } from "../supabaseClient";
 import { setItemToLoad, stopItemFromLoading, updateItemTextV2 } from "../items.slice/item.slice";
-import { rmParagraphFromLoading } from "../ui.slice/ui.slice";
 
 
 export const outline2textCompletion = createAsyncThunk(

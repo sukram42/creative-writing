@@ -4,6 +4,7 @@ import { ItemsState } from "./item.slice.interface"
 
 const initialState: ItemsState = {
   itemsV2: [],
+  loadingItems: []
 }
 
 export const itemsSlice = createSlice({

@@ -1,7 +1,7 @@
 import { ItemV2 } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
 import { useEffect, useRef, useState } from "react";
-import ReactQuill, { UnprivilegedEditor } from "react-quill";
+import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.core.css';
 
 import './item-side.component.scss'
