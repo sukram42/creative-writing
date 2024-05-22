@@ -1,0 +1,34 @@
+.chapterComponent { 
+    .doubleSide {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "left right";
+
+
+
+        $border-general: 2px;
+        $border-left: 1em;
+        border: $border-general solid rgba(0,0,0,0);
+        border-left: $border-left solid rgba(0,0,0,0);
+
+        &:hover {
+            border: $border-general solid #f1f1f1;
+            border-left: $border-left solid #225525;
+        }
+        & > * {
+            flex-grow: 1;
+        }
+        &:first-child {
+            grid-area: left;
+        }
+        &:nth-child(2) {
+            grid-area: right;
+        }
+    }
+    .chapterTitle {
+        font-size: 1.5em;
+    }
+    .sideSwitch {
+        display: flex;
+    }
+}

@@ -1,17 +1,10 @@
-import { Item, ItemV2 } from "../../app/supabaseClient";
+import { ItemV2 } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../app/store";
-import { deleteItem, mistralCompletion, upsertItemText } from "../../app/ui.slice/ui.slice.async";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.core.css';
 
 import './item-side.component.scss'
-import { updateItemText } from "../../app/ui.slice/ui.slice";
-import { loadingFinalTexts } from "../../app/ui.slice/ui.slice.selectors";
-import { useParams } from "react-router-dom";
-import { updateItemTextV2Async } from "../../app/items.slice/item.slice.async";
 
 interface ItemsComponentProps {
     item: ItemV2,
@@ -30,7 +23,6 @@ interface ItemsComponentProps {
 export function ItemSideComponent(props: ItemsComponentProps) {
 
     const [wasChanged, setWasChanged] = useState(false)
-    const { id: activeProjectId } = useParams();
 
     const onTextChange = (newText: string) => {
         if (!wasChanged) return
@@ -61,7 +53,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 value={content || ""}
                 onKeyDown={(e) => {
                     if (e.ctrlKey && e.key === "Enter") {
-                        onTextChange(e.getHTML(), props.final)
+                        onTextChange(e.getHTML())
                         props.onNewItem()
                     }
                 }
@@ -70,7 +62,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                     setTimeout(() => {
                         let fixRange = editor.getSelection()
                         if (fixRange) { } else {
-                            onTextChange(editor.getHTML(), props.final)
+                            onTextChange(editor.getHTML())
                         }
                     }, 2)
                 }}

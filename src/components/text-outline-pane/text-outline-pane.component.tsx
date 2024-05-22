@@ -1,7 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { getLoadChapter } from "../../app/ui.slice/ui.slice.selectors"
 import { AppDispatch } from "../../app/store"
-import { upsertNewChapter } from "../../app/ui.slice/ui.slice.async"
 import { useEffect } from "react"
 import { DividerComponent } from "../divider/divider.component"
 import { v4 } from "uuid"
@@ -12,7 +10,6 @@ import "./text-outline-pane.component.scss"
 import { Item } from "../newItemTest/item/item.component"
 import { getItemsV2 } from "../../app/items.slice/item.slice.selectors"
 import { loadItemsV2, upsertNewItem } from "../../app/items.slice/item.slice.async"
-import { ItemType } from "antd/es/breadcrumb/Breadcrumb"
 import { ItemV2 } from "../../app/supabaseClient"
 
 export function TextOutlinePane() {
@@ -28,10 +25,11 @@ export function TextOutlinePane() {
     }
   }, [dispatch, activeProject])
 
-  const createNewItem = (idx: number, type: ItemType) => {
+  const createNewItem = (idx: number) => {
     const item = {
       version: 0,
       outline: "new",
+      item_id: v4(),
       rank: idx,
       type: "PARAGRAPH"
     } as ItemV2
@@ -51,13 +49,7 @@ export function TextOutlinePane() {
 
     {items?.map((i, idx) =>
       <div key={idx + 1}>
-        <Item item={i} onDelete={function (): {} {
-          throw new Error("Function not implemented.")
-        }} onUpdate={function (item: ItemV2): {} {
-          throw new Error("Function not implemented.")
-        }} onCommitChange={function (item: ItemV2): {} {
-          throw new Error("Function not implemented.")
-        }} />
+        <Item item={i} />
         <DividerComponent
           buttonCaption={"Item"}
           index={idx + 1}

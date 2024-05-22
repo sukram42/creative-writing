@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
 import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setItemsV2, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjectName, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
-import create from "@ant-design/icons/lib/components/IconFont";
 
 export const setActiveProject = createAsyncThunk(
     "ui/getActiveProject",
@@ -307,9 +306,12 @@ export const loadItemsV2 = createAsyncThunk(
             .from("items_v2")
             .select("*")
             .eq("project_id", payload)
-            .order("rank", {ascending: true}) 
-
+            .order("rank", { ascending: true })
+        if (error) {
+            console.error(error.message)
+            return
+        }
         console.log(data)
-        thunkAPI.dispatch(setItemsV2({items: data}))
+        thunkAPI.dispatch(setItemsV2({ items: data }))
     }
 )

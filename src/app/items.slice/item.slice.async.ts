@@ -12,7 +12,11 @@ export const loadItemsV2 = createAsyncThunk(
             .eq("project_id", payload)
             .order("rank", { ascending: true })
 
-        thunkAPI.dispatch(setItemsV2({ items: data }))
+        if (error) {
+            console.error(error.message)
+        } else {
+            thunkAPI.dispatch(setItemsV2({ items: data }))
+        }
     }
 )
 
@@ -26,10 +30,10 @@ export const upsertNewItem = createAsyncThunk(
         let itemsBefore = state.items.itemsV2
 
         let newItems = [...itemsBefore]
-        newItems.splice(payload.rank, 0, payload as ItemV2)
+        newItems.splice(payload.rank!, 0, payload as ItemV2)
 
-        payload.project_id = state.ui.activeProject.project_id
-
+        payload.project_id = state.ui.activeProject?.project_id
+        if (!payload.project_id) return
         thunkAPI.dispatch(updateItemsV2({
             items: newItems
         }))
@@ -50,7 +54,7 @@ export const upsertNewItem = createAsyncThunk(
         else console.log(data)
 
         let itemsFinal = [...itemsBefore]
-        itemsFinal.splice(payload.item.rank, 0, data![0])
+        itemsFinal.splice(payload.rank!, 0, data![0])
 
         thunkAPI.dispatch(updateItemsV2({
             items: itemsFinal
