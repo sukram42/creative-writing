@@ -24,7 +24,7 @@ export const itemsSlice = createSlice({
     updateItemsV2(state, action: { payload: { items: ItemV2[] } }) {
       state.itemsV2 = action.payload.items
     },
-    
+
     updateItemTextV2: (state, action: {
       payload: {
         item: ItemV2,
@@ -39,8 +39,18 @@ export const itemsSlice = createSlice({
         }
       })
     },
+    setItemToLoad: (state, action: { payload: string }) => {
+      let data = new Set(state.loadingItems)
+      data.add(action.payload)
+      state.loadingItems = [...data]
+    },
+    stopItemFromLoading: (state, action: { payload: string }) => {
+      let data = new Set(state.loadingItems)
+      data.delete(action.payload)
+      state.loadingItems = [...data]
+    },
   }
 })
 
 export default itemsSlice.reducer
-export const { setItemsV2, updateItemV2, updateItemsV2, updateItemTextV2} = itemsSlice.actions
+export const { setItemsV2, updateItemV2, updateItemsV2, updateItemTextV2, setItemToLoad, stopItemFromLoading } = itemsSlice.actions

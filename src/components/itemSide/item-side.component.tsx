@@ -1,7 +1,7 @@
 import { ItemV2 } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
-import { useState } from "react";
-import ReactQuill from "react-quill";
+import { useEffect, useRef, useState } from "react";
+import ReactQuill, { UnprivilegedEditor } from "react-quill";
 import 'react-quill/dist/quill.core.css';
 
 import './item-side.component.scss'
@@ -18,11 +18,15 @@ interface ItemsComponentProps {
     onRegenerate?: (item: ItemV2) => void
 
     loading: boolean
+    placeholder?: string
 }
 
 export function ItemSideComponent(props: ItemsComponentProps) {
 
     const [wasChanged, setWasChanged] = useState(false)
+    const [active, setActive] = useState(false)
+
+    const editor = useRef<ReactQuill | null>(null); useRef()
 
     const onTextChange = (newText: string) => {
         if (!wasChanged) return
@@ -31,13 +35,15 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     }
 
     const onLocalTextChange = (newText: string, final: boolean) => {
-        console.log("CHANGE", newText, content, newText === content)
         if (newText !== content) {
-            // dispatch(updateItemText({ item, newText: newText, field: final ? "final" : "outline" }))
-            props.onChange({ ...props.item, [final ? "final" : "outline"]: newText })
+            props.onChange({ ...props.item, [final ? "final" : "outline"]: newText }, newText)
         }
         setWasChanged(true)
     }
+
+    useEffect(() => {
+        if (editor.current) editor.current.getEditor().root.dataset.placeholder = active ? props.placeholder : "";
+    }, [editor, active]);
 
     const content = props.final ? props.item.final : props.item.outline
 
@@ -52,7 +58,10 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             {/*
             // @ts-ignore */}
             <ReactQuill theme={null}
+                ref={editor}
                 value={content || ""}
+                onFocus={() => setActive(true)}
+
                 onKeyDown={(e) => {
                     if (e.ctrlKey && e.key === "Enter") {
                         onTextChange(e.getHTML())
@@ -61,15 +70,15 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 }
                 }
                 onBlur={(_0, _1, editor) => {
-                    console.log("BLUR")
                     setTimeout(() => {
                         let fixRange = editor.getSelection()
                         if (fixRange) { } else {
                             onTextChange(editor.getHTML())
+                            setActive(false)
                         }
                     }, 2)
                 }}
-                placeholder={props.item.item_id}
+                placeholder={active ? props.item.item_id : "s"}
                 onChange={(val) => onLocalTextChange(val, props.final)}
             ></ReactQuill>
         </MoveableObject >
