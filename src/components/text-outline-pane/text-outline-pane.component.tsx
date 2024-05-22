@@ -28,7 +28,6 @@ export function TextOutlinePane() {
   const createNewItem = (idx: number) => {
     const item = {
       version: 0,
-      outline: "new",
       item_id: v4(),
       rank: idx,
       type: "PARAGRAPH"
