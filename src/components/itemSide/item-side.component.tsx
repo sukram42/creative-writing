@@ -1,4 +1,4 @@
-import { Item } from "../../app/supabaseClient";
+import { Item, ItemV2 } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../app/store";
@@ -7,50 +7,53 @@ import { useState } from "react";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.core.css';
 
-import './items.component.scss'
+import './item-side.component.scss'
 import { updateItemText } from "../../app/ui.slice/ui.slice";
 import { loadingFinalTexts } from "../../app/ui.slice/ui.slice.selectors";
 import { useParams } from "react-router-dom";
+import { updateItemTextV2Async } from "../../app/items.slice/item.slice.async";
 
 interface ItemsComponentProps {
-    item: Item,
+    item: ItemV2,
     final: boolean
     onNewItem: () => void
+
+    onChange: (item: ItemV2) => void
+    onCommitChange: (item: ItemV2, newText: string) => void
+    onDelete: (item: ItemV2) => void
+
+    onRegenerate?: (item: ItemV2) => void
+
+    loading: boolean
 }
 
-export function ItemsComponent(props: ItemsComponentProps) {
-    const dispatch = useDispatch<AppDispatch>()
+export function ItemSideComponent(props: ItemsComponentProps) {
 
     const [wasChanged, setWasChanged] = useState(false)
     const { id: activeProjectId } = useParams();
 
-    const paragraphsLoading = useSelector(loadingFinalTexts)
-
-    const onTextChange = (newText: string, final: boolean) => {
-        if (wasChanged) {
-
-            if (!final && newText.length > 20) {
-                dispatch(mistralCompletion({ paragraph: props.item, project_id: activeProjectId! }))
-            }
-            dispatch(upsertItemText({ itemId: props.item.item_id + "", newText, field: final ? "final" : "outline" }))
-            setWasChanged(false)
-        }
+    const onTextChange = (newText: string) => {
+        if (!wasChanged) return
+        props.onCommitChange(props.item, newText)
+        setWasChanged(false)
     }
-    const onLocalTextChange = (newText: string, final: boolean, item: Item) => {
+    const onLocalTextChange = (newText: string, final: boolean) => {
         if (newText !== content) {
             setWasChanged(true)
-            dispatch(updateItemText({ item, newText: newText, field: final ? "final" : "outline" }))
+            // dispatch(updateItemText({ item, newText: newText, field: final ? "final" : "outline" }))
+            props.onChange({ ...props.item, [final ? "final" : "outline"]: newText })
         }
     }
 
     const content = props.final ? props.item.final : props.item.outline
+
     return <>
         <MoveableObject
             type={"Paragraph"}
-            onDelete={() => dispatch(deleteItem(props.item))}
-            onRedo={() => dispatch(mistralCompletion({ paragraph: props.item, project_id: activeProjectId! }))}
-            showRedo
-            loading={props.final && new Set(paragraphsLoading).has(props.item.item_id)}
+            onDelete={() => props.onDelete(props.item)}
+            onRedo={() => props.onRegenerate && props.onRegenerate(props.item)}
+            showRedo={!!props.onRegenerate}
+            loading={props.loading}
         >
             {/*
             // @ts-ignore */}
@@ -63,17 +66,16 @@ export function ItemsComponent(props: ItemsComponentProps) {
                     }
                 }
                 }
-                // onBlur={(_0, _1, c) => onTextChange(c.getHTML(), props.final)}
                 onBlur={(_0, _1, editor) => {
                     setTimeout(() => {
                         let fixRange = editor.getSelection()
                         if (fixRange) { } else {
                             onTextChange(editor.getHTML(), props.final)
                         }
-                    }, 2) // random time
+                    }, 2)
                 }}
                 placeholder={props.item.item_id}
-                onChange={(val) => onLocalTextChange(val, props.final, props.item)}
+                onChange={(val) => onLocalTextChange(val, props.final)}
             ></ReactQuill>
         </MoveableObject >
     </>

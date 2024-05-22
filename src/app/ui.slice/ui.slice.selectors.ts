@@ -12,3 +12,5 @@ export const getLoadChapter = (state: RootState) => state.ui.loadChapters
 export const getUser = (state: RootState) => state.ui.user
 export const loadingFinalTexts = (state: RootState) => state.ui.loadingFinalTexts
 export const getProfile = (state: RootState) => state.ui.profile
+
+export const getItemsV2 = (state: RootState) => state.ui.itemsV2

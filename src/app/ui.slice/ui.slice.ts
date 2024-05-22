@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
-import { Chapter, Item, Profile, Project } from "../supabaseClient"
+import { Chapter, Item, ItemV2, Profile, Project } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
 import { User } from "@supabase/supabase-js";
 
@@ -16,6 +16,8 @@ const initialState: UiState = {
 
   user: undefined,
   loadChapters: false,
+
+  itemsV2: [],
 
   chapters: [],
   items: {},
@@ -54,9 +56,9 @@ export const uiSlice = createSlice({
       const project = { ...state.activeProject }
       project.name = action.payload.name
       state.activeProject = project
-      
-      state.projects.forEach((p)=>{
-        if (p.project_id === state.activeProject?.project_id){
+
+      state.projects.forEach((p) => {
+        if (p.project_id === state.activeProject?.project_id) {
           p.name = action.payload.name
         }
       })
@@ -139,6 +141,10 @@ export const uiSlice = createSlice({
     },
     updateItems(state, action: { payload: { items: Item[], chapter: string } }) {
       state.items[action.payload.chapter] = action.payload.items
+    },
+    setItemsV2(state, action: { payload: { items: ItemV2[] } }) {
+      console.log("payload", action.payload)
+      state.itemsV2 = action.payload.items;
     }
   },
   extraReducers: (builder) => {
@@ -193,4 +199,5 @@ export const { addToCount,
   rmParagraphFromLoading,
   setProfile,
   updateProjectName,
+  setItemsV2,
   updateItems } = uiSlice.actions

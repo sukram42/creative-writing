@@ -104,6 +104,47 @@ export type Database = {
           },
         ]
       }
+      items_v2: {
+        Row: {
+          created_at: string
+          final: string | null
+          item_id: string
+          outline: string | null
+          project_id: string | null
+          rank: number
+          type: Database["public"]["Enums"]["ItemType"] | null
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          final?: string | null
+          item_id?: string
+          outline?: string | null
+          project_id?: string | null
+          rank?: number
+          type?: Database["public"]["Enums"]["ItemType"] | null
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          final?: string | null
+          item_id?: string
+          outline?: string | null
+          project_id?: string | null
+          rank?: number
+          type?: Database["public"]["Enums"]["ItemType"] | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "items_v2_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           is_onboarded: boolean
@@ -229,7 +270,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      ItemType: "PARAGRAPH" | "H1"
     }
     CompositeTypes: {
       [_ in never]: never
