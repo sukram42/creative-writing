@@ -6,7 +6,7 @@ import { supportedLanguages } from "../../app/supportedLanguages"
 import { useDispatch } from "react-redux"
 import { updateProjectField } from "../../app/ui.slice/ui.slice.async"
 import { AppDispatch } from "../../app/store"
-
+import "./project-update-form.component.scss"
 
 interface ProjectUpdateFormProps {
     project: Project
@@ -17,7 +17,7 @@ export function ProjectUpdateForm(props: ProjectUpdateFormProps) {
     const dispatch = useDispatch<AppDispatch>()
 
     return (
-        <div>
+        <div className="projectUpdateForm">
             <InputTextCard
                 description="What is this document about? We will use the information to generate better fitting paragraphs."
                 title="Description of the document"
@@ -63,7 +63,7 @@ export function ProjectUpdateForm(props: ProjectUpdateFormProps) {
                     title="Output language."
                     description="What language should the text be in"
                 />
-                <div style={{ padding: "1em 0", minWidth:"100%" }}>
+                <div style={{ padding: "1em 0", minWidth: "100%" }}>
                     <Select
                         style={{ width: "100%" }}
                         placeholder="Select a language"
