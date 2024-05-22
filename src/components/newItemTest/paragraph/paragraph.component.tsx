@@ -6,6 +6,7 @@ import { ItemSideComponent } from "../../itemSide/item-side.component";
 import { ItemProps } from "../item/item.interface";
 import { ItemV2 } from "../../../app/supabaseClient";
 import { updateItemTextV2Async } from "../../../app/items.slice/item.slice.async";
+import { updateItemTextV2 } from "../../../app/items.slice/item.slice";
 
 
 export function Paragraph(props: ItemProps) {
@@ -19,6 +20,10 @@ export function Paragraph(props: ItemProps) {
             // dispatch(mistralCompletion({ paragraph: props.item, project_id: activeProjectId! }))
         }
         dispatch(updateItemTextV2Async({ item: props.item, newText, field: type }))
+    }
+
+    const changeText = (item: ItemV2, type: "outline" | "final", newText: string) => {
+        dispatch(updateItemTextV2({ item, newText, field: type }))
     }
 
     const regenerate = (type: "outline" | "final") => {
@@ -35,8 +40,8 @@ export function Paragraph(props: ItemProps) {
                         <ItemSideComponent
                             item={props.item}
                             final={false}
-                            onChange={() => { }}
                             onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "outline", newText); }}
+                            onChange={(item: ItemV2, newText: string) => { changeText(item, "outline", newText); }}
                             onNewItem={() => { }}
                             onDelete={props.onDelete!}
                             loading={false} />
@@ -47,7 +52,7 @@ export function Paragraph(props: ItemProps) {
                             onRegenerate={() => regenerate("final")}
                             onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "final", newText); }}
                             onNewItem={() => { }}
-                            onChange={() => { }}
+                            onChange={(item: ItemV2, newText: string) => { changeText(item, "final", newText); }}
                             onDelete={props.onDelete!}
                             loading={false} />
                     </div>

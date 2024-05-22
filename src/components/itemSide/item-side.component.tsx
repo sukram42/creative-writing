@@ -11,7 +11,7 @@ interface ItemsComponentProps {
     final: boolean
     onNewItem: () => void
 
-    onChange: (item: ItemV2) => void
+    onChange: (item: ItemV2, newText: string) => void
     onCommitChange: (item: ItemV2, newText: string) => void
     onDelete: (item: ItemV2) => void
 
@@ -29,12 +29,14 @@ export function ItemSideComponent(props: ItemsComponentProps) {
         props.onCommitChange(props.item, newText)
         setWasChanged(false)
     }
+
     const onLocalTextChange = (newText: string, final: boolean) => {
+        console.log("CHANGE", newText, content, newText === content)
         if (newText !== content) {
-            setWasChanged(true)
             // dispatch(updateItemText({ item, newText: newText, field: final ? "final" : "outline" }))
             props.onChange({ ...props.item, [final ? "final" : "outline"]: newText })
         }
+        setWasChanged(true)
     }
 
     const content = props.final ? props.item.final : props.item.outline
@@ -59,6 +61,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 }
                 }
                 onBlur={(_0, _1, editor) => {
+                    console.log("BLUR")
                     setTimeout(() => {
                         let fixRange = editor.getSelection()
                         if (fixRange) { } else {
