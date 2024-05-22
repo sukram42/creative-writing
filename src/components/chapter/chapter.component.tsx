@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { deleteChapter, upsertChapterTitle, upsertNewItem } from "../../app/ui.slice/ui.slice.async";
 import { locallyUpdateChapterTitle } from "../../app/ui.slice/ui.slice";
 import { AppDispatch } from "../../app/store";
-import { ItemsComponent } from "../items/items.component";
 import { DividerComponent } from "../divider/divider.component";
 import { v4 } from "uuid";
 
@@ -82,11 +81,11 @@ export function ChapterComponent(props: ChapterComponentProps) {
                 {props.items && props.items.map((i, idx) => {
                     return (
                         <div key={idx}>
-                            <div className="doubleSide">
-                                <ItemsComponent key={"1" + idx} item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
-                                <ItemsComponent key={"2" + idx} item={i} final={true} onNewItem={() => createNewItem(idx + 1)} />
+                            <div className="doubleSide"> {i.item_id}
+                                {/* <ItemsComponent key={"1" + idx} item={i} final={false} onNewItem={() => createNewItem(idx + 1)} />
+                                <ItemsComponent key={"2" + idx} item={i} final={true} onNewItem={() => createNewItem(idx + 1)} /> */}
                             </div>
-                            <DividerComponent onButtonClick={() => createNewItem(idx+1)} buttonCaption={"Paragraph"} index={idx+1} />
+                            <DividerComponent onButtonClick={() => createNewItem(idx + 1)} buttonCaption={"Paragraph"} index={idx + 1} />
                         </div>)
                 })}
             </div>

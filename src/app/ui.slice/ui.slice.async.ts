@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjectName, updateProjects } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setItemsV2, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjectName, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
 
 export const setActiveProject = createAsyncThunk(
@@ -197,17 +197,17 @@ export const updateProjectNameAsync = createAsyncThunk(
         const state = thunkAPI.getState() as RootState
         const oldProjectName = state.ui.activeProject?.name
 
-        thunkAPI.dispatch(updateProjectName({name: payload}))
-        
+        thunkAPI.dispatch(updateProjectName({ name: payload }))
+
         const { error } = await supabase
             .from('projects')
-            .update({name: payload, project_id: state.ui.activeProject?.project_id})
+            .update({ name: payload, project_id: state.ui.activeProject?.project_id })
             .eq('project_id', state.ui.activeProject?.project_id)
             .select()
 
-        if(error){
+        if (error) {
             console.error(error)
-            thunkAPI.dispatch(updateProjectName({name: oldProjectName || ""}))
+            thunkAPI.dispatch(updateProjectName({ name: oldProjectName || "" }))
         }
 
     }
@@ -296,5 +296,22 @@ export const fetchProfile = createAsyncThunk(
             console.log("Error getting profile", error)
         }
         thunkAPI.dispatch(setProfile(data![0]))
+    }
+)
+
+export const loadItemsV2 = createAsyncThunk(
+    "ui/loadItemsV2",
+    async (payload: string, thunkAPI) => {
+        const { data, error } = await supabase
+            .from("items_v2")
+            .select("*")
+            .eq("project_id", payload)
+            .order("rank", { ascending: true })
+        if (error) {
+            console.error(error.message)
+            return
+        }
+        console.log(data)
+        thunkAPI.dispatch(setItemsV2({ items: data }))
     }
 )

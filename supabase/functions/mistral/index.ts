@@ -52,7 +52,7 @@ Deno.serve(async (req: Request) => {
     const {
       data
     } = await supabaseClient
-      .from('items')
+      .from('items_v2')
       .select("*")
       .eq("item_id", content.paragraph)
 
@@ -82,7 +82,7 @@ Deno.serve(async (req: Request) => {
 
     // Update the  item
     const { error } = await supabaseClient
-      .from('items')
+      .from('items_v2')
       .update({ final: chatResponse.choices[0].message.content })
       .eq("item_id", content.paragraph)
       .select()
