@@ -7,6 +7,8 @@ import 'react-quill/dist/quill.core.css';
 import './item-side.component.scss'
 import { useDispatch } from "react-redux";
 import { setActiveEditingSide, updateItemType } from "../../app/items.slice/item.slice";
+import { updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
+import { AppDispatch } from "../../app/store";
 
 interface ItemsComponentProps {
     item: ItemV2,
@@ -30,7 +32,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     const [wasChanged, setWasChanged] = useState(false)
     const [active, setActive] = useState(false)
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const editorRef = useRef<ReactQuill | null>(null); useRef()
 
 
@@ -47,7 +49,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
         }
 
         if (newText === "<p># </p>") {
-            dispatch(updateItemType({
+            dispatch(updateItemTypeAsync({
                 newType: "H1",
                 item: { ...props.item, outline: "" }
             }))

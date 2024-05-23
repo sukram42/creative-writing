@@ -15,7 +15,6 @@ export const itemsSlice = createSlice({
   reducers: {
     setActiveEditingSide(state, action: {payload: "outline" | "final"}){
       state.activeEditingSide = action.payload;
-      console.log(state.activeEditingSide)
     },
     setItemsV2(state, action: { payload: { items: ItemV2[] } }) {
       state.itemsV2 = action.payload.items;

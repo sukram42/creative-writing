@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ItemV2, supabase } from "../supabaseClient";
-import { setItemsV2, updateItemTextV2, updateItemsV2 } from "./item.slice";
+import { ItemType, ItemV2, supabase } from "../supabaseClient";
+import { setItemsV2, updateItemTextV2, updateItemType, updateItemsV2 } from "./item.slice";
 import { RootState } from "../store";
 
 export const loadItemsV2 = createAsyncThunk(
@@ -91,7 +91,30 @@ export const updateItemTextV2Async = createAsyncThunk(
         return updatedChapter
     }
 )
+export const updateItemTypeAsync = createAsyncThunk(
+    "items/updateItemType",
+    async (payload: { item: ItemV2, newType: ItemType }, thunkAPI) => {
+        const state = thunkAPI.getState() as RootState;
+        const beforeItems = state.items.itemsV2
 
+        thunkAPI.dispatch(updateItemType(payload))
+
+        const { data: updatedItem, error } = await supabase
+            .from('items_v2')
+            .update({ type: payload.newType})
+            .eq("item_id", payload.item.item_id)
+            .select()
+
+        if (error) {
+            // Rollback
+            console.error(error)
+            thunkAPI.dispatch(updateItemsV2({ items: beforeItems }))
+            return
+        }
+        else console.log(updatedItem)
+        return updatedItem
+    }
+)
 export const deleteItemAsyncV2 = createAsyncThunk(
     "items/deleteItem",
     async (payload: ItemV2, thunkAPI) => {
