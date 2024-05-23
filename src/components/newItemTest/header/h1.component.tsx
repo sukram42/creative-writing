@@ -6,7 +6,7 @@ import { ItemProps } from "../item/item.interface";
 import { updateItemTextV2Async, updateItemTypeAsync } from "../../../app/items.slice/item.slice.async";
 import { MoveableObject } from "../../moveable-object/moveable-object.component";
 import { Input } from "antd";
-import { setActiveEditingSide, updateItemTextV2, updateItemType } from "../../../app/items.slice/item.slice";
+import { setActiveEditingSide, updateItemTextV2 } from "../../../app/items.slice/item.slice";
 import { getActiveEditingSide } from "../../../app/items.slice/item.slice.selectors";
 import { KeyboardEvent} from "react";
 

@@ -6,7 +6,7 @@ import 'react-quill/dist/quill.core.css';
 
 import './item-side.component.scss'
 import { useDispatch } from "react-redux";
-import { setActiveEditingSide, updateItemType } from "../../app/items.slice/item.slice";
+import { setActiveEditingSide } from "../../app/items.slice/item.slice";
 import { updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
 import { AppDispatch } from "../../app/store";
 
