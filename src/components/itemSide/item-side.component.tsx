@@ -5,9 +5,7 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.core.css';
 
 import './item-side.component.scss'
-import { Dropdown, MenuProps } from "antd";
-import { SmileOutlined } from "@ant-design/icons";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setActiveEditingSide, updateItemType } from "../../app/items.slice/item.slice";
 
 interface ItemsComponentProps {
@@ -56,13 +54,15 @@ export function ItemSideComponent(props: ItemsComponentProps) {
         }
         setWasChanged(true)
     }
-
     useEffect(() => {
-        if (editorRef.current) editorRef.current.getEditor().root.dataset.placeholder = active ? props.placeholder : "";
 
         if (props.autofocus) {
             if (editorRef.current) editorRef.current.focus();
         }
+    }, [props.autofocus])
+
+    useEffect(() => {
+        if (editorRef.current) editorRef.current.getEditor().root.dataset.placeholder = active ? props.placeholder : "";
 
     }, [editorRef, active]);
 

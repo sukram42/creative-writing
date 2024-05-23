@@ -11,13 +11,13 @@ export function RawTextView() {
 
     return (
         <div className="rawTextViewComponent">
-            {items.map(i => {
+            {items.map((i,idx) => {
                 switch (i.type) {
                     case "PARAGRAPH":
                         // @ts-ignore
-                        return <ReactQuill theme={null} className="paragraphs" readOnly={true} value={i.final} />
+                        return <ReactQuill key={idx}theme={null} className="paragraphs" readOnly={true} value={i.final} />
                     case "H1":
-                        return <h1>{i.outline}</h1>
+                        return <h1 key={idx}>{i.outline}</h1>
                 }
             })}
         </div>
