@@ -1,12 +1,13 @@
 
 import "./h1.component.scss"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../app/store";
 import { ItemProps } from "../item/item.interface";
 import { updateItemTextV2Async } from "../../../app/items.slice/item.slice.async";
 import { MoveableObject } from "../../moveable-object/moveable-object.component";
 import { Input } from "antd";
-import { updateItemTextV2 } from "../../../app/items.slice/item.slice";
+import { setActiveEditingSide, updateItemTextV2, updateItemType } from "../../../app/items.slice/item.slice";
+import { getActiveEditingSide } from "../../../app/items.slice/item.slice.selectors";
 
 
 export function H1(props: ItemProps) {
@@ -30,6 +31,17 @@ export function H1(props: ItemProps) {
             }))
     }
 
+    const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Backspace" && props.item.outline === "") {
+            dispatch(updateItemType({
+                newType: "PARAGRAPH",
+                item: props.item
+            }))
+            e.preventDefault();
+        }
+    }
+
+    const activeEditingSide = useSelector(getActiveEditingSide)
 
     return (
         <div >
@@ -39,6 +51,7 @@ export function H1(props: ItemProps) {
                         <MoveableObject type={"Chapter"}
                             onDelete={() => props.onDelete(props.item)}>
                             <Input
+                                autoFocus={activeEditingSide === "outline"}
                                 size="small"
                                 placeholder="Chapter Title"
                                 className="chapterTitle"
@@ -46,20 +59,24 @@ export function H1(props: ItemProps) {
                                 variant="borderless"
                                 onChange={(e) => updateTitle(e.target.value)}
                                 onBlur={(e) => updateTitleAsync(e.target.value)}
+                                onFocus={() => dispatch(setActiveEditingSide("outline"))}
+                                onKeyDown={onKeyDown}
                             />
                         </MoveableObject>
                         <MoveableObject
                             type={"Chapter"}
                             onDelete={() => props.onDelete(props.item)}>
                             <Input
+                                autoFocus={activeEditingSide === "final"}
                                 size="small"
                                 placeholder="Chapter Title"
                                 className="chapterTitle"
                                 value={props.item.outline || ""}
                                 variant="borderless"
+                                onFocus={() => dispatch(setActiveEditingSide("final"))}
                                 onChange={(e) => updateTitle(e.target.value)}
                                 onBlur={(e) => updateTitleAsync(e.target.value)}
-                            // onChange={(e) => onLocalTitleChange(e.target.value)}
+                                onKeyDown={onKeyDown}
                             />
                         </MoveableObject>
                     </div>
