@@ -12,17 +12,13 @@ import { getItemsV2 } from "../../app/items.slice/item.slice.selectors"
 import { loadItemsV2, upsertNewItem } from "../../app/items.slice/item.slice.async"
 import { ItemV2 } from "../../app/supabaseClient"
 import { NoItemsYetComponent } from "../no-items-yet/no-items-yet.component"
-import { getActiveProject, getLoadProject } from "../../app/ui.slice/ui.slice.selectors"
-import { ProjectHeader } from "../project-header/project-header.component"
-import { act } from "react-dom/test-utils"
-import { Divider } from "antd"
+import { getLoadProject } from "../../app/ui.slice/ui.slice.selectors"
 
 export function TextOutlinePane() {
 
   const { id: activeProjectId } = useParams();
   const items = useSelector(getItemsV2)
   const loadingProject = useSelector(getLoadProject)
-  const activeProject = useSelector(getActiveProject)
 
   const dispatch = useDispatch<AppDispatch>()
 

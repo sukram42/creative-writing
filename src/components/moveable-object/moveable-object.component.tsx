@@ -1,7 +1,7 @@
 
 import "./moveable-object.component.scss"
-import { DeleteOutlined, HolderOutlined, LoadingOutlined, PlusOutlined, PropertySafetyFilled, RedoOutlined } from "@ant-design/icons"
-import { Button, Divider, Dropdown, MenuProps, Space, theme } from "antd"
+import { DeleteOutlined, HolderOutlined, LoadingOutlined, PlusOutlined, RedoOutlined } from "@ant-design/icons"
+import { Button, Dropdown, MenuProps, theme } from "antd"
 import React from "react"
 const { useToken } = theme;
 interface MoveableObjectProps {

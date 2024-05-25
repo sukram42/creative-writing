@@ -51,7 +51,11 @@ export function ChapterComponent(props: ChapterComponentProps) {
         <div key={props.chapter.chapter_id}>
             <div className="chapterComponent">
                 <div className="doubleSide">
-                    <MoveableObject type={"Chapter"} onDelete={() => rmChapter(props.chapter.chapter_id)}>
+                    <MoveableObject
+                        type={"Chapter"}
+                        onDelete={() => rmChapter(props.chapter.chapter_id)} onNew={function (): void {
+                            throw new Error("Function not implemented.");
+                        }}>
                         <Input
                             size="small"
                             placeholder="Chapter Title"
@@ -63,7 +67,9 @@ export function ChapterComponent(props: ChapterComponentProps) {
                             }
                         />
                     </MoveableObject>
-                    <MoveableObject type={"Chapter"}>
+                    <MoveableObject type={"Chapter"} onNew={function (): void {
+                        throw new Error("Function not implemented.");
+                    }}>
                         <Input
                             size="small"
                             placeholder="Chapter Title"
