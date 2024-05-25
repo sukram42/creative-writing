@@ -1,6 +1,6 @@
 
 import "./moveable-object.component.scss"
-import { DeleteOutlined, HolderOutlined, LoadingOutlined, PlusOutlined, RedoOutlined } from "@ant-design/icons"
+import { DeleteOutlined, HolderOutlined, LoadingOutlined, PlusOutlined, PropertySafetyFilled, RedoOutlined } from "@ant-design/icons"
 import { Button, Divider, Dropdown, MenuProps, Space, theme } from "antd"
 import React from "react"
 const { useToken } = theme;
@@ -27,55 +27,56 @@ export function MoveableObject(props: MoveableObjectProps) {
             type: 'divider',
         },
         {
-            label: <a onClick={() => { if (!!props.onDelete) props.onDelete() }}>Delete</a>,
+            label: <a onClick={()=>props.onDelete && props.onDelete()}>Delete</a>,
             key: '1',
             icon: <DeleteOutlined />,
-            danger: true,
+        danger: true,
         }
     ];
 
-    const contentStyle: React.CSSProperties = {
-        backgroundColor: token.colorBgElevated,
-        borderRadius: token.borderRadiusLG,
-        boxShadow: token.boxShadowSecondary,
-    };
+const contentStyle: React.CSSProperties = {
+    backgroundColor: token.colorBgElevated,
+    borderRadius: token.borderRadiusLG,
+    boxShadow: token.boxShadowSecondary,
+};
 
-    const menuStyle: React.CSSProperties = {
-        boxShadow: 'none',
-    };
-    return (
-        <div className="moveableObject">
+const menuStyle: React.CSSProperties = {
+    boxShadow: 'none',
+};
+return (
+    <div className="moveableObject">
 
-            <div className="buttonBar">
+        <div className="buttonBar">
+            <Button
+                type="text"
+                size="small"
+                onClick={() => { if (!!props.onNew) props.onNew() }}
+                icon={<PlusOutlined />} />
+            <Dropdown menu={{ items: dropdown }} trigger={['click']} dropdownRender={(menu) => (
+                <div style={contentStyle}>
+                    {React.cloneElement(menu as React.ReactElement, { style: menuStyle })}
+                </div>
+            )}>
                 <Button
                     type="text"
                     size="small"
-                    onClick={() => { if (!!props.onNew) props.onNew() }}
-                    icon={<PlusOutlined />} />
-                {props.showRedo ? <Button
-                    type="text"
-                    size="small"
-                    shape="circle"
-                    onClick={() => { if (props.onRedo) props.onRedo() }}
-                    icon={<RedoOutlined />} /> : ""}
+                    icon={<HolderOutlined />} />
+            </Dropdown>
+            <Button
+                type="text"
+                size="small"
+                style={{visibility: props.showRedo?"visible":"hidden"}}
+                disabled={!props.showRedo}
+                onClick={() => { if (props.onRedo) props.onRedo() }}
+                icon={<RedoOutlined />} />
 
-                <Dropdown menu={{ items: dropdown }} trigger={['click']} dropdownRender={(menu) => (
-                    <div style={contentStyle}>
-                        {React.cloneElement(menu as React.ReactElement, { style: menuStyle })}
-                    </div>
-                )}>
-                    <Button
-                        type="text"
-                        size="small"
-                        icon={<HolderOutlined />} />
-                </Dropdown>
-            </div>
-            <div className="textContent">
-                {props.loading ?
-                    <div className="moveableContent loadingOverlay">
-                        <LoadingOutlined spin={true} />
-                    </div> : ""}
-                <div className="moveableContent">{props.children}</div>
-            </div>
-        </ div>)
+        </div>
+        <div className="textContent">
+            {props.loading ?
+                <div className="moveableContent loadingOverlay">
+                    <LoadingOutlined spin={true} />
+                </div> : ""}
+            <div className="moveableContent">{props.children}</div>
+        </div>
+    </ div>)
 }

@@ -12,19 +12,25 @@ import { getItemsV2 } from "../../app/items.slice/item.slice.selectors"
 import { loadItemsV2, upsertNewItem } from "../../app/items.slice/item.slice.async"
 import { ItemV2 } from "../../app/supabaseClient"
 import { NoItemsYetComponent } from "../no-items-yet/no-items-yet.component"
+import { getActiveProject, getLoadProject } from "../../app/ui.slice/ui.slice.selectors"
+import { ProjectHeader } from "../project-header/project-header.component"
+import { act } from "react-dom/test-utils"
+import { Divider } from "antd"
 
 export function TextOutlinePane() {
 
-  const { id: activeProject } = useParams();
+  const { id: activeProjectId } = useParams();
   const items = useSelector(getItemsV2)
+  const loadingProject = useSelector(getLoadProject)
+  const activeProject = useSelector(getActiveProject)
 
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    if (activeProject) {
-      dispatch(loadItemsV2(activeProject))
+    if (activeProjectId) {
+      dispatch(loadItemsV2(activeProjectId))
     }
-  }, [dispatch, activeProject])
+  }, [dispatch, activeProjectId])
 
   const createNewItem = (idx: number, type?: "PARAGRAPH" | "H1") => {
 
@@ -38,12 +44,14 @@ export function TextOutlinePane() {
     dispatch(upsertNewItem(item))
   }
 
-  return <>
-    {items.length === 0 ? <NoItemsYetComponent
+  return <div className="textOutlinePaneComponent">
+    {/* {!!activeProject ? <ProjectHeader project={activeProject} /> : ""} */}
+    {/* <Divider></Divider> */}
+    {items.length === 0 && !loadingProject ? <NoItemsYetComponent
       onNewParagraph={() => createNewItem(0, "PARAGRAPH")}
       onNewHeader={() => createNewItem(0, "H1")}></NoItemsYetComponent> : ""}
-    {false ? <div className="loadingBar"><LoadingOutlined color="green" spin={true}></LoadingOutlined></div> : ""}
-    {!activeProject ? <Navigate to={"/"}></Navigate> : ""}
+    {loadingProject ? <div className="loadingBar"><LoadingOutlined color="green" spin={true}></LoadingOutlined></div> : ""}
+    {!activeProjectId ? <Navigate to={"/"}></Navigate> : ""}
     {items.length > 0 ?
       <DividerComponent
         buttonCaption={"Paragraph"}
@@ -59,5 +67,5 @@ export function TextOutlinePane() {
           onButtonClick={(index: number) => createNewItem(index, "PARAGRAPH")} />
       </div>
     )}
-  </>
+  </div>
 }
