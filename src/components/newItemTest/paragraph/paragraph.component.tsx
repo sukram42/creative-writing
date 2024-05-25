@@ -42,27 +42,29 @@ export function Paragraph(props: ItemProps) {
                 <div>
                     <div className="doubleSide">
                         <ItemSideComponent
-                            autofocus={activeEditingSide==="outline"}
+                            autofocus={activeEditingSide === "outline"}
                             placeholder="This is the right place to write the outline in bullet points!"
                             item={props.item}
                             final={false}
                             onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "outline", newText); }}
                             onChange={(item: ItemV2, newText: string) => { changeText(item, "outline", newText); }}
-                            onNewItem={() => { props.index && props.onNew && props.onNew(props.index) }}
+                            onNewItem={(index: number) => !!props.onNew && props.onNew(index)}
                             onDelete={props.onDelete!}
+                            index={props.index!}
                             loading={false} />
 
                         <ItemSideComponent
-                            autofocus={activeEditingSide==="final"}
+                            autofocus={activeEditingSide === "final"}
                             placeholder="<- Start writing the outline on he left to generate the final text!"
                             item={props.item}
                             final={true}
                             onRegenerate={() => regenerate("final")}
                             onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "final", newText); }}
-                            onNewItem={() => { props.index && props.onNew && props.onNew(props.index) }}
+                            onNewItem={(index: number) => !!props.onNew && props.onNew(index)}
                             onChange={(item: ItemV2, newText: string) => { changeText(item, "final", newText); }}
                             onDelete={props.onDelete!}
-                            loading={loadingItems.has(props.item.item_id)} />
+                            loading={loadingItems.has(props.item.item_id)}
+                            index={props.index!} />
                     </div>
                 </div>
             </div>
