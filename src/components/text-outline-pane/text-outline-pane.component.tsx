@@ -46,7 +46,7 @@ export function TextOutlinePane() {
     {!activeProject ? <Navigate to={"/"}></Navigate> : ""}
     {items.length > 0 ?
       <DividerComponent
-        buttonCaption={"Item"}
+        buttonCaption={"Paragraph"}
         index={0}
         onButtonClick={(index: number) => createNewItem(index, "PARAGRAPH")} /> : ""}
 
@@ -54,7 +54,7 @@ export function TextOutlinePane() {
       <div key={idx + 1}>
         <Item item={i} onNew={createNewItem} index={idx} />
         <DividerComponent
-          buttonCaption={"Item"}
+          buttonCaption={"Paragraph"}
           index={idx + 1}
           onButtonClick={(index: number) => createNewItem(index, "PARAGRAPH")} />
       </div>
