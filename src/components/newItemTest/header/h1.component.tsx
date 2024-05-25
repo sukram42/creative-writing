@@ -40,6 +40,9 @@ export function H1(props: ItemProps) {
             }))
             e.preventDefault();
         }
+        if (e.ctrlKey && e.key === "Enter") {
+            props.onNew && props.onNew(props.index! + 1)
+        }
     }
 
     const activeEditingSide = useSelector(getActiveEditingSide)
@@ -51,7 +54,7 @@ export function H1(props: ItemProps) {
                     <div className="doubleSide">
                         <MoveableObject
                             type={"Chapter"}
-                            onNew={() => alert("hallo")}
+                            onNew={() => props.onNew!((props.index || 0) + 1)}
                             onDelete={() => props.onDelete(props.item)}>
                             <Input
                                 autoFocus={activeEditingSide === "outline"}
@@ -67,7 +70,7 @@ export function H1(props: ItemProps) {
                             />
                         </MoveableObject>
                         <MoveableObject
-                            onNew={() => alert("oh no")}
+                            onNew={() => props.onNew!((props.index || 0) + 1)}
                             type={"Chapter"}
                             onDelete={() => props.onDelete(props.item)}>
                             <Input

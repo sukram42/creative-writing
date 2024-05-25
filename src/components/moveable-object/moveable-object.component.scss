@@ -5,6 +5,7 @@
         &>.objectName {
             opacity: 100%;
         }
+
         &>.buttonBar {
             opacity: 100%;
         }
@@ -17,9 +18,16 @@
         cursor: default;
     }
 
-    .buttonBar{
+    .buttonBar {
         opacity: 0;
         display: flex;
+        color: #888;
+
+        & * {
+            color: #888
+        }
+
+        // align-items: center;
     }
 
     .textContent {
@@ -28,6 +36,7 @@
         grid-template-rows: auto;
         grid-template-areas: "content";
         width: 100%;
+
         .moveableContent {
             grid-area: content;
         }
@@ -47,4 +56,5 @@
         }
 
     }
+
 }
