@@ -47,6 +47,14 @@ return (
     <div className="moveableObject">
 
         <div className="buttonBar">
+             {/* I am not proud of this: */}
+             {!props.showRedo?<Button
+                type="text"
+                size="small"
+                style={{visibility: props.showRedo?"visible":"hidden"}}
+                disabled={!props.showRedo}
+                onClick={() => { if (props.onRedo) props.onRedo() }}
+                icon={<RedoOutlined />} />:""}
             <Button
                 type="text"
                 size="small"
@@ -62,13 +70,13 @@ return (
                     size="small"
                     icon={<HolderOutlined />} />
             </Dropdown>
-            <Button
+            {props.showRedo?<Button
                 type="text"
                 size="small"
                 style={{visibility: props.showRedo?"visible":"hidden"}}
                 disabled={!props.showRedo}
                 onClick={() => { if (props.onRedo) props.onRedo() }}
-                icon={<RedoOutlined />} />
+                icon={<RedoOutlined />} />:""}
 
         </div>
         <div className="textContent">
