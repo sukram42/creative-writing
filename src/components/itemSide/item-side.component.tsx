@@ -80,6 +80,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             {/*
             // @ts-ignore */}
             <ReactQuill theme={null}
+                className="quill-editor"
                 autofocus={props.autofocus}
 
                 onEditorCreated={() => alert('Editor created!')}
@@ -91,8 +92,12 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 }}
                 onKeyDown={(e) => {
                     if (e.ctrlKey && e.key === "Enter") {
-                        onTextChange(e.getHTML())
+                        onTextChange(e.target.getInnerHTML())
                         props.onNewItem()
+                    }
+                    if (e.ctrlKey && e.key === "Backspace" && e.target.getInnerHTML() === "<p><br></p>") {
+
+                        props.onDelete(props.item)
                     }
                 }}
                 onBlur={(_0, _1, editor) => {

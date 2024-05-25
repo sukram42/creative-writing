@@ -42,18 +42,18 @@ export function Paragraph(props: ItemProps) {
                 <div>
                     <div className="doubleSide">
                         <ItemSideComponent
-                            autofocus={activeEditingSide==="outline"}
+                            autofocus={activeEditingSide === "outline"}
                             placeholder="This is the right place to write the outline in bullet points!"
                             item={props.item}
                             final={false}
                             onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "outline", newText); }}
                             onChange={(item: ItemV2, newText: string) => { changeText(item, "outline", newText); }}
-                            onNewItem={() => { props.index && props.onNew && props.onNew(props.index) }}
+                            onNewItem={() => props.index && !!props.onNew && props.onNew(props.index)}
                             onDelete={props.onDelete!}
                             loading={false} />
 
                         <ItemSideComponent
-                            autofocus={activeEditingSide==="final"}
+                            autofocus={activeEditingSide === "final"}
                             placeholder="<- Start writing the outline on he left to generate the final text!"
                             item={props.item}
                             final={true}

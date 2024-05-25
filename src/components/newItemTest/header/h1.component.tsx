@@ -8,7 +8,7 @@ import { MoveableObject } from "../../moveable-object/moveable-object.component"
 import { Input } from "antd";
 import { setActiveEditingSide, updateItemTextV2 } from "../../../app/items.slice/item.slice";
 import { getActiveEditingSide } from "../../../app/items.slice/item.slice.selectors";
-import { KeyboardEvent} from "react";
+import { KeyboardEvent } from "react";
 
 
 export function H1(props: ItemProps) {
@@ -49,7 +49,9 @@ export function H1(props: ItemProps) {
             <div className="chapterComponent">
                 <div>
                     <div className="doubleSide">
-                        <MoveableObject type={"Chapter"}
+                        <MoveableObject
+                            type={"Chapter"}
+                            onNew={() => alert("hallo")}
                             onDelete={() => props.onDelete(props.item)}>
                             <Input
                                 autoFocus={activeEditingSide === "outline"}
@@ -65,6 +67,7 @@ export function H1(props: ItemProps) {
                             />
                         </MoveableObject>
                         <MoveableObject
+                            onNew={() => alert("oh no")}
                             type={"Chapter"}
                             onDelete={() => props.onDelete(props.item)}>
                             <Input
@@ -83,6 +86,6 @@ export function H1(props: ItemProps) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

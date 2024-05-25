@@ -26,6 +26,7 @@ export function TextOutlinePane() {
   }, [dispatch, activeProject])
 
   const createNewItem = (idx: number) => {
+    console.log("hallo")
     const item = {
       version: 0,
       item_id: v4(),
