@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Chapter, Item, Project, supabase } from "../supabaseClient";
-import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setItemsV2, setLoadChapter, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjectName, updateProjects } from "./ui.slice";
+import { locallyRemoveChapter, locallyUpdateChapterTitle, rmParagraphFromLoading, setItemsV2, setLoadProject, setLoadingProjects, setParagraphToLoad, setProfile, updateActiveProject, updateChapters, updateItemText, updateItems, updateProjectName, updateProjects } from "./ui.slice";
 import { RootState } from "../store";
 
 export const setActiveProject = createAsyncThunk(
@@ -30,7 +30,7 @@ export const updateProjectField = createAsyncThunk(
 export const getChaptersByProject = createAsyncThunk(
     "ui/getChaptersByProject",
     async (projectId: string, thunkAPI) => {
-        thunkAPI.dispatch(setLoadChapter(true))
+        thunkAPI.dispatch(setLoadProject(true))
         const { data: chapters } = await supabase
             .from('chapters')
             .select('*')
@@ -47,7 +47,7 @@ export const getChaptersByProject = createAsyncThunk(
             return { [chapter.chapter_id]: items }
 
         })).then(items => {
-            thunkAPI.dispatch(setLoadChapter(false))
+            thunkAPI.dispatch(setLoadProject(false))
             return items.reduce((a, b) => ({ ...a, ...b }), {})
         })
 

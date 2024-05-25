@@ -1,0 +1,18 @@
+.projectHeaderComponent {
+    padding: 1em;
+
+    .parent {
+        background-color: yellow;
+    }
+
+    .child1 {
+        background-color: red;
+    }
+    .child2 {
+        background-color: green;
+        position: relative;
+        left: -10em;
+        width: 10em;
+        text-align: right;
+    }
+}

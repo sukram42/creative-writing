@@ -13,7 +13,7 @@ import { AppDispatch } from "../../app/store";
 interface ItemsComponentProps {
     item: ItemV2,
     final: boolean
-    onNewItem: () => void
+    onNewItem: (index: number) => void
 
     onChange: (item: ItemV2, newText: string) => void
     onCommitChange: (item: ItemV2, newText: string) => void
@@ -25,6 +25,7 @@ interface ItemsComponentProps {
     placeholder?: string
 
     autofocus: boolean
+    index: number
 }
 
 export function ItemSideComponent(props: ItemsComponentProps) {
@@ -76,10 +77,12 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             onRedo={() => props.onRegenerate && props.onRegenerate(props.item)}
             showRedo={!!props.onRegenerate}
             loading={props.loading}
+            onNew={() => props.onNewItem(props.index + 1)}
         >
             {/*
             // @ts-ignore */}
             <ReactQuill theme={null}
+                className="quill-editor"
                 autofocus={props.autofocus}
 
                 onEditorCreated={() => alert('Editor created!')}
@@ -91,8 +94,12 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 }}
                 onKeyDown={(e) => {
                     if (e.ctrlKey && e.key === "Enter") {
-                        onTextChange(e.getHTML())
-                        props.onNewItem()
+                        onTextChange(e.target.getInnerHTML())
+                        props.onNewItem(props.index + 1)
+                    }
+                    if (e.ctrlKey && e.key === "Backspace" && e.target.getInnerHTML() === "<p><br></p>") {
+
+                        props.onDelete(props.item)
                     }
                 }}
                 onBlur={(_0, _1, editor) => {

@@ -15,7 +15,7 @@ const initialState: UiState = {
   loadingProjects: true,
 
   user: undefined,
-  loadChapters: false,
+  loadProject: false,
 
   itemsV2: [],
 
@@ -63,8 +63,8 @@ export const uiSlice = createSlice({
         }
       })
     },
-    setLoadChapter: (state, action: { payload: boolean }) => {
-      state.loadChapters = action.payload
+    setLoadProject: (state, action: { payload: boolean }) => {
+      state.loadProject = action.payload
     },
     locallyUpdateChapterTitle: (state, action: { payload: { chapterId: string, newTitle: string } }) => {
       state.chapters.forEach((c => {
@@ -192,7 +192,7 @@ export const { addToCount,
   updateChapters,
   setLoadingProjects,
   updateProjects,
-  setLoadChapter,
+  setLoadProject,
   setParagraphToLoad,
   updateActiveProject,
   setUser,

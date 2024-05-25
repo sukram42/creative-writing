@@ -2,10 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ItemType, ItemV2, supabase } from "../supabaseClient";
 import { setItemsV2, updateItemTextV2, updateItemType, updateItemsV2 } from "./item.slice";
 import { RootState } from "../store";
+import { setLoadProject } from "../ui.slice/ui.slice";
 
 export const loadItemsV2 = createAsyncThunk(
     "items/loadItems",
     async (payload: string, thunkAPI) => {
+        thunkAPI.dispatch(setLoadProject(true))
         const { data, error } = await supabase
             .from("items_v2")
             .select("*")
@@ -17,6 +19,7 @@ export const loadItemsV2 = createAsyncThunk(
         } else {
             thunkAPI.dispatch(setItemsV2({ items: data }))
         }
+        thunkAPI.dispatch(setLoadProject(false))
     }
 )
 
@@ -101,7 +104,7 @@ export const updateItemTypeAsync = createAsyncThunk(
 
         const { data: updatedItem, error } = await supabase
             .from('items_v2')
-            .update({ type: payload.newType})
+            .update({ type: payload.newType })
             .eq("item_id", payload.item.item_id)
             .select()
 

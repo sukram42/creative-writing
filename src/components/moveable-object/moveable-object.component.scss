@@ -1,8 +1,12 @@
 .moveableObject {
-
+    display: flex;
 
     &:hover {
         &>.objectName {
+            opacity: 100%;
+        }
+
+        &>.buttonBar {
             opacity: 100%;
         }
     }
@@ -14,11 +18,27 @@
         cursor: default;
     }
 
+    .buttonBar {
+        display: flex;
+
+        opacity: 0;
+        padding-right: 3px;
+        display: flex;
+        color: #888;
+
+        & * {
+            color: #888
+        }
+
+        // align-items: center;
+    }
+
     .textContent {
         display: grid;
         grid-template-columns: auto;
         grid-template-rows: auto;
         grid-template-areas: "content";
+        width: 100%;
 
         .moveableContent {
             grid-area: content;
@@ -39,4 +59,5 @@
         }
 
     }
+
 }
