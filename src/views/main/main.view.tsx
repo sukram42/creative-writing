@@ -30,13 +30,15 @@ export function MainView() {
             {!activeProjectId ? <Navigate to={"/"}></Navigate> : ""}
             <div className="mainViewHeader">
                 <div className="headerElements">
-                    {!!activeProject ?
-                        <Typography.Title className={"projectName"}  level={5} editable={{
-                            onChange: (value) => dispatch(updateProjectNameAsync(value)),
-                            triggerType: ["text"],
-                        }}>{activeProject.name}</Typography.Title> : ""}
+                    {
+                        // !!activeProject ?
+                        // <Typography.Title className={"projectName"}  level={5} editable={{
+                        //     onChange: (value) => dispatch(updateProjectNameAsync(value)),
+                        //     triggerType: ["text"],
+                        // }}>{activeProject.name}</Typography.Title> : ""
+                    }
                     <div className="buttons">
-                       <Button icon={<Badge dot={!activeProject?.description}><SettingOutlined /></Badge>} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
+                        <Button icon={<Badge dot={!activeProject?.description}><SettingOutlined /></Badge>} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
                         <Button icon={<FileOutlined />} onClick={() => setRawDrawerOpen(true)} type="text" shape="round" /></div>
                 </div>
             </div>

@@ -5,7 +5,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 import MistralClient from 'https://esm.sh/@mistralai/mistralai'
 import { corsHeaders } from '../_shared/cors.ts'
-
+import { Prompt} from '../_shared/prompt.service.ts'
 
 const getErrorResponse = (error) => {
   return new Response(JSON.stringify({ error: error.message }), {
@@ -41,14 +41,27 @@ Deno.serve(async (req: Request) => {
         },
       }
     )
-
-    // Get prompt
-    const { data: prompt } = await supabaseClient
+    const { data: prompts } = await supabaseClient
       .from("prompts")
       .select("*")
-      .eq("id", "outline2text")
 
-    // Get the paragraph
+    let outlinePrompt
+    let feedbackPrompt
+    let incorporateFeedbackPrompt
+
+    prompts.forEach(function (p) {
+      switch (p.id) {
+        case "outline2text":
+          outlinePrompt = new Prompt(p)
+          break;
+        case "feedback":
+          feedbackPrompt = new Prompt(p)
+          break;
+        case "incorporateFeedback":
+          incorporateFeedbackPrompt = new Prompt(p)
+      }
+    })
+
     const {
       data
     } = await supabaseClient
@@ -63,33 +76,53 @@ Deno.serve(async (req: Request) => {
 
     project = project[0]
 
-    // Create prompt
-    const finalPrompt = prompt[0].prompt
-      .replace("${outline}", data[0].outline)
-      .replace("${documentTitle}", project.name)
-      .replace("${languageDescription}", project.language_description)
-      .replace("${paragraphDefinition}", project.paragraph_definition)
-      .replace("${documentDescription}", project.description)
-      .replace("${outputLanguage}", project.output_language)
-      .replace("${targetGroup}", project.targetGroup)
-
+    const finalPrompt = outlinePrompt.render({ project: project, item: data[0] })
+  
     // const Create the response
     const chatResponse = await mistral_client.chat({
-      model: prompt[0].model_name,
-      temperature: prompt[0].temperature,
+      model: outlinePrompt.prompt.model_name,
+      temperature: outlinePrompt.prompt.temperature,
+      responseFormat: {type: 'json_object'},
       messages: [{ role: 'system', content: finalPrompt }],
     });
+    console.log("First draft:", chatResponse.choices[0].message.content)
+    console.log("==================================")
+    const finalFeedbackPrompt = feedbackPrompt.render({ project: project, item: data[0] })
+
+    //get feedback
+    const feedback = await mistral_client.chat({
+      model: feedbackPrompt.prompt.model_name,
+      temperature: feedbackPrompt.prompt.temperature,
+      messages: [{ role: "system", content: finalFeedbackPrompt }]
+    })
+    console.log("==================================")
+    console.log("Feedback", feedback.choices[0].message.content)
+
+    const finalIncorporateFeedbackPrompt = incorporateFeedbackPrompt.render({ project: project, item: data[0] })
+
+    //get feedback
+    const finalParagraph = await mistral_client.chat({
+      model: feedbackPrompt.prompt.model_name,
+      temperature: feedbackPrompt.prompt.temperature,
+      messages: [{ role: "system", content: finalPrompt },
+      { role: "assistant", content: chatResponse.choices[0].message.content },
+      { role: "user", content: finalIncorporateFeedbackPrompt }
+      ]
+    })
+
+    console.log("==================================")
+    console.log("RESULT /n", finalParagraph.choices[0].message.content)
 
     // Update the  item
     const { error } = await supabaseClient
       .from('items_v2')
-      .update({ final: chatResponse.choices[0].message.content })
+      .update({ final: finalParagraph.choices[0].message.content })
       .eq("item_id", content.paragraph)
       .select()
 
     if (error) return getErrorResponse(error)
 
-    return new Response(JSON.stringify({ result: chatResponse.choices[0].message.content }), {
+    return new Response(JSON.stringify({ result: finalParagraph.choices[0].message.content }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })
