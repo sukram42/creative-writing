@@ -5,10 +5,11 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.core.css';
 
 import './item-side.component.scss'
-import { useDispatch } from "react-redux";
-import { setActiveEditingSide } from "../../app/items.slice/item.slice";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveFocus, setActiveFocusIndex } from "../../app/items.slice/item.slice";
 import { updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
 import { AppDispatch } from "../../app/store";
+import { getActiveFocusSide, getActiveFocusIndex } from "../../app/items.slice/item.slice.selectors";
 
 interface ItemsComponentProps {
     item: ItemV2,
@@ -36,13 +37,16 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     const dispatch = useDispatch<AppDispatch>()
     const editorRef = useRef<ReactQuill | null>(null); useRef()
 
-
     const onTextChange = (newText: string) => {
 
         if (!wasChanged) return
         props.onCommitChange(props.item, newText)
         setWasChanged(false)
     }
+
+    const activeFocusSide = useSelector(getActiveFocusSide)
+    const activeFocusIndex = useSelector(getActiveFocusIndex)
+
 
     const onLocalTextChange = (newText: string, final: boolean) => {
         if (newText !== content) {
@@ -56,13 +60,17 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             }))
         }
         setWasChanged(true)
+        dispatch(setActiveFocusIndex(props.index!))
+        
     }
     useEffect(() => {
-
         if (props.autofocus) {
-            if (editorRef.current) editorRef.current.focus();
+            if (editorRef.current) {
+                editorRef.current.focus();
+                dispatch(setActiveFocusIndex(null))
+            }
         }
-    }, [props.autofocus])
+    }, [activeFocusSide, activeFocusIndex])
 
     useEffect(() => {
         if (editorRef.current) editorRef.current.getEditor().root.dataset.placeholder = active ? props.placeholder : "";
@@ -90,16 +98,30 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 value={content || ""}
                 onFocus={() => {
                     setActive(true);
-                    dispatch(setActiveEditingSide(props.final ? "final" : "outline"))
                 }}
                 onKeyDown={(e) => {
                     if (e.ctrlKey && e.key === "Enter") {
                         onTextChange(e.target.getInnerHTML())
                         props.onNewItem(props.index + 1)
+                        dispatch(setActiveFocusIndex(props.index! + 1))
                     }
                     if (e.ctrlKey && e.key === "Backspace" && e.target.getInnerHTML() === "<p><br></p>") {
 
                         props.onDelete(props.item)
+                        dispatch(setActiveFocusIndex(props.index! - 1))
+                    }
+                    console.log(e)
+                    if (e.ctrlKey && e.altKey && e.key=="ArrowDown"){
+                        dispatch(setActiveFocusIndex(props.index! + 1))
+                    }
+                    if (e.ctrlKey && e.altKey && e.key=="ArrowUp"){
+                        dispatch(setActiveFocusIndex(props.index! - 1))
+                    }
+                    if (e.ctrlKey && e.altKey && e.key=="ArrowRight" && !props.final){
+                        dispatch(setActiveFocus({side: "final", index: props.index!}))
+                    }
+                    if (e.ctrlKey && e.altKey && e.key=="ArrowLeft" && props.final){
+                        dispatch(setActiveFocus({side: "outline", index: props.index!}))
                     }
                 }}
                 onBlur={(_0, _1, editor) => {
