@@ -12,19 +12,22 @@ import { getItemsV2 } from "../../app/items.slice/item.slice.selectors"
 import { loadItemsV2, upsertNewItem } from "../../app/items.slice/item.slice.async"
 import { ItemV2 } from "../../app/supabaseClient"
 import { NoItemsYetComponent } from "../no-items-yet/no-items-yet.component"
-import { getLoadProject } from "../../app/ui.slice/ui.slice.selectors"
+import { getActiveProject, getLoadProject } from "../../app/ui.slice/ui.slice.selectors"
+import { ProjectHeader } from "../project-header/project-header.component"
+import { Divider } from "antd"
 
 export function TextOutlinePane() {
 
   const { id: activeProjectId } = useParams();
   const items = useSelector(getItemsV2)
   const loadingProject = useSelector(getLoadProject)
-
+  const activeProject = useSelector(getActiveProject)
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     if (activeProjectId) {
       dispatch(loadItemsV2(activeProjectId))
+      window.scrollTo(0,0)
     }
   }, [dispatch, activeProjectId])
 
@@ -41,8 +44,8 @@ export function TextOutlinePane() {
   }
 
   return <div className="textOutlinePaneComponent">
-    {/* {!!activeProject ? <ProjectHeader project={activeProject} /> : ""} */}
-    {/* <Divider></Divider> */}
+    {!!activeProject ? <ProjectHeader project={activeProject} /> : ""}
+    <Divider style={{margin:0}}></Divider>
     {items.length === 0 && !loadingProject ? <NoItemsYetComponent
       onNewParagraph={() => createNewItem(0, "PARAGRAPH")}
       onNewHeader={() => createNewItem(0, "H1")}></NoItemsYetComponent> : ""}

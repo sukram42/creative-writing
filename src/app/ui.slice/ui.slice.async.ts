@@ -16,13 +16,19 @@ export const setActiveProject = createAsyncThunk(
 
 export const updateProjectField = createAsyncThunk(
     "ui/updateProjectField",
-    async (payload: { field: string, newValue: string, projectId: string }) => {
+    async (payload: { field: "description" | "output_language" | "language_description" | "paragraph_definition", newValue: string, projectId: string }, thunkAPI) => {
+        const state = thunkAPI.getState() as RootState
+        const currentProject = state.ui.activeProject
+
+        thunkAPI.dispatch(updateActiveProject({ ...currentProject!, [payload.field]: payload.newValue }))
+
         const { data } = await supabase
             .from("projects")
             .update({ [payload.field]: payload.newValue })
             .eq("project_id", payload.projectId)
             .select()
-        console.log(data)
+
+
         return data
     }
 )
