@@ -4,10 +4,10 @@ import "./main.view.scss"
 import { Navigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { setActiveProject, updateProjectNameAsync } from "../../app/ui.slice/ui.slice.async";
+import { setActiveProject } from "../../app/ui.slice/ui.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
-import { Badge, Button, Drawer, Typography } from "antd";
+import { Badge, Button, Drawer } from "antd";
 import { ProjectUpdateForm } from "../../components/project-update-form/project-update-form.component";
 import { FileOutlined, SettingOutlined } from "@ant-design/icons";
 import { RawTextView } from "../../components/raw-text-view/raw-text-view.component";
