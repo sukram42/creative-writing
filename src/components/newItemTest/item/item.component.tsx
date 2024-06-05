@@ -20,7 +20,6 @@ export function Item(props: Partial<ItemProps>) {
         item: props.item!,
         ...props
     }
-    console.log(newProps)
     const itemComponent = ItemMapping[props.item.type!](newProps)
     return itemComponent
 }
