@@ -21,7 +21,6 @@ export const itemsSlice = createSlice({
     setActiveFocus(state, action: { payload: { side: "outline" | "final", index: number | null } }) {
       state.activeFocusSide = action.payload.side;
       state.activeFocusIndex = action.payload.index
-      console.log(state.activeFocusIndex, state.activeFocusSide)
     },
     setItemsV2(state, action: { payload: { items: ItemV2[] } }) {
       state.itemsV2 = action.payload.items;
@@ -30,6 +29,15 @@ export const itemsSlice = createSlice({
       state.itemsV2.forEach((i: ItemV2) => {
         if (i.item_id === action.payload.item.item_id) {
           i = action.payload.item
+          console.log("Updated", action.payload.item)
+          return
+        }
+      })
+    },
+    updateLockedState(state, action: { payload: { item: ItemV2, newLocked: boolean } }) {
+      state.itemsV2.forEach((i: ItemV2) => {
+        if (i.item_id === action.payload.item.item_id) {
+          i["locked"] = action.payload.newLocked
           return
         }
       })
@@ -82,4 +90,4 @@ export const itemsSlice = createSlice({
 })
 
 export default itemsSlice.reducer
-export const { setItemsV2, updateItemV2, updateItemsV2, updateItemType, updateItemTextV2, setItemToLoad, stopItemFromLoading, setActiveFocus, setActiveFocusIndex } = itemsSlice.actions
+export const { setItemsV2, updateItemV2, updateItemsV2, updateItemType, updateItemTextV2, setItemToLoad, stopItemFromLoading, setActiveFocus, setActiveFocusIndex, updateLockedState } = itemsSlice.actions

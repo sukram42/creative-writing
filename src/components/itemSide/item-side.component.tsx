@@ -7,7 +7,7 @@ import 'react-quill/dist/quill.core.css';
 import './item-side.component.scss'
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveFocus, setActiveFocusIndex } from "../../app/items.slice/item.slice";
-import { updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
+import { updateItemLocked, updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveFocusSide, getActiveFocusIndex } from "../../app/items.slice/item.slice.selectors";
 
@@ -27,6 +27,7 @@ interface ItemsComponentProps {
 
     autofocus: boolean
     index: number
+    locked?: boolean
 }
 
 export function ItemSideComponent(props: ItemsComponentProps) {
@@ -61,7 +62,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
         }
         setWasChanged(true)
         dispatch(setActiveFocusIndex(props.index!))
-        
+
     }
     useEffect(() => {
         if (props.autofocus) {
@@ -78,7 +79,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     }, [editorRef, active]);
 
     const content = props.final ? props.item.final : props.item.outline
-    return <>
+    return <div className={"itemSideComponent " + (props.locked ? "locked" : "")}>
         <MoveableObject
             type={"Paragraph"}
             onDelete={() => props.onDelete(props.item)}
@@ -86,13 +87,15 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             showRedo={!!props.onRegenerate}
             loading={props.loading}
             onNew={() => props.onNewItem(props.index + 1)}
+            locked={props.final && props.item.locked}
+            showLocked={props.final}
+            onToggleLock={() => dispatch(updateItemLocked({ item: props.item, newLocked: !props.item.locked }))}
         >
             {/*
             // @ts-ignore */}
             <ReactQuill theme={null}
-                className="quill-editor"
+                className={"quill-editor "}
                 autofocus={props.autofocus}
-
                 onEditorCreated={() => alert('Editor created!')}
                 ref={editorRef}
                 value={content || ""}
@@ -110,18 +113,17 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                         props.onDelete(props.item)
                         dispatch(setActiveFocusIndex(props.index! - 1))
                     }
-                    console.log(e)
-                    if (e.ctrlKey && e.altKey && e.key=="ArrowDown"){
+                    if (e.ctrlKey && e.altKey && e.key == "ArrowDown") {
                         dispatch(setActiveFocusIndex(props.index! + 1))
                     }
-                    if (e.ctrlKey && e.altKey && e.key=="ArrowUp"){
+                    if (e.ctrlKey && e.altKey && e.key == "ArrowUp") {
                         dispatch(setActiveFocusIndex(props.index! - 1))
                     }
-                    if (e.ctrlKey && e.altKey && e.key=="ArrowRight" && !props.final){
-                        dispatch(setActiveFocus({side: "final", index: props.index!}))
+                    if (e.ctrlKey && e.altKey && e.key == "ArrowRight" && !props.final) {
+                        dispatch(setActiveFocus({ side: "final", index: props.index! }))
                     }
-                    if (e.ctrlKey && e.altKey && e.key=="ArrowLeft" && props.final){
-                        dispatch(setActiveFocus({side: "outline", index: props.index!}))
+                    if (e.ctrlKey && e.altKey && e.key == "ArrowLeft" && props.final) {
+                        dispatch(setActiveFocus({ side: "outline", index: props.index! }))
                     }
                 }}
                 onBlur={(_0, _1, editor) => {
@@ -137,5 +139,5 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 onChange={(val) => onLocalTextChange(val, props.final)}
             ></ReactQuill>
         </MoveableObject >
-    </>
+    </div>
 }

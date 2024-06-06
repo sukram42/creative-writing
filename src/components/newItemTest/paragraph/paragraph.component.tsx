@@ -9,7 +9,6 @@ import { updateItemTextV2Async } from "../../../app/items.slice/item.slice.async
 import { updateItemTextV2 } from "../../../app/items.slice/item.slice";
 import { outline2textCompletion } from "../../../app/ai.slice/ai.slice.async";
 import { getActiveFocusIndex, getActiveFocusSide, getLoadingItems } from "../../../app/items.slice/item.slice.selectors";
-import { useRef } from "react";
 
 
 export function Paragraph(props: ItemProps) {
@@ -17,11 +16,10 @@ export function Paragraph(props: ItemProps) {
     const dispatch = useDispatch<AppDispatch>()
 
     const loadingItems = useSelector(getLoadingItems)
-    const outlineSide = useRef()
 
     const commitChange = (item: ItemV2, type: "outline" | "final", newText: string) => {
         // TODO check the indexing here
-        if (type == "outline" && (item[type] || "").length > 20) {
+        if (type == "outline" && (item[type] || "").length > 20 && !props.item.locked) {
             dispatch(outline2textCompletion({ paragraph: props.item, project_id: props.item.project_id! }))
         }
         dispatch(updateItemTextV2Async({ item: props.item, newText, field: type }))
@@ -29,17 +27,15 @@ export function Paragraph(props: ItemProps) {
 
     const changeText = (item: ItemV2, type: "outline" | "final", newText: string) => {
         dispatch(updateItemTextV2({ item, newText, field: type }))
-        console.log(outlineSide)
     }
 
     const regenerate = (type: "outline" | "final") => {
-        if (type == "final") {
+        if (type == "final" && !props.item.locked) {
             dispatch(outline2textCompletion({ paragraph: props.item, project_id: props.item.project_id! }))
         }
     }
     const activeFocusSide = useSelector(getActiveFocusSide)
     const activeFocusIndex = useSelector(getActiveFocusIndex) 
-
     return (
         <div >
             <div className="chapterComponent">
@@ -62,6 +58,7 @@ export function Paragraph(props: ItemProps) {
                             placeholder="<- Start writing the outline on he left to generate the final text!"
                             item={props.item}
                             final={true}
+                            locked={true || props.item.locked}
                             onRegenerate={() => regenerate("final")}
                             onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "final", newText); }}
                             onNewItem={(index: number) => !!props.onNew && props.onNew(index)}
