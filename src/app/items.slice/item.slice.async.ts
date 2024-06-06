@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ItemType, ItemV2, supabase } from "../supabaseClient";
-import { setItemsV2, updateItemTextV2, updateItemType, updateItemsV2 } from "./item.slice";
+import { setItemsV2, updateItemTextV2, updateItemType, updateItemV2, updateItemsV2, updateLockedState } from "./item.slice";
 import { RootState } from "../store";
 import { setLoadProject } from "../ui.slice/ui.slice";
 
@@ -105,6 +105,29 @@ export const updateItemTypeAsync = createAsyncThunk(
         const { data: updatedItem, error } = await supabase
             .from('items_v2')
             .update({ type: payload.newType })
+            .eq("item_id", payload.item.item_id)
+            .select()
+
+        if (error) {
+            // Rollback
+            console.error(error)
+            thunkAPI.dispatch(updateItemsV2({ items: beforeItems }))
+            return
+        }
+        else console.log(updatedItem)
+        return updatedItem
+    }
+)
+export const updateItemLocked = createAsyncThunk(
+    "items/updateItemLocked",
+    async (payload: { item: ItemV2, newLocked: boolean }, thunkAPI) => {
+        const state = thunkAPI.getState() as RootState;
+        const beforeItems = state.items.itemsV2
+
+        thunkAPI.dispatch(updateLockedState(payload))
+        const { data: updatedItem, error } = await supabase
+            .from('items_v2')
+            .update({ locked: payload.newLocked })
             .eq("item_id", payload.item.item_id)
             .select()
 

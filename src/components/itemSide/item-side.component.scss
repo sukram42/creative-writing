@@ -1,12 +1,18 @@
-.ql-container {
-    all: unset;
-    position: relative;
-}
+.itemSideComponent {
+    .ql-container {
+        all: unset;
+        position: relative;
+    }
 
-.ql-editor {
-    padding: 0;
-}
+    .ql-editor {
+        padding: 0;
+    }
 
-.quill-editor{
-    height: 100%;
+    .quill-editor {
+        height: 100%;
+    }
+
+    .locked {
+        background-color: red;
+    }
 }
