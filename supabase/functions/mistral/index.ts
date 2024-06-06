@@ -3,9 +3,10 @@
 // This enables autocomplete, go to definition, etc.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
-import MistralClient from 'https://esm.sh/@mistralai/mistralai'
-import { corsHeaders } from '../_shared/cors.ts'
 
+import { corsHeaders } from '../_shared/cors.ts'
+import { Prompt } from '../_shared/prompt.service.ts'
+import { MistralLLM as LLM } from '../_shared/llm.ts'
 
 const getErrorResponse = (error) => {
   return new Response(JSON.stringify({ error: error.message }), {
@@ -23,8 +24,7 @@ Deno.serve(async (req: Request) => {
   const content = await req.json()
 
   const mistral_key = Deno.env.get("MISTRAL_API_KEY")
-  const mistral_client = new MistralClient(mistral_key);
-
+  const llm = new LLM(mistral_key)
 
   try {
     // Create a Supabase client with the Auth context of the logged in user.
@@ -41,14 +41,27 @@ Deno.serve(async (req: Request) => {
         },
       }
     )
-
-    // Get prompt
-    const { data: prompt } = await supabaseClient
+    const { data: prompts } = await supabaseClient
       .from("prompts")
       .select("*")
-      .eq("id", "outline2text")
 
-    // Get the paragraph
+    let outlinePrompt
+    let feedbackPrompt
+    let incorporateFeedbackPrompt
+
+    prompts.forEach(function (p) {
+      switch (p.id) {
+        case "outline2text":
+          outlinePrompt = new Prompt(p)
+          break;
+        case "feedback":
+          feedbackPrompt = new Prompt(p)
+          break;
+        case "incorporateFeedback":
+          incorporateFeedbackPrompt = new Prompt(p)
+      }
+    })
+
     const {
       data
     } = await supabaseClient
@@ -63,33 +76,40 @@ Deno.serve(async (req: Request) => {
 
     project = project[0]
 
-    // Create prompt
-    const finalPrompt = prompt[0].prompt
-      .replace("${outline}", data[0].outline)
-      .replace("${documentTitle}", project.name)
-      .replace("${languageDescription}", project.language_description)
-      .replace("${paragraphDefinition}", project.paragraph_definition)
-      .replace("${documentDescription}", project.description)
-      .replace("${outputLanguage}", project.output_language)
-      .replace("${targetGroup}", project.targetGroup)
+    let {
+      data: items
+    } = await supabaseClient.from("items_v2")
+      .select("*")
+      .eq("project_id", content.project_id)
 
-    // const Create the response
-    const chatResponse = await mistral_client.chat({
-      model: prompt[0].model_name,
-      temperature: prompt[0].temperature,
-      messages: [{ role: 'system', content: finalPrompt }],
-    });
+    items = items.sort((a, b) => a.rank - b.rank)
+    const itemsBefore = items.filter(i => i.rank <= data[0].rank)
+    const chapter = itemsBefore.filter(i => i.type == "H1").splice(-1)[0]
 
+    const initialParagraph = await Promise.resolve()
+      .then(() => outlinePrompt.render({ project: project, item: data[0], input: { paragraph_before: itemsBefore.splice(-1)[0].final, header: chapter.outline } }))
+      .then(prompt => llm.chatPrompt(prompt))
+      .then(result => result.choices[0].message.content)
+
+    const finalParagraph = await Promise.resolve()
+      .then((paragraph) => feedbackPrompt.render({ project: project, item: data[0], input: { paragraph } }))
+      .then(prompt => llm.chatPrompt(prompt))
+      .then(result => result.choices[0].message.content)
+
+      .then((feedback) => incorporateFeedbackPrompt.render({ project: project, item: data[0], input: { feedback, paragraph: initialParagraph } }))
+      .then(prompt => llm.chatPrompt(prompt))
+      .then(result => result.choices[0].message.content)
+      
     // Update the  item
     const { error } = await supabaseClient
       .from('items_v2')
-      .update({ final: chatResponse.choices[0].message.content })
+      .update({ final: finalParagraph })
       .eq("item_id", content.paragraph)
       .select()
 
     if (error) return getErrorResponse(error)
 
-    return new Response(JSON.stringify({ result: chatResponse.choices[0].message.content }), {
+    return new Response(JSON.stringify({ result: finalParagraph }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })

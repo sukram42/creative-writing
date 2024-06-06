@@ -109,6 +109,7 @@ export type Database = {
           created_at: string
           final: string | null
           item_id: string
+          locked: boolean
           outline: string | null
           project_id: string | null
           rank: number
@@ -119,6 +120,7 @@ export type Database = {
           created_at?: string
           final?: string | null
           item_id?: string
+          locked?: boolean
           outline?: string | null
           project_id?: string | null
           rank?: number
@@ -129,6 +131,7 @@ export type Database = {
           created_at?: string
           final?: string | null
           item_id?: string
+          locked?: boolean
           outline?: string | null
           project_id?: string | null
           rank?: number
@@ -245,6 +248,13 @@ export type Database = {
         Args: {
           minrank: number
           chapter_id: string
+        }
+        Returns: undefined
+      }
+      increment_rank_of_items: {
+        Args: {
+          minrank: number
+          project: string
         }
         Returns: undefined
       }

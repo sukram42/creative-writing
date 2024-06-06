@@ -8,7 +8,7 @@ import { ItemV2 } from "../../../app/supabaseClient";
 import { updateItemTextV2Async } from "../../../app/items.slice/item.slice.async";
 import { updateItemTextV2 } from "../../../app/items.slice/item.slice";
 import { outline2textCompletion } from "../../../app/ai.slice/ai.slice.async";
-import { getActiveEditingSide, getLoadingItems } from "../../../app/items.slice/item.slice.selectors";
+import { getActiveFocusIndex, getActiveFocusSide, getLoadingItems } from "../../../app/items.slice/item.slice.selectors";
 
 
 export function Paragraph(props: ItemProps) {
@@ -19,7 +19,7 @@ export function Paragraph(props: ItemProps) {
 
     const commitChange = (item: ItemV2, type: "outline" | "final", newText: string) => {
         // TODO check the indexing here
-        if (type == "outline" && (item[type] || "").length > 20) {
+        if (type == "outline" && (item[type] || "").length > 20 && !props.item.locked) {
             dispatch(outline2textCompletion({ paragraph: props.item, project_id: props.item.project_id! }))
         }
         dispatch(updateItemTextV2Async({ item: props.item, newText, field: type }))
@@ -30,19 +30,19 @@ export function Paragraph(props: ItemProps) {
     }
 
     const regenerate = (type: "outline" | "final") => {
-        if (type == "final") {
+        if (type == "final" && !props.item.locked) {
             dispatch(outline2textCompletion({ paragraph: props.item, project_id: props.item.project_id! }))
         }
     }
-    const activeEditingSide = useSelector(getActiveEditingSide)
-
+    const activeFocusSide = useSelector(getActiveFocusSide)
+    const activeFocusIndex = useSelector(getActiveFocusIndex) 
     return (
         <div >
             <div className="chapterComponent">
                 <div>
                     <div className="doubleSide">
                         <ItemSideComponent
-                            autofocus={activeEditingSide === "outline"}
+                            autofocus={activeFocusSide === "outline" && props.index == activeFocusIndex}
                             placeholder="This is the right place to write the outline in bullet points!"
                             item={props.item}
                             final={false}
@@ -54,10 +54,11 @@ export function Paragraph(props: ItemProps) {
                             loading={false} />
 
                         <ItemSideComponent
-                            autofocus={activeEditingSide === "final"}
+                            autofocus={activeFocusSide === "final" && props.index == activeFocusIndex}
                             placeholder="<- Start writing the outline on he left to generate the final text!"
                             item={props.item}
                             final={true}
+                            locked={true || props.item.locked}
                             onRegenerate={() => regenerate("final")}
                             onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "final", newText); }}
                             onNewItem={(index: number) => !!props.onNew && props.onNew(index)}

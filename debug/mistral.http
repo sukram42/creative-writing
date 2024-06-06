@@ -1,0 +1,6 @@
+POST http://127.0.0.1:54321/functions/v1/mistral
+
+{
+    "paragraph": "e835421f-388c-42e7-af36-139ce5d47706",
+    "project_id": "1199c89e-7af5-4103-ac97-f31784ba8950"
+}
