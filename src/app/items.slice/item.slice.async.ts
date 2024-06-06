@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ItemType, ItemV2, supabase } from "../supabaseClient";
-import { setItemsV2, updateItemTextV2, updateItemType, updateItemV2, updateItemsV2, updateLockedState } from "./item.slice";
+import { setItemsV2, updateItemTextV2, updateItemType, updateItemsV2, updateLockedState } from "./item.slice";
 import { RootState } from "../store";
 import { setLoadProject } from "../ui.slice/ui.slice";
 

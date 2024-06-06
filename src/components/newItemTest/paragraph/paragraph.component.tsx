@@ -9,7 +9,6 @@ import { updateItemTextV2Async } from "../../../app/items.slice/item.slice.async
 import { updateItemTextV2 } from "../../../app/items.slice/item.slice";
 import { outline2textCompletion } from "../../../app/ai.slice/ai.slice.async";
 import { getActiveFocusIndex, getActiveFocusSide, getLoadingItems } from "../../../app/items.slice/item.slice.selectors";
-import { useRef } from "react";
 
 
 export function Paragraph(props: ItemProps) {

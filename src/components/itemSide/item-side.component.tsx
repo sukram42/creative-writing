@@ -6,7 +6,7 @@ import 'react-quill/dist/quill.core.css';
 
 import './item-side.component.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveFocus, setActiveFocusIndex, updateItemV2 } from "../../app/items.slice/item.slice";
+import { setActiveFocus, setActiveFocusIndex } from "../../app/items.slice/item.slice";
 import { updateItemLocked, updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveFocusSide, getActiveFocusIndex } from "../../app/items.slice/item.slice.selectors";
