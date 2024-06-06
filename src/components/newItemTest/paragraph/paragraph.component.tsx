@@ -30,7 +30,7 @@ export function Paragraph(props: ItemProps) {
     }
 
     const regenerate = (type: "outline" | "final") => {
-        if (type == "final" && !props.item.locked) {
+        if (type == "final") {
             dispatch(outline2textCompletion({ paragraph: props.item, project_id: props.item.project_id! }))
         }
     }
