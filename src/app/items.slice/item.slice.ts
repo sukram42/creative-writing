@@ -16,7 +16,6 @@ export const itemsSlice = createSlice({
   reducers: {
     setActiveFocusIndex(state, action: { payload: number | null }) {
       state.activeFocusIndex = action.payload
-      console.log(state.activeFocusIndex, state.activeFocusSide)
     },
     setActiveFocus(state, action: { payload: { side: "outline" | "final", index: number | null } }) {
       state.activeFocusSide = action.payload.side;
@@ -29,7 +28,6 @@ export const itemsSlice = createSlice({
       state.itemsV2.forEach((i: ItemV2) => {
         if (i.item_id === action.payload.item.item_id) {
           i = action.payload.item
-          console.log("Updated", action.payload.item)
           return
         }
       })
