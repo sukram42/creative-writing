@@ -95,7 +95,6 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             // @ts-ignore */}
             <ReactQuill theme={null}
                 className={"quill-editor "}
-                autofocus={props.autofocus}
                 onEditorCreated={() => alert('Editor created!')}
                 ref={editorRef}
                 value={content || ""}
@@ -114,10 +113,10 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                         dispatch(setActiveFocusIndex(props.index! - 1))
                     }
                     if (e.ctrlKey && e.altKey && e.key == "ArrowDown") {
-                        dispatch(setActiveFocusIndex(props.index! + 1))
+                        dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index!+1 }))
                     }
                     if (e.ctrlKey && e.altKey && e.key == "ArrowUp") {
-                        dispatch(setActiveFocusIndex(props.index! - 1))
+                        dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index! - 1 }))
                     }
                     if (e.ctrlKey && e.altKey && e.key == "ArrowRight" && !props.final) {
                         dispatch(setActiveFocus({ side: "final", index: props.index! }))
@@ -127,6 +126,9 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                     }
                 }}
                 onBlur={(_0, _1, editor) => {
+                    dispatch(setActiveFocus({side: null, index: null}))
+                    
+
                     setTimeout(() => {
                         let fixRange = editor.getSelection()
                         if (fixRange) { } else {

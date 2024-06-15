@@ -7,6 +7,6 @@ export interface ItemsState {
     loadingItems: string[]
     
     // What side are we currently editing?
-    activeFocusSide: "outline" | "final"
+    activeFocusSide: "outline" | "final" | null
     activeFocusIndex: number | null
 }

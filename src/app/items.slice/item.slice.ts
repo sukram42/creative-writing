@@ -17,7 +17,7 @@ export const itemsSlice = createSlice({
     setActiveFocusIndex(state, action: { payload: number | null }) {
       state.activeFocusIndex = action.payload
     },
-    setActiveFocus(state, action: { payload: { side: "outline" | "final", index: number | null } }) {
+    setActiveFocus(state, action: { payload: { side: "outline" | "final" | null, index: number | null } }) {
       state.activeFocusSide = action.payload.side;
       state.activeFocusIndex = action.payload.index
     },
