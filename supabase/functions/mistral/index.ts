@@ -87,7 +87,7 @@ Deno.serve(async (req: Request) => {
     const chapter = itemsBefore.filter(i => i.type == "H1").splice(-1)[0]
 
     const initialParagraph = await Promise.resolve()
-      .then(() => outlinePrompt.render({ project: project, item: data[0], input: { paragraph_before: itemsBefore.splice(-1)[0].final, header: chapter.outline } }))
+      .then(() => outlinePrompt.render({ project: project, item: data[0], input: { paragraph_before: itemsBefore.splice(-1)[0].final, header: chapter?chapter.outline: project.name } }))
       .then(prompt => llm.chatPrompt(prompt))
       .then(result => result.choices[0].message.content)
 

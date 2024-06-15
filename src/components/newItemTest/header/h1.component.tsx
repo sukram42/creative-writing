@@ -36,7 +36,7 @@ export function H1(props: ItemProps) {
             }))
     }
 
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKeyDown = (e: KeyboardEvent, side: "outline" | "final") => {
         if (e.key === "Backspace" && props.item.outline === "") {
             dispatch(updateItemTypeAsync({
                 newType: "PARAGRAPH",
@@ -50,18 +50,19 @@ export function H1(props: ItemProps) {
             return
         }
         if (e.ctrlKey && e.altKey && e.key == "ArrowDown") {
-            dispatch(setActiveFocusIndex(props.index! + 1))
+            dispatch(setActiveFocus({ side: side, index: props.index! + 1 }))
             return
         }
         if (e.ctrlKey && e.altKey && e.key == "ArrowUp") {
             dispatch(setActiveFocusIndex(props.index! - 1))
+            dispatch(setActiveFocus({ side: side, index: props.index! - 1 }))
             return
         }
-        if (e.ctrlKey && e.altKey && e.key == "ArrowRight" && activeFocusSide === "outline") {
+        if (e.ctrlKey && e.altKey && e.key == "ArrowRight" && side === "outline") {
             dispatch(setActiveFocus({ side: "final", index: props.index! }))
             return
         }
-        if (e.ctrlKey && e.altKey && e.key == "ArrowLeft" && activeFocusSide === "final") {
+        if (e.ctrlKey && e.altKey && e.key == "ArrowLeft" && side === "final") {
             dispatch(setActiveFocus({ side: "outline", index: props.index! }))
             return
         }
@@ -96,7 +97,6 @@ export function H1(props: ItemProps) {
                             onDelete={() => props.onDelete(props.item)}>
                             <Input
                                 ref={outlineRef}
-                                autoFocus={activeFocusSide === "outline" && props.index == activeFocusIndex}
                                 size="small"
                                 placeholder="Chapter Title"
                                 className="chapterTitle"
@@ -105,7 +105,7 @@ export function H1(props: ItemProps) {
                                 onChange={(e) => updateTitle(e.target.value)}
                                 onBlur={(e) => updateTitleAsync(e.target.value)}
                                 onFocus={() => dispatch(setActiveFocus({ side: "outline", index: null }))}
-                                onKeyDown={onKeyDown}
+                                onKeyDown={(e) => onKeyDown(e, "outline")}
                             />
                         </MoveableObject>
                         <MoveableObject
@@ -114,7 +114,6 @@ export function H1(props: ItemProps) {
                             onDelete={() => props.onDelete(props.item)}>
                             <Input
                                 ref={finalRef}
-                                autoFocus={activeFocusSide === "final" && props.index == activeFocusIndex}
                                 size="small"
                                 placeholder="Chapter Title"
                                 className="chapterTitle"
@@ -123,7 +122,7 @@ export function H1(props: ItemProps) {
                                 onFocus={() => dispatch(setActiveFocus({ side: "final", index: null }))}
                                 onChange={(e) => updateTitle(e.target.value)}
                                 onBlur={(e) => updateTitleAsync(e.target.value)}
-                                onKeyDown={onKeyDown}
+                                onKeyDown={(e) => onKeyDown(e, "final")}
                             />
                         </MoveableObject>
                     </div>
