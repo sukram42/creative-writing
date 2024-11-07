@@ -10,6 +10,8 @@ import { setActiveFocus, setActiveFocusIndex } from "../../app/items.slice/item.
 import { updateItemLocked, updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveFocusSide, getActiveFocusIndex } from "../../app/items.slice/item.slice.selectors";
+import { HistoryOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { VersionSwiper } from "../versionSwiper/versionSwiper.component";
 
 interface ItemsComponentProps {
     item: ItemV2,
@@ -137,11 +139,45 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                             onTextChange(editor.getHTML())
                             setActive(false)
                         }
-                    }, 2)
-                }}
-                placeholder={active ? props.item.item_id : ""}
-                onChange={(val) => onLocalTextChange(val, props.final)}
-            ></ReactQuill>
+                        if (e.ctrlKey && e.key === "Backspace" && e.target.getInnerHTML() === "<p><br></p>") {
+
+                            props.onDelete(props.item)
+                            dispatch(setActiveFocusIndex(props.index! - 1))
+                        }
+                        if (e.ctrlKey && e.altKey && e.key == "ArrowDown") {
+                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! + 1 }))
+                        }
+                        if (e.ctrlKey && e.altKey && e.key == "ArrowUp") {
+                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! - 1 }))
+                        }
+                        if (e.ctrlKey && e.altKey && e.key == "ArrowRight" && !props.final) {
+                            dispatch(setActiveFocus({ side: "final", index: props.index! }))
+                        }
+                        if (e.ctrlKey && e.altKey && e.key == "ArrowLeft" && props.final) {
+                            dispatch(setActiveFocus({ side: "outline", index: props.index! }))
+                        }
+                    }}
+                    onBlur={(_0, _1, editor) => {
+                        dispatch(setActiveFocus({ side: null, index: null }))
+
+
+                        setTimeout(() => {
+                            let fixRange = editor.getSelection()
+                            if (fixRange) { } else {
+                                onTextChange(editor.getHTML())
+                                setActive(false)
+                            }
+                        }, 2)
+                    }}
+                    placeholder={active ? props.item.item_id : ""}
+                    onChange={(val) => onLocalTextChange(val, props.final)}
+                ></ReactQuill>
+                {props.final ?
+                    <div className="versionPagination">
+                        <VersionSwiper item={props.item} />
+                    </div> :
+                    <></>}
+            </div>
         </MoveableObject >
     </div>
 }

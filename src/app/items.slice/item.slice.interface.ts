@@ -1,4 +1,4 @@
-import { ItemV2 } from "../supabaseClient";
+import { ItemV2, ItemVersion } from "../supabaseClient";
 
 export interface ItemsState {
     itemsV2: ItemV2[],
@@ -12,4 +12,7 @@ export interface ItemsState {
     // What side are we currently editing?
     activeFocusSide: "outline" | "final" | null
     activeFocusIndex: number | null
+ 
+    // history
+    itemVersions: Record<string, ItemVersion[]>
 }

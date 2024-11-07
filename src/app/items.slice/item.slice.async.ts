@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ItemType, ItemV2, supabase } from "../supabaseClient";
-import { setItemsV2, updateItemTextV2, updateItemType, updateItemsV2, updateLockedState } from "./item.slice";
+import { setAllItemVersions, setItemVersions, setItemsV2, updateItemTextV2, updateItemType, updateItemsV2, updateLockedState } from "./item.slice";
 import { RootState } from "../store";
 import { setLoadProject } from "../ui.slice/ui.slice";
 
@@ -27,8 +27,6 @@ export const upsertNewItem = createAsyncThunk(
     "items/upsertNewItem",
     async (payload: Partial<ItemV2>, thunkAPI) => {
         const state = thunkAPI.getState() as RootState
-
-        // if (!payload.item.item_id) return
 
         let itemsBefore = state.items.itemsV2
 
@@ -90,6 +88,7 @@ export const updateItemTextV2Async = createAsyncThunk(
             return
         }
 
+        thunkAPI.dispatch(fetchItemVersions(payload.item))
         return updatedChapter
     }
 )
@@ -136,7 +135,6 @@ export const updateItemLocked = createAsyncThunk(
             thunkAPI.dispatch(updateItemsV2({ items: beforeItems }))
             return
         }
-        else console.log(updatedItem)
         return updatedItem
     }
 )
@@ -158,3 +156,23 @@ export const deleteItemAsyncV2 = createAsyncThunk(
                 }
             })
     })
+
+
+export const fetchItemVersions = createAsyncThunk(
+    "items/getchItemVersions",
+    async (payload: ItemV2, thunkAPI) => {
+        const state = (thunkAPI.getState() as RootState)
+        const beforeVersion = state.items.itemVersions
+        const { data: versions, error } = await supabase
+            .from("items_v2_audit")
+            .select()
+            .eq("item_id", payload.item_id)
+
+        if (error) {
+            thunkAPI.dispatch(setAllItemVersions(beforeVersion))
+            return
+        }
+        thunkAPI.dispatch(setItemVersions({ itemId: payload.item_id, versions: versions }))
+
+    }
+)

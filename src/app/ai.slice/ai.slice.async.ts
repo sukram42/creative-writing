@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ItemV2, supabase } from "../supabaseClient";
 import { resolveErrorParagraph, setErrorParagraph, setItemToLoad, stopItemFromLoading, updateItemTextV2 } from "../items.slice/item.slice";
+import { fetchItemVersions } from "../items.slice/item.slice.async";
 
 
 export const outline2textCompletion = createAsyncThunk(
@@ -24,5 +25,7 @@ export const outline2textCompletion = createAsyncThunk(
             item: payload.paragraph,
             newText: data.result
         }))
+        thunkAPI.dispatch(stopItemFromLoading(payload.paragraph.item_id))
+        thunkAPI.dispatch(fetchItemVersions(payload.paragraph))
     }
 )

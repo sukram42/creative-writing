@@ -12,6 +12,9 @@
         & .lockingToolbar{
             visibility: visible;
         }
+        & .footer{
+            visibility: visible;
+        }
     }
 
     & .objectName {
@@ -28,7 +31,7 @@
         grid-template-rows: auto 3em;
         grid-template-areas: "buttons" "locked";
     }
-
+    
     .lockingToolbar {
         grid-area: locked;
         visibility: hidden;

@@ -29,7 +29,6 @@ export function ResetPassword() {
     }, [])
 
     const onRegister = (values: FormValues) => {
-        console.log(values)
         if (values.password1 !== values.password2) {
             alert("ohn no")
             return

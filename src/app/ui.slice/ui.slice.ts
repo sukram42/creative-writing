@@ -27,6 +27,7 @@ const initialState: UiState = {
   items: {},
 
   loadingFinalTexts: []
+
 }
 
 export const uiSlice = createSlice({
@@ -155,7 +156,6 @@ export const uiSlice = createSlice({
       state.items[action.payload.chapter] = action.payload.items
     },
     setItemsV2(state, action: { payload: { items: ItemV2[] } }) {
-      console.log("payload", action.payload)
       state.itemsV2 = action.payload.items;
     }
   },
