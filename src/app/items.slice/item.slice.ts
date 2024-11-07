@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { ItemType, ItemV2 } from "../supabaseClient"
+import { ItemType, ItemV2, ItemVersion } from "../supabaseClient"
 import { ItemsState } from "./item.slice.interface"
 
 const initialState: ItemsState = {
@@ -7,13 +7,22 @@ const initialState: ItemsState = {
   loadingItems: [],
 
   activeFocusSide: "outline",
-  activeFocusIndex: null
+  activeFocusIndex: null,
+
+  itemVersions: {}
 }
 
 export const itemsSlice = createSlice({
   "name": "items",
   initialState,
   reducers: {
+    setItemVersions(state, action: { payload: { itemId: number, versions: ItemVersion[] } }) {
+      state.itemVersions[action.payload.itemId] = action.payload.versions
+    },
+    setAllItemVersions(state, action: { payload: Record<string, ItemVersion> }) {
+      state.itemVersions = action.payload
+    },
+
     setActiveFocusIndex(state, action: { payload: number | null }) {
       state.activeFocusIndex = action.payload
     },
@@ -88,4 +97,4 @@ export const itemsSlice = createSlice({
 })
 
 export default itemsSlice.reducer
-export const { setItemsV2, updateItemV2, updateItemsV2, updateItemType, updateItemTextV2, setItemToLoad, stopItemFromLoading, setActiveFocus, setActiveFocusIndex, updateLockedState } = itemsSlice.actions
+export const { setItemsV2, updateItemV2, updateItemsV2, updateItemType, setItemVersions, updateItemTextV2, setItemToLoad, stopItemFromLoading, setActiveFocus, setActiveFocusIndex, updateLockedState, setAllItemVersions } = itemsSlice.actions

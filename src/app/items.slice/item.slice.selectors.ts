@@ -5,3 +5,5 @@ export const getLoadingItems = (state: RootState) => new Set(state.items.loading
 
 export const getActiveFocusSide = (state: RootState) => state.items.activeFocusSide
 export const getActiveFocusIndex = (state: RootState) => state.items.activeFocusIndex
+
+export const getItemVersions = (state: RootState) => state.items.itemVersions

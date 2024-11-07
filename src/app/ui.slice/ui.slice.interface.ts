@@ -19,4 +19,5 @@ export interface UiState {
 
     // The paragraph ids which are loading
     loadingFinalTexts: string[]
+
 }
