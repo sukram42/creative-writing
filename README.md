@@ -13,9 +13,15 @@ Well, I just knocked out this neat little paragraph for you with the same app I'
 
 ```
 npm run dev
+npx supabase functions serve
 ```
 
 ## Build the app
 ```
 npm run build
+```
+
+# rest the database
+```
+npx supabase db rest
 ```

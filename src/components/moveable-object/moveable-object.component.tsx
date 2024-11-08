@@ -1,6 +1,6 @@
 
 import "./moveable-object.component.scss"
-import { DeleteOutlined, HolderOutlined, LoadingOutlined, LockOutlined, PlusOutlined, RedoOutlined, UnlockOutlined } from "@ant-design/icons"
+import { DeleteOutlined, HolderOutlined, LoadingOutlined, LockOutlined, PlusOutlined, RedoOutlined, UnlockOutlined, WarningFilled } from "@ant-design/icons"
 import { Button, Dropdown, MenuProps, Tooltip, theme } from "antd"
 import React from "react"
 const { useToken } = theme;
@@ -11,6 +11,7 @@ interface MoveableObjectProps {
     onRedo?: () => void
     showRedo?: boolean
     loading?: boolean,
+    error?: string,
     onNew: () => void
     locked?: boolean
     showLocked?: boolean
@@ -18,6 +19,7 @@ interface MoveableObjectProps {
 }
 
 export function MoveableObject(props: MoveableObjectProps) {
+
 
     const { token } = useToken();
     const dropdown: MenuProps['items'] = [
@@ -86,10 +88,15 @@ export function MoveableObject(props: MoveableObjectProps) {
                         style={{ visibility: props.showRedo ? "visible" : "hidden" }}
                         disabled={!props.showRedo}
                         onClick={() => { if (props.onRedo) props.onRedo() }}
-                        icon={<RedoOutlined />} /> : ""}
+                        icon={!!props.error ?
+                            <Tooltip title={props.error} color="#FF3333">
+                                <WarningFilled style={{ color: 'red' }} />
+                            </Tooltip>
+                            :
+                            <RedoOutlined spin={props.loading} />} /> : ""}
                 </div>
             </div>
-            <div className="textContent">
+            <div className="textContent" >
                 {props.loading ?
                     <div className="moveableContent loadingOverlay">
                         <LoadingOutlined spin={true} />

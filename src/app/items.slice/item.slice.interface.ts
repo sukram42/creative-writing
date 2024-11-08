@@ -5,6 +5,9 @@ export interface ItemsState {
 
     // The paragraph ids which are loading
     loadingItems: string[]
+
+    // The paragraphs with an error on generation <paragraph id> : Message Code
+    errorItems: Record<string, string>
     
     // What side are we currently editing?
     activeFocusSide: "outline" | "final" | null

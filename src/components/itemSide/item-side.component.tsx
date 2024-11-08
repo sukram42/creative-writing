@@ -23,6 +23,7 @@ interface ItemsComponentProps {
     onRegenerate?: (item: ItemV2) => void
 
     loading: boolean
+    error?: string
     placeholder?: string
 
     autofocus: boolean
@@ -81,6 +82,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     const content = props.final ? props.item.final : props.item.outline
     return <div className={"itemSideComponent " + (props.locked ? "locked" : "")}>
         <MoveableObject
+            error={props.error}
             type={"Paragraph"}
             onDelete={() => props.onDelete(props.item)}
             onRedo={() => props.onRegenerate && props.onRegenerate(props.item)}
@@ -94,10 +96,10 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             {/*
             // @ts-ignore */}
             <ReactQuill theme={null}
-                className={"quill-editor "}
+                className={"quill-editor " + (!!props.error ? "error-state" : "")}
                 onEditorCreated={() => alert('Editor created!')}
                 ref={editorRef}
-                value={content || ""}
+                value={content || ""} 
                 onFocus={() => {
                     setActive(true);
                 }}
