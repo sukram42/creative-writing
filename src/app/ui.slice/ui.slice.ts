@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, isAction } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
 import { Chapter, Item, ItemV2, Profile, Project } from "../supabaseClient"
@@ -16,6 +16,9 @@ const initialState: UiState = {
 
   user: undefined,
   loadProject: false,
+
+  rawDrawerOpen: false,
+  documentDrawerOpen: false,
 
   itemsV2: [],
 
@@ -48,8 +51,13 @@ export const uiSlice = createSlice({
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
     },
+    setDocumentDrawerOpen: (state, action: { payload: boolean }) => {
+      state.documentDrawerOpen = action.payload
+    },
+    setRawDrawerOpen: (state, action: { payload: boolean }) => {
+      state.rawDrawerOpen = action.payload
+    },
     updateProjectName: (state, action: { payload: { name: string } }) => {
-      console.log(action.payload, state.activeProject, state.activeProjectId)
       if (!state.activeProject) {
         return
       }
@@ -188,12 +196,14 @@ export const { addToCount,
   locallyUpdateChapterTitle,
   updateItemText,
   locallyAddChapterAtIndex,
+  setRawDrawerOpen,
   locallyRemoveChapter,
   updateChapters,
   setLoadingProjects,
   updateProjects,
   setLoadProject,
   setParagraphToLoad,
+  setDocumentDrawerOpen,
   updateActiveProject,
   setUser,
   rmParagraphFromLoading,
