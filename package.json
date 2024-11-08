@@ -15,9 +15,11 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
     "@editorjs/editorjs": "^2.29.1",
+    "@mistralai/mistralai": "^1.3.0",
     "@reduxjs/toolkit": "^2.2.2",
     "@supabase/supabase-js": "^2.41.1",
     "antd": "^5.16.0",
+    "creative-writing-app": "file:",
     "handlebars": "^4.7.8",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",

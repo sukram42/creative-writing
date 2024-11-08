@@ -5,6 +5,7 @@ import { ItemsState } from "./item.slice.interface"
 const initialState: ItemsState = {
   itemsV2: [],
   loadingItems: [],
+  errorItems: {},
 
   activeFocusSide: "outline",
   activeFocusIndex: null
@@ -73,7 +74,12 @@ export const itemsSlice = createSlice({
         }
       })
     },
-
+    setErrorParagraph: (state, action: { payload: { paragraphId: string, errorCode: string } }) => {
+      state.errorItems[action.payload.paragraphId] = action.payload.errorCode
+    },
+    resolveErrorParagraph: (state, action: {payload: string})=> {
+      delete state.errorItems[action.payload]
+    },
     setItemToLoad: (state, action: { payload: string }) => {
       let data = new Set(state.loadingItems)
       data.add(action.payload)
@@ -88,4 +94,4 @@ export const itemsSlice = createSlice({
 })
 
 export default itemsSlice.reducer
-export const { setItemsV2, updateItemV2, updateItemsV2, updateItemType, updateItemTextV2, setItemToLoad, stopItemFromLoading, setActiveFocus, setActiveFocusIndex, updateLockedState } = itemsSlice.actions
+export const { setItemsV2, updateItemV2, updateItemsV2, updateItemType, updateItemTextV2, setItemToLoad, stopItemFromLoading, setActiveFocus, setActiveFocusIndex, updateLockedState, setErrorParagraph, resolveErrorParagraph } = itemsSlice.actions

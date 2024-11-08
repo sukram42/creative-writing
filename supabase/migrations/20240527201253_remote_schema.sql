@@ -202,7 +202,8 @@ CREATE TABLE IF NOT EXISTS "public"."items_v2" (
     "item_id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "type" "public"."ItemType",
     "version" integer NOT NULL,
-    "project_id" "uuid"
+    "project_id" "uuid",
+    "locked" boolean
 );
 
 ALTER TABLE "public"."items_v2" OWNER TO "postgres";
