@@ -3,6 +3,7 @@
     display: flex;
     height: 100%;
     flex-direction: column;
+    padding-top: 2em;
 
     .notesPane {
         background-color: red;
@@ -25,25 +26,49 @@
 
 
         .headerElements {
-            display: grid;
+            display: flex;
+            justify-content: space-between;
             width: 100%;
-            grid-template-columns: 10em auto 10em;
-            grid-template-areas: "left middle right";
-            align-items: center;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            z-index: 100;
+
+
+            .sidebarButton {
+                grid-area: left;
+                font-size: 1.5em;
+
+                &>* {
+                    color: #ddd;
+                }
+            }
+
+            .sidebarButton:hover {
+                &>* {
+                    color: #333;
+                }
+            }
 
             .projectName {
                 grid-area: middle;
                 text-align: center;
                 justify-content: center;
-                margin:0;
+                margin: 0;
+
                 & * {
                     text-align: center;
                 }
             }
-            .buttons{
+
+            .buttons {
                 grid-area: right;
                 display: flex;
                 justify-content: end;
+                gap: 0.5em;
+                padding-right: 1em;
             }
         }
     }

@@ -1,25 +1,47 @@
-
 .layoutContainer {
     display: grid;
     height: 100vh;
-    grid-template-rows: auto 2em;
-    grid-template-columns: 3em auto;
-    grid-template-areas: "sidebar content" " sidebar footer";
 
 
     .footer {
         grid-area: footer;
     }
 
+
+
     .sidebar {
         grid-area: sidebar;
         height: 100vh;
         position: fixed;
         top: 0;
-        width: 3em;
+        min-width: 20em;
         border-right: 1px solid #eee;
+        background-color: #F7F7F5;
+        z-index: 101;
     }
+    
     .content {
         grid-area: content;
     }
+}
+
+.layoutWithoutSidebar {
+    grid-template-rows: auto 2em;
+    grid-template-columns: 3em auto;
+    grid-template-areas: "sidebar content" "sidebar footer";
+
+    .smallSidebar {
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        height: 100%;
+        flex-direction: column-reverse;
+        padding: 0.5em;
+    }
+}
+
+.layoutWithSidebar {
+    grid-template-rows: auto 2em;
+    grid-template-columns: 20em auto;
+    grid-template-areas: "sidebar content" "sidebar footer";
 }

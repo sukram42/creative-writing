@@ -19,6 +19,7 @@ const initialState: UiState = {
 
   rawDrawerOpen: false,
   documentDrawerOpen: false,
+  showSidebar: true,
 
   itemsV2: [],
 
@@ -147,6 +148,9 @@ export const uiSlice = createSlice({
         }
       })
     },
+    setShowSidebar(state, action: { payload: boolean }) {
+      state.showSidebar = action.payload
+    },
     updateItems(state, action: { payload: { items: Item[], chapter: string } }) {
       state.items[action.payload.chapter] = action.payload.items
     },
@@ -198,6 +202,7 @@ export const { addToCount,
   locallyAddChapterAtIndex,
   setRawDrawerOpen,
   locallyRemoveChapter,
+  setShowSidebar,
   updateChapters,
   setLoadingProjects,
   updateProjects,
