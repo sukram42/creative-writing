@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import './chapter-overview.scss';
 import { Button, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -20,7 +19,7 @@ const ChapterOverview = () => {
     const addChapter = () => {
         setChapters([...chapters, 'New Chapter']);
     };
-
+    console.log(chapters)
     return (
         <nav className="ChapterOverview">
             <h2>Chapters</h2>
@@ -36,7 +35,7 @@ const ChapterOverview = () => {
                             target="_null"
                             title={
                                 <Tooltip title={chapter.outline}>
-                                    <HashLink smooth to={`/project/7e6183ec-bc0d-4b0d-89cb-2290f1992a95#${chapter.item_id}`}>
+                                    <HashLink smooth to={`/project/${chapter.project_id}#${chapter.item_id}`}>
                                         <span style={{
                                             display: 'inline-block',
                                             whiteSpace: 'nowrap',
@@ -46,7 +45,7 @@ const ChapterOverview = () => {
                                             color: "#666"
                                         }}>
                                             {chapter.outline}
-                                            </span>
+                                        </span>
                                     </HashLink>
                                 </Tooltip>}
                         />

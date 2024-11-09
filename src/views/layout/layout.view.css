@@ -1,14 +1,13 @@
 .layoutContainer {
     display: grid;
     height: 100vh;
-    grid-template-rows: auto 2em;
-    grid-template-columns: 20em auto;
-    grid-template-areas: "sidebar content" " sidebar footer";
 
 
     .footer {
         grid-area: footer;
     }
+
+
 
     .sidebar {
         grid-area: sidebar;
@@ -16,11 +15,23 @@
         position: fixed;
         top: 0;
         min-width: 20em;
-        border-right: 1px solid #eee;  
+        border-right: 1px solid #eee;
         background-color: #F7F7F5;
     }
-
+    
     .content {
         grid-area: content;
     }
+}
+
+.layoutWithoutSidebar {
+    grid-template-rows: auto 2em;
+    grid-template-columns: auto;
+    grid-template-areas: "content" "footer";
+}
+
+.layoutWithSidebar {
+    grid-template-rows: auto 2em;
+    grid-template-columns: 20em auto;
+    grid-template-areas: "sidebar content" "sidebar footer";
 }

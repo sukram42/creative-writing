@@ -31,16 +31,32 @@
             grid-template-areas: "left middle right";
             align-items: center;
 
+            .sidebarButton {
+                grid-area: left;
+                font-size: 1.5em;
+                &>* {
+                    color: #ddd;
+                }
+            }
+
+            .sidebarButton:hover {
+                &>* {
+                    color: #333;
+                }
+            }
+
             .projectName {
                 grid-area: middle;
                 text-align: center;
                 justify-content: center;
-                margin:0;
+                margin: 0;
+
                 & * {
                     text-align: center;
                 }
             }
-            .buttons{
+
+            .buttons {
                 grid-area: right;
                 display: flex;
                 justify-content: end;

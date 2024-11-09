@@ -1,7 +1,7 @@
 .sidebarComponent {
     display: grid;
-    grid-template-rows: 10em auto 3em;
-    grid-template-areas: "buffer" "content" "avatar";
+    grid-template-rows: 5em 10% auto 3em;
+    grid-template-areas: "header" "buffer" "content" "avatar";
 
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -10,12 +10,13 @@
     height: 100%;
     justify-content: stretch;
 
-    padding: 0 2em;
+    padding-left: 2em;
 
     .chapters {
         grid-area: content;
         width: 100%;
     }
+
     .avatar {
         grid-area: avatar;
         display: flex;
@@ -24,6 +25,32 @@
         justify-content: center;
         justify-items: center;
         align-items: center;
-        gap: 1em
+        gap: 1em;
+    }
+
+    .bottomIcons {
+        grid-area: avatar;
+    }
+
+    .topIcons {
+        grid-area: header;
+        display: grid;
+        grid-template-columns: auto 2em;
+        align-items: center;
+
+        .sidebarButton {
+            align-self: flex-start;
+            font-size: 1.5em;
+
+            &>* {
+                color: #ddd;
+            }
+        }
+
+        .sidebarButton:hover {
+            &>* {
+                color: #333;
+            }
+        }
     }
 }
