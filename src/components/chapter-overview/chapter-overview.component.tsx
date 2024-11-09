@@ -6,9 +6,7 @@ import Anchor from 'antd/es/anchor/Anchor';
 import { HashLink } from 'react-router-hash-link';
 import { useSelector } from 'react-redux';
 import { getItemsV2 } from '../../app/items.slice/item.slice.selectors';
-import { Typography } from 'antd';
 
-const { Text } = Typography;
 const { Link } = Anchor;
 
 const ChapterOverview = () => {
@@ -19,7 +17,6 @@ const ChapterOverview = () => {
     const addChapter = () => {
         setChapters([...chapters, 'New Chapter']);
     };
-    console.log(chapters)
     return (
         <nav className="ChapterOverview">
             <h2>Chapters</h2>

@@ -38,8 +38,8 @@ export function MainView() {
                             <Button type="link" onClick={() => dispatch(setShowSidebar(true))} icon={<DoubleRightOutlined />}></Button>}
                     </div>
                     <div className="buttons">
-                        <Button icon={<Badge dot={!activeProject?.description}><SettingOutlined /></Badge>} onClick={() => setDocumentDrawerOpen(true)} type="text" shape="round" />
-                        <Button icon={<FileOutlined />} onClick={() => dispatch(setRawDrawerOpen(true))} type="text" shape="round" /></div>
+                        <Button icon={<Badge dot={!activeProject?.description}><SettingOutlined /></Badge>} onClick={() => dispatch(setDocumentDrawerOpen(true))} type="text"  />
+                        <Button icon={<FileOutlined />} onClick={() => dispatch(setRawDrawerOpen(true))} type="text"  /></div>
                 </div>
             </div>
             <Drawer size="large" open={rawDrawerOpen} title={activeProject ? activeProject.name : ""} onClose={() => dispatch(setRawDrawerOpen(false))}>
