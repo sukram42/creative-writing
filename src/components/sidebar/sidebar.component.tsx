@@ -12,6 +12,7 @@ import { HashLink } from 'react-router-hash-link';
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
 import { setShowSidebar } from "../../app/ui.slice/ui.slice";
+import UserAvatar from "./sidebar-avatar";
 interface SidebarProps {
     showBack?: boolean
 }
@@ -83,12 +84,7 @@ export default function Sidebar(props: SidebarProps) {
                 <ChapterOverview></ChapterOverview>
             </div>
             <div className="bottomIcons">
-                <Dropdown menu={{ items, onClick: clickContextMenu }}>
-                    <div className="avatar">
-                        <Avatar style={{ backgroundColor: '#87d068', color: '#ffffff' }}>U</Avatar>
-                        user1@testuiser.com
-                    </div>
-                </Dropdown>
+                <UserAvatar></UserAvatar>
             </div>
         </div>)
 }
