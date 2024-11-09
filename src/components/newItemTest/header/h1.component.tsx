@@ -87,7 +87,7 @@ export function H1(props: ItemProps) {
 
 
     return (
-        <div >
+        <div id={props.item.item_id}>
             <div className="chapterComponent">
                 <div>
                     <div className="doubleSide">

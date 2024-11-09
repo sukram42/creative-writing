@@ -1,12 +1,69 @@
 .sidebarComponent {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
+    display: grid;
+    grid-template-rows: 5em 10% auto 3em;
+    grid-template-areas: "header" "buffer" "content" "avatar";
 
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 0.5em 0;
+
+    height: 100%;
+    justify-content: stretch;
+
+    padding-left: 2em;
+
+    .chapters {
+        grid-area: content;
+        width: 100%;
+    }
+
+    .projectPanel {
+        cursor: pointer;
+        color: #666;
+        .projectName {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .projectMeta {
+            font-size: 0.8em;
+            font-weight: 100;
+        }
+    }
+
+    .avatar {
+        grid-area: avatar;
+        display: flex;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        gap: 1em;
+    }
+
+    .bottomIcons {
+        grid-area: avatar;
+    }
+
+    .topIcons {
+        grid-area: header;
+        display: grid;
+        grid-template-columns: auto 2em;
+        align-items: center;
+
+        .sidebarButton {
+            align-self: flex-start;
+            font-size: 1.5em;
+
+            &>* {
+                color: #ddd;
+            }
+        }
+
+        .sidebarButton:hover {
+            &>* {
+                color: #333;
+            }
+        }
+    }
 }

@@ -12,6 +12,13 @@
         height: 100%;
     }
 
+    .error-state {
+        border: 3px solid #FF6347;
+        border-radius: 10px;
+        box-sizing: 'border-box';
+        //   background-color: red;
+    }
+
     .locked {
         background-color: red;
     }

@@ -17,6 +17,10 @@ const initialState: UiState = {
   user: undefined,
   loadProject: false,
 
+  rawDrawerOpen: false,
+  documentDrawerOpen: false,
+  showSidebar: true,
+
   itemsV2: [],
 
   chapters: [],
@@ -48,8 +52,13 @@ export const uiSlice = createSlice({
     addToCount: (state, action: { payload: number }) => {
       state.count = state.count + action.payload
     },
+    setDocumentDrawerOpen: (state, action: { payload: boolean }) => {
+      state.documentDrawerOpen = action.payload
+    },
+    setRawDrawerOpen: (state, action: { payload: boolean }) => {
+      state.rawDrawerOpen = action.payload
+    },
     updateProjectName: (state, action: { payload: { name: string } }) => {
-      console.log(action.payload, state.activeProject, state.activeProjectId)
       if (!state.activeProject) {
         return
       }
@@ -139,6 +148,9 @@ export const uiSlice = createSlice({
         }
       })
     },
+    setShowSidebar(state, action: { payload: boolean }) {
+      state.showSidebar = action.payload
+    },
     updateItems(state, action: { payload: { items: Item[], chapter: string } }) {
       state.items[action.payload.chapter] = action.payload.items
     },
@@ -188,12 +200,15 @@ export const { addToCount,
   locallyUpdateChapterTitle,
   updateItemText,
   locallyAddChapterAtIndex,
+  setRawDrawerOpen,
   locallyRemoveChapter,
+  setShowSidebar,
   updateChapters,
   setLoadingProjects,
   updateProjects,
   setLoadProject,
   setParagraphToLoad,
+  setDocumentDrawerOpen,
   updateActiveProject,
   setUser,
   rmParagraphFromLoading,

@@ -13,4 +13,9 @@ export const getUser = (state: RootState) => state.ui.user
 export const loadingFinalTexts = (state: RootState) => state.ui.loadingFinalTexts
 export const getProfile = (state: RootState) => state.ui.profile
 
+export const isShowSidebar = (state: RootState) => state.ui.showSidebar
+
+export const getDocumentDrawerState = (state: RootState) => state.ui.documentDrawerOpen
+export const getRawDrawerState = (state: RootState) => state.ui.rawDrawerOpen
+
 export const getItemsV2 = (state: RootState) => state.ui.itemsV2

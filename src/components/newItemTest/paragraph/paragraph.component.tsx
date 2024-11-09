@@ -8,7 +8,7 @@ import { ItemV2 } from "../../../app/supabaseClient";
 import { updateItemTextV2Async } from "../../../app/items.slice/item.slice.async";
 import { updateItemTextV2 } from "../../../app/items.slice/item.slice";
 import { outline2textCompletion } from "../../../app/ai.slice/ai.slice.async";
-import { getActiveFocusIndex, getActiveFocusSide, getLoadingItems } from "../../../app/items.slice/item.slice.selectors";
+import { getActiveFocusIndex, getActiveFocusSide, getErrorItems, getLoadingItems } from "../../../app/items.slice/item.slice.selectors";
 
 
 export function Paragraph(props: ItemProps) {
@@ -16,6 +16,9 @@ export function Paragraph(props: ItemProps) {
     const dispatch = useDispatch<AppDispatch>()
 
     const loadingItems = useSelector(getLoadingItems)
+    const error = useSelector(getErrorItems);
+    const hasError = Object.keys(error).includes(props.item.item_id);
+    const errorCode = hasError ? error[props.item.item_id] : undefined;
 
     const commitChange = (item: ItemV2, type: "outline" | "final", newText: string) => {
         // TODO check the indexing here
@@ -35,12 +38,12 @@ export function Paragraph(props: ItemProps) {
         }
     }
     const activeFocusSide = useSelector(getActiveFocusSide)
-    const activeFocusIndex = useSelector(getActiveFocusIndex) 
+    const activeFocusIndex = useSelector(getActiveFocusIndex)
     return (
-        <div >
+        <div  id={props.item.item_id} >
             <div className="chapterComponent">
                 <div>
-                    <div className="doubleSide">
+                    <div className="doubleSide" >
                         <ItemSideComponent
                             autofocus={activeFocusSide === "outline" && props.index == activeFocusIndex}
                             placeholder="This is the right place to write the outline in bullet points!"
@@ -64,6 +67,7 @@ export function Paragraph(props: ItemProps) {
                             onNewItem={(index: number) => !!props.onNew && props.onNew(index)}
                             onChange={(item: ItemV2, newText: string) => { changeText(item, "final", newText); }}
                             onDelete={props.onDelete!}
+                            error={errorCode}
                             loading={loadingItems.has(props.item.item_id)}
                             index={props.index!} />
                     </div>

@@ -27,7 +27,7 @@ export function TextOutlinePane() {
   useEffect(() => {
     if (activeProjectId) {
       dispatch(loadItemsV2(activeProjectId))
-      window.scrollTo(0,0)
+      window.scrollTo(0, 0)
     }
   }, [dispatch, activeProjectId])
 
@@ -45,7 +45,7 @@ export function TextOutlinePane() {
 
   return <div className="textOutlinePaneComponent">
     {!!activeProject ? <ProjectHeader project={activeProject} /> : ""}
-    <Divider style={{margin:0}}></Divider>
+    <Divider style={{ margin: 0 }}></Divider>
     {items.length === 0 && !loadingProject ? <NoItemsYetComponent
       onNewParagraph={() => createNewItem(0, "PARAGRAPH")}
       onNewHeader={() => createNewItem(0, "H1")}></NoItemsYetComponent> : ""}

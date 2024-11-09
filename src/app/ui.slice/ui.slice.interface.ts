@@ -8,6 +8,11 @@ export interface UiState {
     activeProject: Project | null,
     loadingProjects: boolean,
 
+    documentDrawerOpen: boolean,
+    rawDrawerOpen: boolean,
+
+    showSidebar: boolean,
+
     loadProject: boolean,
     chapters: Chapter[],
     items: Record<string, Item[]>
