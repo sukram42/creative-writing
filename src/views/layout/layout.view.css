@@ -17,10 +17,12 @@
         min-width: 20em;
         border-right: 1px solid #eee;
         background-color: #F7F7F5;
+        z-index: 101;
     }
     
     .content {
         grid-area: content;
+        padding-top: 2em;
     }
 }
 

@@ -53,7 +53,6 @@ export function MainView() {
             }
             <div className="contentPane">
                 <TextOutlinePane />
-                {/* <EditorPaneComponent></EditorPaneComponent> */}
             </div>
         </div >)
 }
