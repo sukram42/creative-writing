@@ -22,7 +22,6 @@ export function ProjectView() {
 
     const [loading, setLoading] = useState(false)
 
-
     const activeProject = useSelector(getActiveProjectId)
     const projects = useSelector(getProjects)
     const areProjectsLoading = useSelector(getAreProjectsLoading)

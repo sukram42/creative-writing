@@ -16,7 +16,7 @@ export function ProjectHeader(props: ProjectHeaderProps) {
     const dispatch = useDispatch<AppDispatch>()
 
     return <div className="projectHeaderComponent">
-        <div className="parent">
+        <div className="parent" >
             <Typography.Title className={"header"} level={1} editable={{
                 onChange: (value) => dispatch(updateProjectNameAsync(value)),
                 triggerType: ["text"],

@@ -1,7 +1,7 @@
 
-import { ArrowLeftOutlined, DoubleLeftOutlined, LogoutOutlined } from "@ant-design/icons"
+import { DoubleLeftOutlined, LogoutOutlined, ProductOutlined } from "@ant-design/icons"
 import "./sidebar.component.scss"
-import { Button, Dropdown, MenuProps } from "antd"
+import { Button, Dropdown, MenuProps, Skeleton } from "antd"
 import { supabase } from "../../app/supabaseClient"
 
 import { useNavigate } from "react-router-dom";
@@ -9,9 +9,8 @@ import Avatar from "antd/es/avatar/avatar";
 import ChapterOverview from "../chapter-overview/chapter-overview.component";
 
 import { HashLink } from 'react-router-hash-link';
-import useSelection from "antd/es/table/hooks/useSelection";
 import { useDispatch, useSelector } from "react-redux";
-import { isShowSidebar } from "../../app/ui.slice/ui.slice.selectors";
+import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
 import { setShowSidebar } from "../../app/ui.slice/ui.slice";
 interface SidebarProps {
     showBack?: boolean
@@ -23,30 +22,54 @@ export default function Sidebar(props: SidebarProps) {
         navigate("/login")
     }
 
+    const activeProject = useSelector(getActiveProject)
+
     const dispatch = useDispatch()
 
 
     const items: MenuProps['items'] = [
         {
             key: '1',
+            label: 'Change Project',
+            icon: <ProductOutlined />
+        },
+        {
+            key: '2',
             label: 'Logout',
             icon: <LogoutOutlined />
-        },
+        }
     ];
     const clickContextMenu = (e) => {
         switch (e.key) {
             case "1":
+                navigate("/")
+                break
+            case "2":
                 logOut()
                 break
         }
     }
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('default', { dateStyle: 'short', timeStyle: 'short' }).format(date);
+    };
 
     return (
         <div className="sidebarComponent">
 
             <div className="topIcons">
-                <div>
-                    <HashLink smooth to={`/project/7e6183ec-bc0d-4b0d-89cb-2290f1992a95#introduction`}>Travelsickness in Trains</HashLink>
+                <div className="projectDescription">
+                    <Dropdown menu={{ items, onClick: clickContextMenu }}>
+                        <HashLink smooth to={`/project/${activeProject?.project_id}#${activeProject?.project_id}`}>
+                            <Skeleton title={false} loading={!activeProject} active paragraph={{ rows: 2 }} >
+
+                                <div className="projectPanel">
+                                    <div className="projectName">{activeProject?.name}</div>
+                                    <div className="projectMeta">created on {activeProject && formatDate(activeProject.created_at)}</div>
+                                </div>
+                            </Skeleton >
+                        </HashLink>
+                    </Dropdown>
                 </div>
                 <div className="sidebarButton">
                     <Button type="link" onClick={() => dispatch(setShowSidebar(false))} icon={<DoubleLeftOutlined />}></Button>

@@ -22,6 +22,7 @@ export function MainView() {
 
     useEffect(
         () => {
+            dispatch(setShowSidebar(true))
             if (!!activeProjectId) dispatch(setActiveProject(activeProjectId))
         }, []
     )
@@ -29,7 +30,7 @@ export function MainView() {
     const sidebarVisible = useSelector(isShowSidebar)
 
     return (
-        <div className="mainView">
+        <div className="mainView" id={activeProject?.project_id}>
             {!activeProjectId ? <Navigate to={"/"}></Navigate> : ""}
             <div className="mainViewHeader">
                 <div className="headerElements">

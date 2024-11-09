@@ -14,9 +14,6 @@ const ChapterOverview = () => {
     const items = useSelector(getItemsV2)
     const chapters = items.filter((i) => i.type == "H1")
 
-    const addChapter = () => {
-        setChapters([...chapters, 'New Chapter']);
-    };
     return (
         <nav className="ChapterOverview">
             <h2>Chapters</h2>
@@ -31,7 +28,7 @@ const ChapterOverview = () => {
                             href={`#${chapter.item_id}`}
                             target="_null"
                             title={
-                                <Tooltip title={chapter.outline}>
+                                <Tooltip mouseEnterDelay={1} title={chapter.outline} >
                                     <HashLink smooth to={`/project/${chapter.project_id}#${chapter.item_id}`}>
                                         <span style={{
                                             display: 'inline-block',
@@ -51,9 +48,9 @@ const ChapterOverview = () => {
 
                 </Anchor>
             </div>
-            <Button icon={<PlusOutlined />} type="text" onClick={addChapter}>
+            {/* <Button icon={<PlusOutlined />} type="text" onClick={}>
                 Add Chapter
-            </Button>
+            </Button> */}
         </nav >
     );
 };
