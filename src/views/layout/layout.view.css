@@ -3,7 +3,7 @@
     display: grid;
     height: 100vh;
     grid-template-rows: auto 2em;
-    grid-template-columns: 3em auto;
+    grid-template-columns: 20em auto;
     grid-template-areas: "sidebar content" " sidebar footer";
 
 
@@ -16,7 +16,7 @@
         height: 100vh;
         position: fixed;
         top: 0;
-        width: 3em;
+        width: 20em;
         border-right: 1px solid #eee;
         background-color: #F7F7F5;
     }

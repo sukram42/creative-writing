@@ -6,6 +6,7 @@ import { supabase } from "../../app/supabaseClient"
 
 import { useNavigate } from "react-router-dom";
 import Avatar from "antd/es/avatar/avatar";
+import ChapterOverview from "../chapter-overview/chapter-overview.component";
 
 interface SidebarProps {
     showBack?: boolean
@@ -26,7 +27,7 @@ export default function Sidebar(props: SidebarProps) {
     ];
     const clickContextMenu = (e) => {
         switch (e.key) {
-            case "1": 
+            case "1":
                 logOut()
                 break
         }
@@ -38,12 +39,15 @@ export default function Sidebar(props: SidebarProps) {
                 {props.showBack ? <Button shape="circle" href="/" icon={<ArrowLeftOutlined />}>
                 </Button> : ""}
             </div>
-            <div className="middleIcons">
+            <div className="chapters">
+                <ChapterOverview></ChapterOverview>
             </div>
             <div className="bottomIcons">
-                {/* <Button shape="circle" icon={<LogoutOutlined />} onClick={() => logOut()}></Button> */}
                 <Dropdown menu={{ items, onClick: clickContextMenu }}>
-                    <Avatar style={{ backgroundColor: '#87d068', color: '#ffffff' }}>U</Avatar>
+                    <div className="avatar">
+                        <Avatar style={{ backgroundColor: '#87d068', color: '#ffffff' }}>U</Avatar>
+                        user1@testuiser.com
+                    </div>
                 </Dropdown>
             </div>
 
