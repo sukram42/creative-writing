@@ -1,4 +1,4 @@
-import { createSlice, isAction } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 import { UiState } from "./ui.slice.interface"
 import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.slice.async"
 import { Chapter, Item, ItemV2, Profile, Project } from "../supabaseClient"

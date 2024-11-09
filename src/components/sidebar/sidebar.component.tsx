@@ -5,7 +5,6 @@ import { Button, Dropdown, MenuProps, Skeleton } from "antd"
 import { supabase } from "../../app/supabaseClient"
 
 import { useNavigate } from "react-router-dom";
-import Avatar from "antd/es/avatar/avatar";
 import ChapterOverview from "../chapter-overview/chapter-overview.component";
 
 import { HashLink } from 'react-router-hash-link';
@@ -13,10 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
 import { setShowSidebar } from "../../app/ui.slice/ui.slice";
 import UserAvatar from "./sidebar-avatar";
-interface SidebarProps {
-    showBack?: boolean
-}
-export default function Sidebar(props: SidebarProps) {
+
+export default function Sidebar() {
     const navigate = useNavigate()
     const logOut = () => {
         supabase.auth.signOut()
@@ -40,7 +37,7 @@ export default function Sidebar(props: SidebarProps) {
             icon: <LogoutOutlined />
         }
     ];
-    const clickContextMenu = (e) => {
+    const clickContextMenu = (e: {key: string}) => {
         switch (e.key) {
             case "1":
                 navigate("/")
@@ -84,7 +81,7 @@ export default function Sidebar(props: SidebarProps) {
                 <ChapterOverview></ChapterOverview>
             </div>
             <div className="bottomIcons">
-                <UserAvatar></UserAvatar>
+                <UserAvatar smallVersion={false}></UserAvatar>
             </div>
         </div>)
 }

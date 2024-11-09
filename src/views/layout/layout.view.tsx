@@ -1,5 +1,5 @@
 
-import { Outlet, useLocation } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 
 import "./layout.view.css"
 import { FooterComponent } from "../../components/footer/footer.component"
@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import UserAvatar from "../../components/sidebar/sidebar-avatar";
 
 export function Layout() {
-    const location = useLocation();
     const sidebarVisible = useSelector(isShowSidebar)
     return (
         <div className={"layoutContainer " + (sidebarVisible ? "layoutWithSidebar" : "layoutWithoutSidebar")} >
@@ -18,7 +17,7 @@ export function Layout() {
             </div>
             {sidebarVisible && (
                 <div className="sidebar">
-                    <Sidebar showBack={location.pathname !== "/"} ></Sidebar>
+                    <Sidebar></Sidebar>
                 </div>)}
             {!sidebarVisible &&
                 <div className="smallSidebar">

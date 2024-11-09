@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, Menu, MenuProps } from 'antd';
+import { Avatar, Dropdown, MenuProps } from 'antd';
 import { ProductOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../app/supabaseClient';
@@ -31,7 +31,7 @@ const UserAvatar = ({ smallVersion = false }: UserAvatarProps) => {
         },
     ];
 
-    const clickContextMenu = (e) => {
+    const clickContextMenu = (e: {key: string}) => {
         switch (e.key) {
             case '1':
                 navigate('/');

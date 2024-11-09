@@ -1,19 +1,19 @@
 import './chapter-overview.scss';
-import { Button, Tooltip } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Anchor from 'antd/es/anchor/Anchor';
 
 import { HashLink } from 'react-router-hash-link';
 import { useSelector } from 'react-redux';
 import { getItemsV2 } from '../../app/items.slice/item.slice.selectors';
 
+//@ts-ignore: The Link property exists, is just not seen by tslint. Idk why 
 const { Link } = Anchor;
 
 const ChapterOverview = () => {
 
     const items = useSelector(getItemsV2)
     const chapters = items.filter((i) => i.type == "H1")
-
+    console.log(Link)
     return (
         <nav className="ChapterOverview">
             <h2>Chapters</h2>
@@ -23,7 +23,7 @@ const ChapterOverview = () => {
                 >
                     {chapters.map((chapter, index) => (
                         <Link
-                            onClick={(e) => e.preventDefault()}
+                            onClick={(e:  React.MouseEvent<HTMLAnchorElement, MouseEvent>) => e.preventDefault()}
                             key={index}
                             href={`#${chapter.item_id}`}
                             target="_null"

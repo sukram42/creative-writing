@@ -3,7 +3,7 @@ import { TextOutlinePane } from "../../components/text-outline-pane/text-outline
 import "./main.view.scss"
 import { Navigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { setActiveProject } from "../../app/ui.slice/ui.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveProject, getDocumentDrawerState, getRawDrawerState, isShowSidebar } from "../../app/ui.slice/ui.slice.selectors";
