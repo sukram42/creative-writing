@@ -24,7 +24,7 @@ jobs:
       - name: Build application
         run: npm run build
         env:
-          VITE_REACT_SUPABASE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzeGdlcHlodWhpZHZwc2RzbmxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE5MTA3NDIsImV4cCI6MjAyNzQ4Njc0Mn0.GQkXKqCACbYgDx8WKch_qUg9NYgEdjmoVxiL_DaEO0A"
+          VITE_REACT_SUPABASE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzeGdlcHlodWhpZHZwc2RzbmxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE5MTA3NDIsImV4cCI6MjAyNzQ4Njc0Mn0.GQkXKqCACbYgDx8WKch_qUg9NYgEdjmoVxiL_DaEO0A
           VITE_REACT_SUPABASE_URL: https://lsxgepyhuhidvpsdsnli.supabase.co
       
       - name: Archive dist folder
