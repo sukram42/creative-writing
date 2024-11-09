@@ -8,16 +8,16 @@ import Sidebar from "../../components/sidebar/sidebar.component"
 export function Layout() {
     const location = useLocation();
     return (
-            <div className="layoutContainer">
-                <div className="content">
-                    <Outlet />
-                </div>
-                <div className="sidebar">
-                    <Sidebar showBack={location.pathname !=="/"} ></Sidebar>
-                </div>
-                <div className="footer">
-                    <FooterComponent></FooterComponent>
-                </div>
+        <div className="layoutContainer">
+            <div className="content">
+                <Outlet />
+            </div>
+            <div className="sidebar">
+                <Sidebar showBack={location.pathname !== "/"} ></Sidebar>
+            </div>
+            <div className="footer">
+                <FooterComponent></FooterComponent>
+            </div>
         </div>
     )
 }

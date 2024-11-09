@@ -1,4 +1,3 @@
-
 .layoutContainer {
     display: grid;
     height: 100vh;
@@ -16,10 +15,11 @@
         height: 100vh;
         position: fixed;
         top: 0;
-        width: 20em;
-        border-right: 1px solid #eee;
+        min-width: 20em;
+        border-right: 1px solid #eee;  
         background-color: #F7F7F5;
     }
+
     .content {
         grid-area: content;
     }

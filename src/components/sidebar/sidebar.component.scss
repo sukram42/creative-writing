@@ -1,27 +1,21 @@
 .sidebarComponent {
     display: grid;
-
-    grid-template-rows: 1em auto 3em;
+    grid-template-rows: 10em auto 3em;
     grid-template-areas: "buffer" "content" "avatar";
-
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
 
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 0.5em 0;
 
-    & > * {
-        width: 100%;
-    }
+    height: 100%;
+    justify-content: stretch;
+
+    padding: 0 2em;
 
     .chapters {
         grid-area: content;
+        width: 100%;
     }
-
     .avatar {
         grid-area: avatar;
         display: flex;

@@ -4,7 +4,7 @@ import "./sidebar.component.scss"
 import { Button, Dropdown, MenuProps } from "antd"
 import { supabase } from "../../app/supabaseClient"
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "antd/es/avatar/avatar";
 import ChapterOverview from "../chapter-overview/chapter-overview.component";
 
@@ -35,8 +35,9 @@ export default function Sidebar(props: SidebarProps) {
 
     return (
         <div className="sidebarComponent">
+
             <div className="topIcons">
-                {props.showBack ? <Button shape="circle" href="/" icon={<ArrowLeftOutlined />}>
+                {props.showBack ? <Button type="link" href="/" icon={<ArrowLeftOutlined />}>Back to projects
                 </Button> : ""}
             </div>
             <div className="chapters">
@@ -50,6 +51,5 @@ export default function Sidebar(props: SidebarProps) {
                     </div>
                 </Dropdown>
             </div>
-
         </div>)
 }
