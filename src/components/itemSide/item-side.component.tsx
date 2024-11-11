@@ -104,15 +104,16 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                     setActive(true);
                 }}
                 onKeyDown={(e) => {
+                    console.log(e.ctrlKey, e.key, activeFocusIndex, activeFocusSide)
                     if (e.ctrlKey && e.key === "Enter") {
                         onTextChange(e.target.getHTML())
                         props.onNewItem(props.index + 1)
-                        dispatch(setActiveFocusIndex(props.index! + 1))
+                        dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index! + 1 }))
                     }
                     if (e.ctrlKey && e.key === "Backspace" && e.target.getHTML() === "<p><br></p>") {
-
                         props.onDelete(props.item)
-                        dispatch(setActiveFocusIndex(props.index! - 1))
+                        // dispatch(setActiveFocusIndex(props.index! - 1))
+                        dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index! - 1 }))
                     }
                     if (e.ctrlKey && e.altKey && e.key == "ArrowDown") {
                         dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index!+1 }))

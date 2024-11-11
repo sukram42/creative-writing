@@ -42,6 +42,7 @@ export function H1(props: ItemProps) {
                 newType: "PARAGRAPH",
                 item: props.item
             }))
+            dispatch(setActiveFocus({ side: side, index: props.index!}))
             e.preventDefault();
         }
         if (e.ctrlKey && e.key === "Enter") {
