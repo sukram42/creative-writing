@@ -15,7 +15,7 @@ export function Paragraph(props: ItemProps) {
 
     const dispatch = useDispatch<AppDispatch>()
 
-    const loadingItems = useSelector(getLoadingItems)
+    const loadingItems = new Set(useSelector(getLoadingItems))
     const error = useSelector(getErrorItems);
     const hasError = Object.keys(error).includes(props.item.item_id);
     const errorCode = hasError ? error[props.item.item_id] : undefined;
