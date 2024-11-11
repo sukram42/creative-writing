@@ -60,7 +60,6 @@ export default function Sidebar() {
                     <Dropdown menu={{ items, onClick: clickContextMenu }}>
                         <HashLink smooth to={`/project/${activeProject?.project_id}#${activeProject?.project_id}`}>
                             <Skeleton title={false} loading={!activeProject} active paragraph={{ rows: 2 }} >
-
                                 <div className="projectPanel">
                                     <div className="projectName">{activeProject?.name}</div>
                                     <div className="projectMeta">created on {activeProject && formatDate(activeProject.created_at)}</div>
