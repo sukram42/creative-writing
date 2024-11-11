@@ -1,3 +1,18 @@
+
+.newRoot{
+    height: 100vh;
+
+    .sidebar {
+        /* grid-area: sidebar; */
+        height: 100vh;
+        /* position: fixed; */
+        /* top: 0; */
+        /* min-width: 20em; */
+        border-right: 1px solid #eee;
+        background-color: #F7F7F5;
+        z-index: 101;
+    }
+}
 .layoutContainer {
     display: grid;
     height: 100vh;
@@ -25,7 +40,7 @@
     }
 }
 
-.layoutWithoutSidebar {
+/* .layoutWithoutSidebar {
     grid-template-rows: auto 2em;
     grid-template-columns: 3em auto;
     grid-template-areas: "sidebar content" "sidebar footer";
@@ -44,4 +59,4 @@
     grid-template-rows: auto 2em;
     grid-template-columns: 20em auto;
     grid-template-areas: "sidebar content" "sidebar footer";
-}
+} */

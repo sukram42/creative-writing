@@ -20,6 +20,7 @@ const initialState: UiState = {
   rawDrawerOpen: false,
   documentDrawerOpen: false,
   showSidebar: true,
+  sidebarSize: ["20%", "80%"],
 
   itemsV2: [],
 

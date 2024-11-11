@@ -14,6 +14,7 @@ export const loadingFinalTexts = (state: RootState) => state.ui.loadingFinalText
 export const getProfile = (state: RootState) => state.ui.profile
 
 export const isShowSidebar = (state: RootState) => state.ui.showSidebar
+export const getSidebarSize = (state: RootState) => state.ui.sidebarSize
 
 export const getDocumentDrawerState = (state: RootState) => state.ui.documentDrawerOpen
 export const getRawDrawerState = (state: RootState) => state.ui.rawDrawerOpen

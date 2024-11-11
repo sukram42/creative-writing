@@ -22,8 +22,10 @@ export function MainView() {
 
     useEffect(
         () => {
-            dispatch(setShowSidebar(true))
-            if (!!activeProjectId) dispatch(setActiveProject(activeProjectId))
+            if (!!activeProjectId) {
+                dispatch(setActiveProject(activeProjectId))
+                // dispatch(setShowSidebar(true))
+            }
         }, []
     )
 
@@ -36,11 +38,13 @@ export function MainView() {
                 <div className="headerElements">
                     <div className="sidebarButton">
                         {!sidebarVisible &&
-                            <Button type="link" onClick={() => dispatch(setShowSidebar(true))} icon={<DoubleRightOutlined />}></Button>}
+                            <Button type="link" onClick={() => dispatch(setShowSidebar(true))} icon={<DoubleRightOutlined />}></Button>
+                            }
+
                     </div>
                     <div className="buttons">
-                        <Button icon={<Badge dot={!activeProject?.description}><SettingOutlined /></Badge>} onClick={() => dispatch(setDocumentDrawerOpen(true))} type="text"  />
-                        <Button icon={<FileOutlined />} onClick={() => dispatch(setRawDrawerOpen(true))} type="text"  /></div>
+                        <Button icon={<Badge dot={!activeProject?.description}><SettingOutlined /></Badge>} onClick={() => dispatch(setDocumentDrawerOpen(true))} type="text" />
+                        <Button icon={<FileOutlined />} onClick={() => dispatch(setRawDrawerOpen(true))} type="text" /></div>
                 </div>
             </div>
             <Drawer size="large" open={rawDrawerOpen} title={activeProject ? activeProject.name : ""} onClose={() => dispatch(setRawDrawerOpen(false))}>

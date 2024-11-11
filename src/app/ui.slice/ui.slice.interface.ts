@@ -12,6 +12,7 @@ export interface UiState {
     rawDrawerOpen: boolean,
 
     showSidebar: boolean,
+    sidebarSize: (number | string)[],
 
     loadProject: boolean,
     chapters: Chapter[],
