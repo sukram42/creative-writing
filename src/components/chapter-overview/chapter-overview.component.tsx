@@ -12,29 +12,27 @@ const ChapterOverview = () => {
 
     const items = useSelector(getItemsV2)
     const chapters = items.filter((i) => i.type == "H1")
+
+
+    const chapterItems = chapters.map((chapter, index) => ({
+        key: index,
+        href: `/project/${chapter.project_id}#${chapter.item_id}`,
+        title: <Tooltip mouseEnterDelay={1} title={chapter.outline}>
+            {chapter.outline}
+        </Tooltip>
+    }))
+
+
     return (
         <nav className="ChapterOverview">
             <h2>Chapters</h2>
             <div className="chapters-list">
                 <Anchor
+                    items={chapterItems}
                     onClick={(e) => e.preventDefault()}
-                >
-                    {chapters.map((chapter, index) => (
-                        <Link
-                            key={index}
-                            href={`/project/${chapter.project_id}#${chapter.item_id}`}
-                            target="_null"
-                            title={
-                                <Tooltip mouseEnterDelay={1} title={chapter.outline} >
-                                            {chapter.outline}
-                                </Tooltip>}
-                        />
+                />
+            </div> 
 
-                    ))}
-
-                </Anchor>
-            </div>
-   
         </nav >
     );
 };

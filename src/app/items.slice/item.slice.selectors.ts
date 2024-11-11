@@ -1,7 +1,7 @@
 import { RootState } from "../store";
 
 export const getItemsV2 = (state: RootState) => state.items.itemsV2
-export const getLoadingItems = (state: RootState) => new Set(state.items.loadingItems)
+export const getLoadingItems = (state: RootState) => state.items.loadingItems
 export const getErrorItems = (state: RootState)=> state.items.errorItems
 
 export const getActiveFocusSide = (state: RootState) => state.items.activeFocusSide
