@@ -88,7 +88,7 @@ export function H1(props: ItemProps) {
 
     return (
         <div id={props.item.item_id}>
-            <div className="chapterComponent">
+            <div className={"chapterComponent " + (props.className || "")}>
                 <div>
                     <div className="doubleSide">
                         <MoveableObject

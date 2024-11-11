@@ -41,8 +41,8 @@ export function Paragraph(props: ItemProps) {
     const activeFocusIndex = useSelector(getActiveFocusIndex)
 
     return (
-        <div  id={props.item.item_id} >
-            <div className="chapterComponent">
+        <div id={props.item.item_id} >
+            <div className={"chapterComponent " + (props.className || "")}>
                 <div>
                     <div className="doubleSide" >
                         <ItemSideComponent
