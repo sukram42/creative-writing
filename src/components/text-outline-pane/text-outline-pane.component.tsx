@@ -59,7 +59,7 @@ export function TextOutlinePane() {
 
     {items?.map((i, idx) =>
       <div key={idx + 1}>
-        <Item item={i} onNew={createNewItem} index={idx} />
+        <Item item={i} onNew={createNewItem} index={idx} className={!i.outline||i.outline==="<p><br></p>"?"emptyItem":""} />
         <DividerComponent
           buttonCaption={"Paragraph"}
           index={idx + 1}
