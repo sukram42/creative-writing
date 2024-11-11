@@ -105,11 +105,11 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 }}
                 onKeyDown={(e) => {
                     if (e.ctrlKey && e.key === "Enter") {
-                        onTextChange(e.target.getInnerHTML())
+                        onTextChange(e.target.getHTML())
                         props.onNewItem(props.index + 1)
                         dispatch(setActiveFocusIndex(props.index! + 1))
                     }
-                    if (e.ctrlKey && e.key === "Backspace" && e.target.getInnerHTML() === "<p><br></p>") {
+                    if (e.ctrlKey && e.key === "Backspace" && e.target.getHTML() === "<p><br></p>") {
 
                         props.onDelete(props.item)
                         dispatch(setActiveFocusIndex(props.index! - 1))
