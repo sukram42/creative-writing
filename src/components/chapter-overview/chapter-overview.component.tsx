@@ -17,8 +17,13 @@ const ChapterOverview = () => {
     const chapterItems = chapters.map((chapter, index) => ({
         key: index,
         href: `/project/${chapter.project_id}#${chapter.item_id}`,
-        title: <Tooltip mouseEnterDelay={1} title={chapter.outline}>
-            {chapter.outline}
+        title: <Tooltip mouseEnterDelay={1} title={chapter.outline}><div style={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            width: "15em"
+        }}>
+            {chapter.outline}</div>
         </Tooltip>
     }))
 
@@ -31,7 +36,7 @@ const ChapterOverview = () => {
                     items={chapterItems}
                     onClick={(e) => e.preventDefault()}
                 />
-            </div> 
+            </div>
 
         </nav >
     );

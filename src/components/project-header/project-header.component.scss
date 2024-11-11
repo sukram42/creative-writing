@@ -1,11 +1,13 @@
 .projectHeaderComponent {
     padding: 1em;
+    padding-left: 5rem;
 
     .header {
         margin:0;
         font-size: 2rem;
-        font-weight: lighter !important;
-        padding-bottom:0.2em;
+        font-weight: bold !important;
+        padding-bottom: 0.2em;
+       
     }
 
     .header * {
@@ -14,6 +16,7 @@
     }
 
     .description {
-        font-size: 1rem
+        font-size: 1rem;
+        color: #888;
     }
 }
