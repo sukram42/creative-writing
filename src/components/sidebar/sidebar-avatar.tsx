@@ -17,7 +17,6 @@ const UserAvatar = ({ smallVersion = false }: UserAvatarProps) => {
     }
 
     const user = useSelector(getUser)
-    console.log(user)
     const items: MenuProps['items'] = [
         {
             key: '1',
