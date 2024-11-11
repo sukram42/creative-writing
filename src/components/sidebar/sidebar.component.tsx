@@ -37,7 +37,7 @@ export default function Sidebar() {
             icon: <LogoutOutlined />
         }
     ];
-    const clickContextMenu = (e: {key: string}) => {
+    const clickContextMenu = (e: { key: string }) => {
         switch (e.key) {
             case "1":
                 navigate("/")
@@ -61,7 +61,12 @@ export default function Sidebar() {
                         <HashLink smooth to={`/project/${activeProject?.project_id}#${activeProject?.project_id}`}>
                             <Skeleton title={false} loading={!activeProject} active paragraph={{ rows: 2 }} >
                                 <div className="projectPanel">
-                                    <div className="projectName">{activeProject?.name}</div>
+                                    <div className="projectName" style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        width: "15em",
+                                        textOverflow: 'ellipsis',
+                                    }}>{activeProject?.name}</div>
                                     <div className="projectMeta">created on {activeProject && formatDate(activeProject.created_at)}</div>
                                 </div>
                             </Skeleton >
