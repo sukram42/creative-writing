@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { useDispatch } from "react-redux";
 import { setUser } from "./ui.slice/ui.slice";
+import { usePostHog } from "posthog-js/react";
 
 export default function RequireAuth({ children }: { children: ReactNode }) {
   const [stateUser, setStateUser] = useState<User | null>()
@@ -11,10 +12,14 @@ export default function RequireAuth({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
+  const posthog = usePostHog()
+
   async function getUser() {
     setLoading(true)
     const { data: { user } } = await supabase.auth.getUser()
     const { data: profile } = await supabase.from("profiles").select("*").select()
+
+
 
     dispatch(setUser(user || undefined))
 
@@ -24,6 +29,7 @@ export default function RequireAuth({ children }: { children: ReactNode }) {
       navigate("/login")
       return
     }
+    posthog.identify(user.id)
     if (!profile[0].is_onboarded || !profile[0].password_set) {
       navigate("/onboarding")
     }

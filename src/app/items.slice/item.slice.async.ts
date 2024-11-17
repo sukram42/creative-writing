@@ -89,7 +89,6 @@ export const updateItemTextV2Async = createAsyncThunk(
             thunkAPI.dispatch(updateItemsV2({ items: beforeItems }))
             return
         }
-        else console.log(updatedChapter)
 
         return updatedChapter
     }
