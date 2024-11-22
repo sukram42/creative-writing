@@ -86,17 +86,31 @@ Deno.serve(async (req: Request) => {
     const itemsBefore = items.filter(i => i.rank <= data[0].rank)
     const chapter = itemsBefore.filter(i => i.type == "H1").splice(-1)[0]
 
+    const paragraph_before = itemsBefore.splice(-2)[0]?.final || ""
+
     const initialParagraph = await Promise.resolve()
-      .then(() => outlinePrompt.render({ project: project, item: data[0], input: { paragraph_before: itemsBefore.splice(-1)[0].final, header: chapter?chapter.outline: project.name } }))
+      .then(() => outlinePrompt.render({ project: project, item: data[0], input: { paragraph_before: paragraph_before , header: chapter?chapter.outline: project.name } }))
+      .then(prompt=>{
+        console.log(prompt)
+        return prompt
+      })
       .then(prompt => llm.chatPrompt(prompt))
       .then(result => result.choices[0].message.content)
-
+ 
     const finalParagraph = await Promise.resolve()
-      .then((paragraph) => feedbackPrompt.render({ project: project, item: data[0], input: { paragraph } }))
+      .then(() => feedbackPrompt.render({ project: project, item: data[0], input: { paragraph_before , paragraph: initialParagraph } }))
+      .then(prompt=>{
+        console.log(prompt)
+        return prompt
+      })
       .then(prompt => llm.chatPrompt(prompt))
       .then(result => result.choices[0].message.content)
 
       .then((feedback) => incorporateFeedbackPrompt.render({ project: project, item: data[0], input: { feedback, paragraph: initialParagraph } }))
+      .then(prompt=>{
+        console.log(prompt)
+        return prompt
+      })
       .then(prompt => llm.chatPrompt(prompt))
       .then(result => result.choices[0].message.content)
       
