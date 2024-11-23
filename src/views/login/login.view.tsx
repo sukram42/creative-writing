@@ -37,6 +37,15 @@ export function LoginView() {
         ]);
     }
 
+    async function handleSignInWithGoogle(response) {
+        const { data, error } = await supabase.auth.signInWithIdToken({
+            provider: 'google',
+            token: response.credential,
+        })
+    }
+
+
+
     const formItemLayout = {
         labelCol: { span: 0 },
         wrapperCol: { span: 2 },
@@ -87,6 +96,23 @@ export function LoginView() {
                         </Form.Item>
                     </Form>
                 </Card>
+                <div id="g_id_onload"
+                    data-client_id="828930008411-21o9msvidh7quqhlcejjf0umvs03pdgc.apps.googleusercontent.com"
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-callback="handleSignInWithGoogle"
+                    data-auto_select="true"
+                    data-itp_support="true">
+                </div>
+
+                <div className="g_id_signin"
+                    data-type="standard"
+                    data-shape="pill"
+                    data-theme="outline"
+                    data-text="signup_with"
+                    data-size="large"
+                    data-logo_alignment="left">
+                </div>
             </div>
             <div className="img">
                 <h1>What is it all about?</h1>
