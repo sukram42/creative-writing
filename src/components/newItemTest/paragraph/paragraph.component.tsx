@@ -2,7 +2,7 @@
 import "./paragraph.component.scss"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../app/store";
-import { ItemSideComponent } from "../../itemSide/item-side.component";
+import { ItemSideComponent } from "../../item-side/item-side.component";
 import { ItemProps } from "../item/item.interface";
 import { ItemV2 } from "../../../app/supabaseClient";
 import { updateItemTextV2Async } from "../../../app/items.slice/item.slice.async";
