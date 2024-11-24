@@ -1,5 +1,5 @@
 import { Button, Input, InputRef, Popover } from "antd";
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { feedback2item } from "../../app/ai.slice/ai.slice.async";
 import { ItemV2 } from "../../app/supabaseClient";
 import { InfoCircleOutlined, RollbackOutlined } from "@ant-design/icons";
@@ -12,6 +12,10 @@ interface ItemQAPopupProps {
     show: boolean,
     final: boolean,
     onLocalTextChange: (newText: string, final: boolean) => void
+    onOpenChange: (val: boolean) => void
+
+    children: ReactNode
+
 }
 export function ItemQAPopup(props: ItemQAPopupProps) {
 
@@ -27,19 +31,19 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
         setQueryText("")
     }
 
-    const onOpenChange = (val) => {
+    const onOpenChange = (val: boolean) => {
         if (!val) {
             reset()
         }
         props.onOpenChange(val)
     }
 
-    const onPrompt = (prompt) => {
+    const onPrompt = (prompt: string) => {
         setLoading(true)
         const text = props.final ? props.item.final : props.item.outline
         setOldText(text)
         feedback2item({
-            text,
+            text: text || "",
             query: prompt,
             type: props.final ? "paragraph" : "outline"
         })
@@ -63,7 +67,7 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
                     ref={searchRef}
                     placeholder="How can I help you with this paragraph?"
                     variant="borderless"
-                    onSearch={(value, e) => onPrompt(value)}
+                    onSearch={(value) => onPrompt(value)}
                     loading={isLoading}
                     value={queryText}
                     onChange={(e) => setQueryText(e.target.value)}

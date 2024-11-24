@@ -96,13 +96,13 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             onToggleLock={() => dispatch(updateItemLocked({ item: props.item, newLocked: !props.item.locked }))}
             showQA={() => showQAPopup(true)}
         >
-            {/*
-            // @ts-ignore */}
-            <ItemQAPopup show={isQAPopup}
+            <ItemQAPopup
+                show={isQAPopup}
                 item={props.item}
                 onLocalTextChange={onLocalTextChange}
                 final={props.final}
                 onOpenChange={(val) => showQAPopup(val)} >
+                {/*// @ts-ignore */}
                 <ReactQuill theme={null}
                     className={"quill-editor " + (!!props.error ? "error-state" : "")}
                     onEditorCreated={() => alert('Editor created!')}
