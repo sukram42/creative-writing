@@ -3,18 +3,34 @@
     grid-template-columns: 1fr 10fr 1fr;
     grid-template-rows: 1em 3em auto;
     height: 100%;
-
+    
     grid-template-areas: ". . ."
         ". header ."
         ". main .";
 
     .projectList {
         grid-area: main;
+        padding-top:1.5em;
     }
 
     .projectToolbar {
         grid-area: header;
         justify-self: self-end;
         align-self: center;
+    }
+    .projectButtonBar{
+        display: flex;
+        gap: 1em;
+    }
+    .projectName {
+        font-size: 1.4em;
+    }
+
+    .projectDescription {
+        font-size: 0.9em;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 }
