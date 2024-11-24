@@ -17,6 +17,7 @@ const UserAvatar = ({ smallVersion = false }: UserAvatarProps) => {
     }
 
     const user = useSelector(getUser)
+    console.log(user)
     const items: MenuProps['items'] = [
         {
             key: '1',
@@ -45,7 +46,7 @@ const UserAvatar = ({ smallVersion = false }: UserAvatarProps) => {
         <div className="bottomIcons">
             <Dropdown menu={{ items, onClick: clickContextMenu }}>
                 <div className="avatar">
-                    <Avatar style={{ backgroundColor: '#87d068', color: '#ffffff' }}>{user?.email?.toUpperCase().charAt(0)}</Avatar>
+                    <Avatar src={user?.user_metadata?.avatar_url} style={{ backgroundColor: '#87d068', color: '#ffffff' }}>{user?.email?.toUpperCase().charAt(0)}</Avatar>
                     {!smallVersion && <span>{user?.email}</span>}
                 </div>
             </Dropdown>
