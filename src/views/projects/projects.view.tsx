@@ -3,7 +3,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import "./project.view.scss"
 import { AppDispatch } from "../../app/store"
-import { List, Skeleton, Button, Drawer } from "antd"
+import { Button, Drawer, Table } from "antd"
 import { createProject, deleteProject, loadProjects } from "../../app/ui.slice/ui.slice.async"
 import { getActiveProjectId, getAreProjectsLoading, getProjects } from "../../app/ui.slice/ui.slice.selectors"
 import { useEffect, useState } from "react"
@@ -14,6 +14,7 @@ import { NewProjectForm } from "../../components/new-project-form/new-project-fo
 import { Project } from "../../app/supabaseClient"
 import { ProjectInfo } from "../../components/project-info/project-info.component"
 import { setShowSidebar } from "../../app/ui.slice/ui.slice"
+import moment from 'moment';
 
 export function ProjectView() {
 
@@ -34,10 +35,11 @@ export function ProjectView() {
         dispatch(loadProjects())
     }, []);
 
+
     const createProjectFinish = (values: NewProjectFormValues) => {
 
-        if(!values.name) {
-            values = {...values, name: "New Unnamed Project" }
+        if (!values.name) {
+            values = { ...values, name: "New Unnamed Project" }
         }
         setNewProjectDrawerOpenState(false)
         setLoading(true)
@@ -49,6 +51,42 @@ export function ProjectView() {
         })
     }
 
+    const columns = [
+        {
+            title: 'Name',
+            sorter: (a: Project, b: Project) => a.name > b.name ? 0 : 1,
+            dataIndex: 'name',
+            key: 'name',
+            render: (_: any, record: Project) => (
+                <div>
+                    <div className="projectName">
+                        <a href={`#/project/${record.project_id}`}>{record.name}</a>
+                    </div>
+                    <div className="projectDescription">
+                        {record.description}
+                    </div>
+                </div>
+            )
+        },
+        {
+            title: 'Created',
+            dataIndex: 'created_at',
+            key: 'created_at',
+            defaultSortOrder: 'descend',
+            sorter: (a: Project, b: Project) => moment(a.created_at).unix() - moment(b.created_at).unix(),
+            render: (text: string) => moment(text).fromNow(),
+        },
+        {
+            title: '',
+            dataIndex: "project_id",
+            render: (_: any, record: Project) => (
+                <div className="projectButtonBar" key={record.project_id}>
+                    <Button key="list-loadmore-edit" icon={<EditOutlined />} href={`#/project/${record.project_id}`}></Button>
+                    <Button key="info" type="text" icon={<MoreOutlined />} onClick={() => setActiveProjectInfo(record)}></Button>
+                </div>
+            ),
+        },
+    ];
     return (
         <div className="projectView">
             <Drawer title="Basic Drawer" size={"large"} onClose={() => setNewProjectDrawerOpenState(false)} open={isNewProjectDrawerOpen}>
@@ -70,29 +108,15 @@ export function ProjectView() {
             </div>
 
             {activeProject ? <Navigate to={`/project/${activeProject}`}></Navigate> : ""}
-            <div className="projectList">
-                <List
-                    className="projectList"
-                    itemLayout="horizontal"
-                    dataSource={projects}
-                    loading={areProjectsLoading || loading}
-                    renderItem={(item) => (
-                        <List.Item
-                            actions={[
-                                <Button key="list-loadmore-edit" icon={<EditOutlined />} href={`#/project/${item.project_id}`}></Button>,
-                                <Button key="info" type="text" icon={<MoreOutlined />} onClick={() => setActiveProjectInfo(item)}></Button>]
-                            }
-                        >
-                            <Skeleton avatar title={false} loading={areProjectsLoading} active>
-                                <List.Item.Meta
-                                    // avatar={<Avatar src={item.picture.large} />}
-                                    title={<a href={`#/project/${item.project_id}`}>{item.name}</a>}
-                                    description={item.description}
-                                />
 
-                            </Skeleton>
-                        </List.Item>
-                    )}
-                /></div>
+            <div className="projectList">
+                {/* 
+                //tslint ignore
+                 */}
+                <Table dataSource={projects}
+                    loading={areProjectsLoading || loading}
+                    /*// @ts-ignore */
+                    columns={columns} />;
+            </div>
         </div >)
 }
