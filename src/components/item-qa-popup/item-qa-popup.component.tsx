@@ -66,7 +66,7 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
                     onSearch={(value, e) => onPrompt(value)}
                     loading={isLoading}
                     value={queryText}
-                    onChange={(e)=>setQueryText(e.target.value)}
+                    onChange={(e) => setQueryText(e.target.value)}
                     suffix={
                         <Button type="text" size="small" icon={<InfoCircleOutlined />}>
                         </Button>
@@ -78,16 +78,6 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
                     </Button>}
                 </div>
             </div>}
-
-
-
-
-    // <ItemQAContent
-    //     loading={isLoading}
-    //     onPrompt={onPrompt}
-    //     proposalGiven={!!oldText}
-    //     onRevert={() => { revert() }} />}
-
     >
         {props.children}
     </Popover>
