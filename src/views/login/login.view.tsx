@@ -4,7 +4,10 @@ import { supabase } from "../../app/supabaseClient";
 import { Navigate } from "react-router-dom";
 import { User } from "@supabase/supabase-js";
 import "./login.view.scss";
+
 import { GoogleOutlined, KeyOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import logo from "../../assets/outlaine_o.svg"
+
 
 interface LoginInformation {
     username: string,
@@ -51,7 +54,7 @@ export function LoginView() {
                 <Card className="loginCard">
                     <div className="textInfo">
                         <a href="http://www.outlaine.com">
-                            <img src="src\assets\outlaine_o.svg"
+                            <img src={logo}
                                 className="logo"
                                 alt="Outlaine Logo" /></a>
                         <div className="appName">Welcome to Outl<b>ai</b>ne!</div>
