@@ -1,6 +1,6 @@
 
 import "./moveable-object.component.scss"
-import { DeleteOutlined, HolderOutlined, LoadingOutlined, LockOutlined, PlusOutlined, RedoOutlined, UnlockOutlined, WarningFilled } from "@ant-design/icons"
+import { BulbOutlined, DeleteOutlined, HolderOutlined, LoadingOutlined, LockOutlined, PlusOutlined, RedoOutlined, UnlockOutlined, WarningFilled } from "@ant-design/icons"
 import { Button, Dropdown, MenuProps, Tooltip, theme } from "antd"
 import React from "react"
 const { useToken } = theme;
@@ -16,6 +16,8 @@ interface MoveableObjectProps {
     locked?: boolean
     showLocked?: boolean
     onToggleLock?: () => void
+
+    showQA?:()=>void
 }
 
 export function MoveableObject(props: MoveableObjectProps) {
@@ -72,6 +74,11 @@ export function MoveableObject(props: MoveableObjectProps) {
                         size="small"
                         onClick={() => { if (!!props.onNew) props.onNew() }}
                         icon={<PlusOutlined />} />
+                    <Button
+                        type="text"
+                        size="small"
+                        onClick={() => {props.showQA && props.showQA()}}
+                        icon={<BulbOutlined />} />
                     <Dropdown menu={{ items: dropdown }} trigger={['click']} dropdownRender={(menu) => (
                         <div style={contentStyle}>
                             {React.cloneElement(menu as React.ReactElement, { style: menuStyle })}
@@ -94,6 +101,7 @@ export function MoveableObject(props: MoveableObjectProps) {
                             </Tooltip>
                             :
                             <RedoOutlined spin={props.loading} />} /> : ""}
+
                 </div>
             </div>
             <div className="textContent" >

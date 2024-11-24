@@ -26,3 +26,15 @@ export const outline2textCompletion = createAsyncThunk(
         }))
     }
 )
+export const feedback2item = async (payload: { text: string, query: string, type: "outline" | "paragraph" }) => {
+
+    const { data, error } = await supabase.functions.invoke('item-qa', {
+        body: {
+            text: payload.text,
+            query: payload.query,
+            type: payload.type
+        },
+    })
+    console.log("data", data, error)
+    return data
+}
