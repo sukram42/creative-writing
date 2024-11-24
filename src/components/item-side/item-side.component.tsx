@@ -10,6 +10,7 @@ import { setActiveFocus, setActiveFocusIndex } from "../../app/items.slice/item.
 import { updateItemLocked, updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveFocusSide, getActiveFocusIndex } from "../../app/items.slice/item.slice.selectors";
+import { ItemQAPopup } from "../item-qa-popup/item-qa-popup.component";
 
 interface ItemsComponentProps {
     item: ItemV2,
@@ -35,6 +36,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
 
     const [wasChanged, setWasChanged] = useState(false)
     const [active, setActive] = useState(false)
+    const [isQAPopup, showQAPopup] = useState(false)
 
     const dispatch = useDispatch<AppDispatch>()
     const editorRef = useRef<ReactQuill | null>(null); useRef()
@@ -92,56 +94,63 @@ export function ItemSideComponent(props: ItemsComponentProps) {
             locked={props.final && props.item.locked}
             showLocked={props.final}
             onToggleLock={() => dispatch(updateItemLocked({ item: props.item, newLocked: !props.item.locked }))}
+            showQA={() => showQAPopup(true)}
         >
-            {/*
-            // @ts-ignore */}
-            <ReactQuill theme={null}
-                className={"quill-editor " + (!!props.error ? "error-state" : "")}
-                onEditorCreated={() => alert('Editor created!')}
-                ref={editorRef}
-                value={content || ""} 
-                onFocus={() => {
-                    setActive(true);
-                }}
-                onKeyDown={(e) => {
-                    if (e.ctrlKey && e.key === "Enter") {
-                        onTextChange(e.target.getHTML())
-                        props.onNewItem(props.index + 1)
-                        dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index! + 1 }))
-                    }
-                    if (e.ctrlKey && e.key === "Backspace" && e.target.getHTML() === "<p><br></p>") {
-                        props.onDelete(props.item)
-                        // dispatch(setActiveFocusIndex(props.index! - 1))
-                        dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index! - 1 }))
-                    }
-                    if (e.ctrlKey && e.altKey && e.key == "ArrowDown") {
-                        dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index!+1 }))
-                    }
-                    if (e.ctrlKey && e.altKey && e.key == "ArrowUp") {
-                        dispatch(setActiveFocus({ side: props.final?"final":"outline", index: props.index! - 1 }))
-                    }
-                    if (e.ctrlKey && e.altKey && e.key == "ArrowRight" && !props.final) {
-                        dispatch(setActiveFocus({ side: "final", index: props.index! }))
-                    }
-                    if (e.ctrlKey && e.altKey && e.key == "ArrowLeft" && props.final) {
-                        dispatch(setActiveFocus({ side: "outline", index: props.index! }))
-                    }
-                }}
-                onBlur={(_0, _1, editor) => {
-                    dispatch(setActiveFocus({side: null, index: null}))
-                    
-
-                    setTimeout(() => {
-                        let fixRange = editor.getSelection()
-                        if (fixRange) { } else {
-                            onTextChange(editor.getHTML())
-                            setActive(false)
+            <ItemQAPopup
+                show={isQAPopup}
+                item={props.item}
+                onLocalTextChange={onLocalTextChange}
+                final={props.final}
+                onOpenChange={(val) => showQAPopup(val)} >
+                {/*// @ts-ignore */}
+                <ReactQuill theme={null}
+                    className={"quill-editor " + (!!props.error ? "error-state" : "")}
+                    onEditorCreated={() => alert('Editor created!')}
+                    ref={editorRef}
+                    value={content || ""}
+                    onFocus={() => {
+                        setActive(true);
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.ctrlKey && e.key === "Enter") {
+                            onTextChange(e.target.getHTML())
+                            props.onNewItem(props.index + 1)
+                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! + 1 }))
                         }
-                    }, 2)
-                }}
-                placeholder={active ? props.item.item_id : ""}
-                onChange={(val) => onLocalTextChange(val, props.final)}
-            ></ReactQuill>
+                        if (e.ctrlKey && e.key === "Backspace" && e.target.getHTML() === "<p><br></p>") {
+                            props.onDelete(props.item)
+                            // dispatch(setActiveFocusIndex(props.index! - 1))
+                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! - 1 }))
+                        }
+                        if (e.ctrlKey && e.altKey && e.key == "ArrowDown") {
+                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! + 1 }))
+                        }
+                        if (e.ctrlKey && e.altKey && e.key == "ArrowUp") {
+                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! - 1 }))
+                        }
+                        if (e.ctrlKey && e.altKey && e.key == "ArrowRight" && !props.final) {
+                            dispatch(setActiveFocus({ side: "final", index: props.index! }))
+                        }
+                        if (e.ctrlKey && e.altKey && e.key == "ArrowLeft" && props.final) {
+                            dispatch(setActiveFocus({ side: "outline", index: props.index! }))
+                        }
+                    }}
+                    onBlur={(_0, _1, editor) => {
+                        dispatch(setActiveFocus({ side: null, index: null }))
+
+
+                        setTimeout(() => {
+                            let fixRange = editor.getSelection()
+                            if (fixRange) { } else {
+                                onTextChange(editor.getHTML())
+                                setActive(false)
+                            }
+                        }, 2)
+                    }}
+                    placeholder={active ? props.item.item_id : ""}
+                    onChange={(val) => onLocalTextChange(val, props.final)}
+                ></ReactQuill>
+            </ItemQAPopup>
         </MoveableObject >
     </div>
 }

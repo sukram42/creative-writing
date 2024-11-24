@@ -10,8 +10,8 @@ export class Prompt {
         this.template = handlebars.compile(prompt.prompt)
     }
 
-    getMessage(){
-        if(!this.message){
+    getMessage() {
+        if (!this.message) {
             throw Error("The prompt needs to be rendered first.")
         }
         return this.message

@@ -1,16 +1,23 @@
 .ChapterOverview {
-    
+
     color: #666666;
     font-size: 1em;
-    
+
+    .noChapterDescription {
+        font-size: 0.8em;
+        white-space: normal;
+        width: 16em;
+    }
+
 
 
     h2 {
         font-size: 0.9em;
-        padding-bottom:1em ;
+        padding-bottom: 1em;
         font-weight: 600;
     }
-    .chapters-list{
+
+    .chapters-list {
         // gap: 0.2em;
         font-weight: 100;
 
