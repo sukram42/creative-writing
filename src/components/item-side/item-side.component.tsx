@@ -138,7 +138,6 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                     onBlur={(_0, _1, editor) => {
                         dispatch(setActiveFocus({ side: null, index: null }))
 
-
                         setTimeout(() => {
                             let fixRange = editor.getSelection()
                             if (fixRange) { } else {
