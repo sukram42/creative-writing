@@ -73,7 +73,7 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
                     }
                     enterButton />
                 <div className='acceptButtons'>
-                    {!!oldText && <Button type="text" size="small" onClick={() => revert()} icon={<RollbackOutlined />}>
+                    {!!oldText && <Button type="text" disabled={isLoading} size="small" onClick={() => revert()} icon={<RollbackOutlined />}>
                         Revert
                     </Button>}
                 </div>
