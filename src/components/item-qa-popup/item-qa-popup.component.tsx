@@ -61,7 +61,7 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
             <div className='itemQaContentComponent'>
                 <Search
                     ref={searchRef}
-                    placeholder="input search loading with enterButton"
+                    placeholder="How can I help you with this paragraph?"
                     variant="borderless"
                     onSearch={(value, e) => onPrompt(value)}
                     loading={isLoading}
