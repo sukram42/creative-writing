@@ -1,5 +1,5 @@
 
-import { DoubleLeftOutlined, LogoutOutlined, ProductOutlined } from "@ant-design/icons"
+import { ArrowLeftOutlined, DoubleLeftOutlined, LogoutOutlined, ProductOutlined } from "@ant-design/icons"
 import "./sidebar.component.scss"
 import { Button, Dropdown, MenuProps, Skeleton } from "antd"
 import { supabase } from "../../app/supabaseClient"
@@ -10,20 +10,14 @@ import ChapterOverview from "../chapter-overview/chapter-overview.component";
 import { HashLink } from 'react-router-hash-link';
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveProject } from "../../app/ui.slice/ui.slice.selectors";
-import { setShowSidebar } from "../../app/ui.slice/ui.slice";
+import { setDocumentDrawerOpen, setRawDrawerOpen, setShowSidebar } from "../../app/ui.slice/ui.slice";
 import UserAvatar from "./sidebar-avatar";
 
 export default function Sidebar() {
     const navigate = useNavigate()
-    const logOut = () => {
-        supabase.auth.signOut()
-        navigate("/login")
-    }
 
     const activeProject = useSelector(getActiveProject)
-
     const dispatch = useDispatch()
-
 
     const items: MenuProps['items'] = [
         {
@@ -32,9 +26,12 @@ export default function Sidebar() {
             icon: <ProductOutlined />
         },
         {
-            key: '2',
-            label: 'Logout',
-            icon: <LogoutOutlined />
+            key: "2",
+            label: "Configure Project"
+        },
+        {
+            key: "3",
+            label: "View Project"
         }
     ];
     const clickContextMenu = (e: { key: string }) => {
@@ -43,7 +40,10 @@ export default function Sidebar() {
                 navigate("/")
                 break
             case "2":
-                logOut()
+                dispatch(setDocumentDrawerOpen(true))
+                break
+            case "3":
+                dispatch(setRawDrawerOpen(true))
                 break
         }
     }
@@ -54,34 +54,38 @@ export default function Sidebar() {
 
     return (
         <div className="sidebarComponent">
-
             <div className="topIcons">
-                <div className="projectDescription">
-                    <Dropdown menu={{ items, onClick: clickContextMenu }}>
-                        <HashLink smooth to={`/project/${activeProject?.project_id}#${activeProject?.project_id}`}>
-                            <Skeleton title={false} loading={!activeProject} active paragraph={{ rows: 2 }} >
-                                <div className="projectPanel">
-                                    <div className="projectName" style={{
-                                        whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        width: "15em",
-                                        textOverflow: 'ellipsis',
-                                    }}>{activeProject?.name}</div>
-                                    <div className="projectMeta">created on {activeProject && formatDate(activeProject.created_at)}</div>
-                                </div>
-                            </Skeleton >
-                        </HashLink>
-                    </Dropdown>
+                <div className="sidebarButton">
+                    <Button href="/" type={"link"} icon={<ArrowLeftOutlined />}>
+                    Back to Projects
+                    </Button>
                 </div>
                 <div className="sidebarButton">
                     <Button type="link" onClick={() => dispatch(setShowSidebar(false))} icon={<DoubleLeftOutlined />}></Button>
                 </div>
 
-                {/* {props.showBack ? <Button type="link" href="/" icon={<ArrowLeftOutlined />}>
-                Back to projects
-                </Button> : ""} */}
+
             </div>
             <div className="chapters">
+                <div className="projectDescription">
+                    <Dropdown menu={{ items, onClick: clickContextMenu }}>
+                        <div>
+                            <HashLink smooth to={`/project/${activeProject?.project_id}#${activeProject?.project_id}`}>
+                                <Skeleton title={false} loading={!activeProject} active paragraph={{ rows: 2 }} >
+                                    <div className="projectPanel">
+                                        <div className="projectName" style={{
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            width: "15em",
+                                            textOverflow: 'ellipsis',
+                                        }}>{activeProject?.name}</div>
+                                        <div className="projectMeta">created on {activeProject && formatDate(activeProject.created_at)}</div>
+                                    </div>
+                                </Skeleton >
+                            </HashLink>
+                        </div>
+                    </Dropdown>
+                </div>
                 <ChapterOverview></ChapterOverview>
             </div>
             <div className="bottomIcons">

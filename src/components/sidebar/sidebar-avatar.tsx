@@ -17,15 +17,9 @@ const UserAvatar = ({ smallVersion = false }: UserAvatarProps) => {
     }
 
     const user = useSelector(getUser)
-    console.log(user)
     const items: MenuProps['items'] = [
         {
             key: '1',
-            label: 'Change Project',
-            icon: <ProductOutlined />,
-        },
-        {
-            key: '2',
             label: 'Logout',
             icon: <LogoutOutlined />,
         },
@@ -34,9 +28,6 @@ const UserAvatar = ({ smallVersion = false }: UserAvatarProps) => {
     const clickContextMenu = (e: {key: string}) => {
         switch (e.key) {
             case '1':
-                navigate('/');
-                break;
-            case '2':
                 logOut();
                 break;
         }

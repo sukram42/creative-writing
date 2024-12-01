@@ -10,11 +10,13 @@
     height: 100%;
     justify-content: stretch;
 
-    padding-left: 2em;
-
     .chapters {
         grid-area: content;
+        padding-left: 2em;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 2em
     }
 
     .projectPanel {
@@ -44,6 +46,7 @@
 
     .bottomIcons {
         grid-area: avatar;
+        padding-left: 2em;
     }
 
     .topIcons {
@@ -57,7 +60,7 @@
             font-size: 1.5em;
 
             &>* {
-                color: #ddd;
+                color: #888;
             }
         }
 
