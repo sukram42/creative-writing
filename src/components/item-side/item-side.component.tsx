@@ -1,4 +1,4 @@
-import { ItemType, ItemV2 } from "../../app/supabaseClient";
+import { ItemV2 } from "../../app/supabaseClient";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
 import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
@@ -7,11 +7,11 @@ import 'react-quill/dist/quill.core.css';
 import './item-side.component.scss'
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveFocus, setActiveFocusIndex } from "../../app/items.slice/item.slice";
-import { createNewItem, deleteItemAsyncV2, updateItemLocked, updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
+import { updateItemLocked, updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
 import { AppDispatch } from "../../app/store";
 import { getActiveFocusSide, getActiveFocusIndex } from "../../app/items.slice/item.slice.selectors";
 import { ItemQAPopup } from "../item-qa-popup/item-qa-popup.component";
-import { StepsType, Views } from "../../app/ui.slice/view.states";
+import { Views } from "../../app/ui.slice/view.states";
 import { handleKeyDownInEditor } from "../../services/keymap.service";
 
 interface ItemsComponentProps {
@@ -80,6 +80,13 @@ export function ItemSideComponent(props: ItemsComponentProps) {
 
     }, [editorRef, active]);
 
+    const onQAOpenChange = (val: boolean) => {
+        showQAPopup(val)
+        console.log("focus", props.view, props.index)
+        setTimeout(() => dispatch(setActiveFocus({ side: props.view, index: props.index })), 1)
+    }
+
+
     const content = props.item[props.view]
     return <div className={"itemSideComponent " + (props.locked ? "locked" : "")}>
         <MoveableObject
@@ -100,7 +107,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 item={props.item}
                 onLocalTextChange={onLocalTextChange}
                 view={props.view}
-                onOpenChange={(val) => showQAPopup(val)} >
+                onOpenChange={onQAOpenChange} >
                 {/*// @ts-ignore */}
                 <ReactQuill theme={null}
                     className={"quill-editor " + (!!props.error ? "error-state" : "")}
@@ -111,11 +118,14 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                         setActive(true);
                     }}
                     onKeyDown={(e) => {
-                        // if (e.ctrlKey && e.key === "Enter") {
-                        //     e.preventDefault()
-                        //     onTextChange(e.target.getHTML())
-                        // }
-                        console.log("keydown", e, props.index, props.item, props.view)
+                        if (e.ctrlKey && e.key === "k") {
+                            e.preventDefault()
+                            showQAPopup(true)
+                        }
+                        if (e.ctrlKey && e.key === "Enter") {
+                            e.preventDefault()
+                            onTextChange(e.target.getHTML())
+                        }
                         handleKeyDownInEditor(e, props.index, props.item, props.view)
 
                     }}

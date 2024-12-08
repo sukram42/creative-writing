@@ -1,6 +1,7 @@
 .menuItem {
     display: flex;
     gap: 1em;
+
     div {
         // background-color: #888;
         font-size: 0.8em;
@@ -22,6 +23,10 @@
         & .lockingToolbar {
             visibility: visible;
         }
+
+        .viewDescription {
+            opacity: 100%;
+        }
     }
 
     .lockedIcon {
@@ -33,24 +38,13 @@
     }
 
     .toolbar {
-        display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: auto;
-        grid-template-areas: "buttons";
-    }
-
-    .lockingToolbar {
-        grid-area: locked;
-        visibility: hidden;
-        align-self: center;
-        justify-self: center;
-        font-size: 2em;
-        color: #844;
-        cursor: pointer;
-    }
-
-    .currentlyLocked {
-        visibility: visible;
+        display: flex;
+        flex-direction: column;
+        // align-items: flex-end;
+        // display: grid;
+        // grid-template-columns: auto;
+        // grid-template-rows: auto;
+        // grid-template-areas: "buttons";
     }
 
     .buttonBar {
@@ -67,12 +61,21 @@
         }
     }
 
+
+    .viewDescription {
+        color: #aaa;
+        font-size: 0.7rem;
+        opacity: 0;
+    }
+
     .textContent {
         display: grid;
         grid-template-columns: auto;
         grid-template-rows: auto;
         grid-template-areas: "content";
         width: 100%;
+
+
 
         .moveableContent {
             grid-area: content;

@@ -1,8 +1,8 @@
 import { Button, Input, InputRef, Popover } from "antd";
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { feedback2item } from "../../app/ai.slice/ai.slice.async";
 import { ItemV2 } from "../../app/supabaseClient";
-import { InfoCircleOutlined, RollbackOutlined } from "@ant-design/icons";
+import { BulbOutlined, InfoCircleOutlined, RollbackOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
@@ -32,6 +32,12 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
         setQueryText("")
     }
 
+    useEffect(() => {
+        console.log(searchRef)
+        setTimeout(()=>searchRef.current?.focus(), 0.1)
+    }, [props.show])
+
+
     const onOpenChange = (val: boolean) => {
         if (!val) {
             reset()
@@ -58,6 +64,12 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
         setOldText(null)
     }
 
+    const doExample = (example: text) => {
+        setQueryText(example)
+        onPrompt(example)
+    }
+
+
     return <Popover
         trigger="click"
         open={props.show}
@@ -72,12 +84,29 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
                     loading={isLoading}
                     value={queryText}
                     onChange={(e) => setQueryText(e.target.value)}
+                    onKeyDown={(e)=>e.key==="Escape" && onOpenChange(false)}
                     suffix={
-                        <Button type="text" size="small" icon={<InfoCircleOutlined />}>
-                        </Button>
+                        <Popover trigger={["click", "hover"]} title={<><BulbOutlined /> AI Refinement </>}
+                            content={<p>Ask the AI something about your outline or paragraph. <br />Please check the output of the model.</p>}>
+                            <Button type="text" size="small" icon={<InfoCircleOutlined />}>
+                            </Button>
+                        </Popover>
                     }
                     enterButton />
                 <div className='acceptButtons'>
+                    {!oldText && <div className={"examples"}>
+                        <Button
+                            color="default"
+                            onClick={() => doExample("Add examples")}
+                            shape="round">
+                            Add more examples
+                        </Button>
+                        <Button color="default"
+                            shape="round"
+                            onClick={() => doExample("Make it more concise")}>
+                            Make it more concise
+                        </Button>
+                    </div>}
                     {!!oldText && <Button type="text" disabled={isLoading} size="small" onClick={() => revert()} icon={<RollbackOutlined />}>
                         Revert
                     </Button>}

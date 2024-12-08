@@ -1,7 +1,7 @@
 
 import { ArrowLeftOutlined, DoubleLeftOutlined, LogoutOutlined, ProductOutlined } from "@ant-design/icons"
 import "./sidebar.component.scss"
-import { Button, Dropdown, MenuProps, Skeleton, Steps } from "antd"
+import { Button, Dropdown, MenuProps, Popover, Skeleton, Steps } from "antd"
 
 import { useNavigate } from "react-router-dom";
 import ChapterOverview from "../chapter-overview/chapter-overview.component";
@@ -12,6 +12,7 @@ import { getActiveProject, getStep } from "../../app/ui.slice/ui.slice.selectors
 import { setDocumentDrawerOpen, setRawDrawerOpen, setShowSidebar, setStep } from "../../app/ui.slice/ui.slice";
 import UserAvatar from "./sidebar-avatar";
 import { StepMapping } from "../../app/ui.slice/view.states";
+import { StepDescriptionMapping } from "../description/paragraph-description.component";
 
 export default function Sidebar() {
     const dispatch = useDispatch()
@@ -100,7 +101,11 @@ export default function Sidebar() {
                     current={steps.indexOf(currentStep)}
                     onChange={onChangeStep}
                     className="site-navigation-steps"
-                    items={steps.map((step) => ({ title: step.charAt(0).toUpperCase() + step.slice(1) }))}
+                    items={steps.map((step) => ({
+                        title: <Popover content={StepDescriptionMapping[step]} mouseEnterDelay={0.7}>
+                            {step.charAt(0).toUpperCase() + step.slice(1)}
+                        </Popover>
+                    }))}
                 />
                 <ChapterOverview></ChapterOverview>
             </div>

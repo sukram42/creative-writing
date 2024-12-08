@@ -1,5 +1,5 @@
 import { setActiveFocus } from "../app/items.slice/item.slice"
-import { createNewItem, deleteItemAsyncV2 } from "../app/items.slice/item.slice.async"
+import { createNewItem, deleteItemAsyncV2, updateItemLocked } from "../app/items.slice/item.slice.async"
 import { store } from "../app/store"
 import { ItemV2 } from "../app/supabaseClient"
 import { setStep } from "../app/ui.slice/ui.slice"
@@ -8,9 +8,10 @@ import { Views } from "../app/ui.slice/view.states"
 
 
 export const handleKeyDownInEditor = ((e, index: number, item: ItemV2, view: Views) => {
-    console.log("handler", view, index)
-    console.log("INDEX:", store.getState().items.activeFocusIndex)
-    console.log("SIDE:", store.getState().items.activeFocusSide)
+    if (e.ctrlKey && e.key === "l") {
+        store.dispatch(updateItemLocked({ item: item, newLocked: !item.locked }))
+        e.preventDefault()
+    }
     if (e.ctrlKey && e.key === "Enter") {
         store.dispatch(createNewItem({ idx: index + 1, type: "PARAGRAPH" }))
         store.dispatch(setActiveFocus({ side: view, index: index! + 1 }))
