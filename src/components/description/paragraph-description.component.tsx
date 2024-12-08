@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { StepsType, Views } from "../../app/ui.slice/view.states";
 import { Description } from "./description.component";
 

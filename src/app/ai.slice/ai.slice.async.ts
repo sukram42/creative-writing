@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ItemV2, supabase } from "../supabaseClient";
 import { resolveErrorParagraph, setErrorParagraph, setItemToLoad, stopItemFromLoading, updateItemTextV2 } from "../items.slice/item.slice";
+import { Views } from "../ui.slice/view.states";
 
 
 export const outline2textCompletion = createAsyncThunk(
@@ -26,9 +27,9 @@ export const outline2textCompletion = createAsyncThunk(
         }))
     }
 )
-export const feedback2item = async (payload: { text: string, query: string, type: "view" }) => {
+export const feedback2item = async (payload: { text: string, query: string, type: Views }) => {
 
-    const { data, error } = await supabase.functions.invoke('item-qa', {
+    const { data } = await supabase.functions.invoke('item-qa', {
         body: {
             text: payload.text,
             query: payload.query,

@@ -1,16 +1,13 @@
 
 import "./moveable-object.component.scss"
-import { BulbOutlined, DeleteOutlined, HolderOutlined, LoadingOutlined, LockFilled, LockOutlined, PlusOutlined, RedoOutlined, UnlockOutlined, WarningFilled } from "@ant-design/icons"
-import { Button, Divider, Dropdown, MenuProps, Popover, Tooltip, theme } from "antd"
-import React from "react"
+import { HolderOutlined, LoadingOutlined, LockFilled, PlusOutlined, RedoOutlined, UnlockOutlined, WarningFilled } from "@ant-design/icons"
+import { Button, Popover, Tooltip } from "antd"
 import { useDispatch } from "react-redux";
-import { createNewItem, deleteItemAsyncV2 } from "../../app/items.slice/item.slice.async";
+import { createNewItem } from "../../app/items.slice/item.slice.async";
 import { ItemV2 } from "../../app/supabaseClient";
 import { Views } from "../../app/ui.slice/view.states";
-import { Description } from "../description/description.component";
-import { ViewDescriptionMapping } from "../description/paragraph-description.component";
 import { MoveableDropdown } from "./dropdown.component";
-const { useToken } = theme;
+import { AppDispatch } from "../../app/store";
 interface MoveableObjectProps {
     children: JSX.Element | JSX.Element[]
     index: number,
@@ -29,20 +26,8 @@ interface MoveableObjectProps {
 }
 
 export function MoveableObject(props: MoveableObjectProps) {
-    const { token } = useToken();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
-
-
-    const contentStyle: React.CSSProperties = {
-        backgroundColor: token.colorBgElevated,
-        borderRadius: token.borderRadiusLG,
-        boxShadow: token.boxShadowSecondary,
-    };
-
-    const menuStyle: React.CSSProperties = {
-        boxShadow: 'none',
-    };
     return (
         <div className="moveableObject">
             <div className="toolbar">

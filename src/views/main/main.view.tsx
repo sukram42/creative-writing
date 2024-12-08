@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setActiveProject } from "../../app/ui.slice/ui.slice.async";
 import { AppDispatch } from "../../app/store";
-import { getActiveProject, getDocumentDrawerState, getRawDrawerState, getStep, getViewFinal, getViewIdea, getViewOutline, getViews, isShowSidebar } from "../../app/ui.slice/ui.slice.selectors";
-import { Badge, Button, Drawer, Popover, Steps, theme } from "antd";
+import { getActiveProject, getDocumentDrawerState, getRawDrawerState, getStep, getViews, isShowSidebar } from "../../app/ui.slice/ui.slice.selectors";
+import { Badge, Button, Drawer, Popover, theme } from "antd";
 import { ProjectUpdateForm } from "../../components/project-update-form/project-update-form.component";
-import { AlignCenterOutlined, DoubleRightOutlined, DownloadOutlined, FileOutlined, PropertySafetyFilled, SettingOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { DoubleRightOutlined, FileOutlined, SettingOutlined } from "@ant-design/icons";
 import { RawTextView } from "../../components/raw-text-view/raw-text-view.component";
-import { setDocumentDrawerOpen, setFinalView, setIdeaView, setOutlineView, setRawDrawerOpen, setShowSidebar, setStep } from "../../app/ui.slice/ui.slice";
-import { current } from "@reduxjs/toolkit";
+import { setDocumentDrawerOpen, setRawDrawerOpen, setShowSidebar, setStep } from "../../app/ui.slice/ui.slice";
 import { Rect } from "../../components/description/rect.image";
 import { Views } from "../../app/ui.slice/view.states";
 

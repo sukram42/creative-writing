@@ -57,7 +57,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
         if (newText !== content) {
             props.onChange({ ...props.item, [props.view]: newText }, newText)
 
-            const manuelChange = Math.abs(newText.length - content.length) == 1
+            const manuelChange = content && Math.abs(newText.length - content.length) == 1
             if (props.view === "final" && manuelChange) {
                 dispatch(updateItemLocked({ item: props.item, newLocked: true }))
             }

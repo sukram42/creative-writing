@@ -8,6 +8,7 @@ export function Item(props: Partial<ItemProps>) {
     if (!props.item) throw Error("An Item type needs an Item to be passed down.")
     const newProps: ItemProps = {
         item: props.item!,
+        index: props.index!,
         ...props
     }
     const itemComponent = ItemMapping[props.item.type!](newProps)

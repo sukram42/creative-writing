@@ -6,7 +6,7 @@ interface RectProps {
     stroke?: string
 }
 
-export function Rect({ fill = "#dddddd", width = 30, stroke = "#444444" }: RectProps) {
+export function Rect({ fill = "#dddddd", width = 30}: RectProps) {
     return <svg width={width} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"
         overflow="hidden">
         <g>

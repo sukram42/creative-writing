@@ -3,8 +3,8 @@ import { setActiveFocus, setActiveFocusIndex } from "../../app/items.slice/item.
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../app/store";
-import { ItemV2, ItemType } from "../../app/supabaseClient";
-import { createNewItem, deleteItemAsyncV2, updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
+import { ItemV2 } from "../../app/supabaseClient";
+import { updateItemTypeAsync } from "../../app/items.slice/item.slice.async";
 import { getActiveFocusSide, getActiveFocusIndex } from "../../app/items.slice/item.slice.selectors";
 import { MoveableObject } from "../moveable-object/moveable-object.component";
 import { handleKeyDownInEditor } from "../../services/keymap.service";
@@ -77,6 +77,8 @@ export function Idea(props: IdeaComponentProps) {
             item={props.item}
             view="idea"
         >
+
+            {/*// @ts-ignore:next-line */}
             <ReactQuill theme={null}
                 className={"quill-editor " + (!!props.error ? "error-state" : "")}
                 ref={editorRef}

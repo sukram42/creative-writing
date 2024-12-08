@@ -64,7 +64,7 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
         setOldText(null)
     }
 
-    const doExample = (example: text) => {
+    const doExample = (example: string) => {
         setQueryText(example)
         onPrompt(example)
     }

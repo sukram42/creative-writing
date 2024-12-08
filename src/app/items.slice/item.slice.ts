@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit"
 import { ItemType, ItemV2 } from "../supabaseClient"
 import { ItemsState } from "./item.slice.interface"
 import { Views } from "../ui.slice/view.states"
-import { v4 } from "uuid"
 
 const initialState: ItemsState = {
   itemsV2: [],

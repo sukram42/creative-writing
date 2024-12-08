@@ -1,5 +1,5 @@
 import { Avatar, Dropdown, MenuProps } from 'antd';
-import { ProductOutlined, LogoutOutlined } from '@ant-design/icons';
+import { LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../app/supabaseClient';
 import { useSelector } from 'react-redux';

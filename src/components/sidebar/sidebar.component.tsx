@@ -1,5 +1,5 @@
 
-import { ArrowLeftOutlined, DoubleLeftOutlined, LogoutOutlined, ProductOutlined } from "@ant-design/icons"
+import { ArrowLeftOutlined, DoubleLeftOutlined, ProductOutlined } from "@ant-design/icons"
 import "./sidebar.component.scss"
 import { Button, Dropdown, MenuProps, Popover, Skeleton, Steps } from "antd"
 

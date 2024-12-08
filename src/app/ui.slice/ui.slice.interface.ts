@@ -1,6 +1,6 @@
 import { User } from "@supabase/supabase-js";
 import { Chapter, Item, ItemV2, Profile, Project } from "../supabaseClient";
-import { StepsType, Views } from "./view.states";
+import { StepsType } from "./view.states";
 
 export interface UiState {
     count: number,

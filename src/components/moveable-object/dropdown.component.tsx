@@ -1,5 +1,5 @@
-import { BulbOutlined, DeleteOutlined, HolderOutlined, LockOutlined, PlusOutlined, UnlockOutlined } from "@ant-design/icons";
-import { Dropdown, Button, theme } from "antd";
+import { BulbOutlined, DeleteOutlined, LockOutlined, PlusOutlined, UnlockOutlined } from "@ant-design/icons";
+import { Dropdown, theme } from "antd";
 import React, { ReactNode } from "react";
 import { ViewDescriptionMapping } from "../description/paragraph-description.component";
 import { createNewItem, deleteItemAsyncV2 } from "../../app/items.slice/item.slice.async";

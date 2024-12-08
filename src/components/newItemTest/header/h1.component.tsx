@@ -3,7 +3,7 @@ import "./h1.component.scss"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../app/store";
 import { ItemProps } from "../item/item.interface";
-import { createNewItem, updateItemTextV2Async, updateItemTypeAsync } from "../../../app/items.slice/item.slice.async";
+import { updateItemTextV2Async, updateItemTypeAsync } from "../../../app/items.slice/item.slice.async";
 import { MoveableObject } from "../../moveable-object/moveable-object.component";
 import { Input, InputRef } from "antd";
 import { setActiveFocus, setActiveFocusIndex, updateItemTextV2 } from "../../../app/items.slice/item.slice";
