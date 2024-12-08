@@ -1,32 +1,42 @@
+.menuItem {
+    display: flex;
+    gap: 1em;
+    div {
+        // background-color: #888;
+        font-size: 0.8em;
+        align-self: center;
+    }
+}
+
 .moveableObject {
     display: flex;
 
     &:hover {
-        & .objectName {
-            opacity: 100%;
-        }
 
         & .buttonBar {
-            opacity: 100%;
+            &>* {
+                opacity: 100%;
+            }
         }
-        & .lockingToolbar{
+
+        & .lockingToolbar {
             visibility: visible;
         }
     }
 
-    & .objectName {
-        font-size: 0.8em;
-        color: #888;
-        opacity: 0;
-        cursor: default;
-    }
+    .lockedIcon {
+        * {
+            // color: red;
+        }
 
+        opacity: 100% !important;
+    }
 
     .toolbar {
         display: grid;
         grid-template-columns: auto;
-        grid-template-rows: auto 3em;
-        grid-template-areas: "buttons" "locked";
+        grid-template-rows: auto;
+        grid-template-areas: "buttons";
     }
 
     .lockingToolbar {
@@ -47,16 +57,14 @@
         display: flex;
 
         grid-area: buttons;
-        opacity: 0;
         padding-right: 3px;
         display: flex;
         color: #888;
 
-        & * {
-            color: #888
+        &>* {
+            color: #888;
+            opacity: 0;
         }
-
-        // align-items: center;
     }
 
     .textContent {

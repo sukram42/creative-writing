@@ -3,6 +3,7 @@ import { ItemType, ItemV2, supabase } from "../supabaseClient";
 import { setItemsV2, updateItemTextV2, updateItemType, updateItemsV2, updateLockedState } from "./item.slice";
 import { RootState } from "../store";
 import { setLoadProject } from "../ui.slice/ui.slice";
+import { v4 } from "uuid";
 
 export const loadItemsV2 = createAsyncThunk(
     "items/loadItems",
@@ -23,6 +24,24 @@ export const loadItemsV2 = createAsyncThunk(
     }
 )
 
+export const createNewItem = createAsyncThunk(
+    "items/createNewItem",
+
+    async (payload: { idx: number, type?: ItemType }, thunkAPI) => {
+        const item = {
+            version: 0,
+            item_id: v4(),
+            rank: payload.idx,
+            type: payload.type?.toString() || "PARAGRAPH"
+        } as ItemV2
+        if (payload.type === "H1") {
+            item["outline"] = ""
+        }
+
+        thunkAPI.dispatch(upsertNewItem(item))
+
+    }
+)
 export const upsertNewItem = createAsyncThunk(
     "items/upsertNewItem",
     async (payload: Partial<ItemV2>, thunkAPI) => {
@@ -54,8 +73,6 @@ export const upsertNewItem = createAsyncThunk(
             }))
             return
         }
-        else console.log(data)
-
         let itemsFinal = [...itemsBefore]
         itemsFinal.splice(payload.rank!, 0, data![0])
 
@@ -67,7 +84,7 @@ export const upsertNewItem = createAsyncThunk(
 
 export const updateItemTextV2Async = createAsyncThunk(
     "items/updateItemText",
-    async (payload: { item: ItemV2, newText: string, field: "final" | "outline" }, thunkAPI) => {
+    async (payload: { item: ItemV2, newText: string, field: "final" | "outline" | "idea" }, thunkAPI) => {
         const state = thunkAPI.getState() as RootState;
         const beforeItems = state.items.itemsV2
 

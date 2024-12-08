@@ -24,14 +24,15 @@ export function ProjectHeader(props: ProjectHeaderProps) {
             <Typography.Paragraph
                 className={"description"}
                 editable={{
-                    onChange: (value) =>
+                    onChange: (value) => {
                         dispatch(updateProjectField({
                             field: "description",
                             projectId: props.project.project_id,
                             newValue: value
-                        })),
+                        }))
+                    },
                     triggerType: ["text"],
-                }}>{props.project.description || "   "}</Typography.Paragraph>
+                }}>{props.project.description || "Click to add a description"}</Typography.Paragraph>
             <Button icon={<SettingOutlined />} type="text" onClick={() => dispatch(setDocumentDrawerOpen(true))}>
                 Configure
             </Button>

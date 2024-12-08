@@ -7,11 +7,12 @@ import { InfoCircleOutlined, RollbackOutlined } from "@ant-design/icons";
 const { Search } = Input;
 
 import "./item-qa-popup.component.scss"
+import { Views } from "../../app/ui.slice/view.states";
 interface ItemQAPopupProps {
     item: ItemV2,
     show: boolean,
-    final: boolean,
-    onLocalTextChange: (newText: string, final: boolean) => void
+    view: Views,
+    onLocalTextChange: (newText: string, view: Views) => void
     onOpenChange: (val: boolean) => void
 
     children: ReactNode
@@ -40,20 +41,20 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
 
     const onPrompt = (prompt: string) => {
         setLoading(true)
-        const text = props.final ? props.item.final : props.item.outline
+        const text = props.item[props.view]
         setOldText(text)
         feedback2item({
             text: text || "",
             query: prompt,
-            type: props.final ? "paragraph" : "outline"
+            type: props.view
         })
-            .then((result) => { props.onLocalTextChange(result.result, props.final); return result })
+            .then((result) => { props.onLocalTextChange(result.result, props.view); return result })
             .then(() => setLoading(false))
     }
 
     const revert = () => {
         if (!oldText) return
-        props.onLocalTextChange(oldText, props.final)
+        props.onLocalTextChange(oldText, props.view)
         setOldText(null)
     }
 

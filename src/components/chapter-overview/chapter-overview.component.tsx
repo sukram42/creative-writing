@@ -13,8 +13,6 @@ const ChapterOverview = () => {
     const items = useSelector(getItemsV2)
     const chapters = items.filter((i) => i.type == "H1")
 
-    console.log(chapters)
-
     const chapterItems = chapters.map((chapter, index) => {
         const chapterName = chapter.outline == '' ? "<Unnamed Chapter>" : chapter.outline
         return ({

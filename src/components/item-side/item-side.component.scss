@@ -6,6 +6,11 @@
 
     .ql-editor {
         padding: 0;
+        
+        ul,
+        ol {
+            padding-left: 0rem;
+        }
     }
 
     .quill-editor {
@@ -23,5 +28,5 @@
         background-color: red;
     }
 
-   
+
 }

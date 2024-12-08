@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { ItemType, ItemV2 } from "../supabaseClient"
 import { ItemsState } from "./item.slice.interface"
+import { Views } from "../ui.slice/view.states"
+import { v4 } from "uuid"
 
 const initialState: ItemsState = {
   itemsV2: [],
@@ -18,7 +20,12 @@ export const itemsSlice = createSlice({
     setActiveFocusIndex(state, action: { payload: number | null }) {
       state.activeFocusIndex = action.payload
     },
-    setActiveFocus(state, action: { payload: { side: "outline" | "final" | null, index: number | null } }) {
+    setActiveFocus(state, action: {
+      payload: {
+        side: Views | null,
+        index: number | null
+      }
+    }) {
       state.activeFocusSide = action.payload.side;
       state.activeFocusIndex = action.payload.index
     },
@@ -49,7 +56,7 @@ export const itemsSlice = createSlice({
       payload: {
         item: ItemV2,
         newText: string,
-        field: "final" | "outline"
+        field: "final" | "outline" | "idea"
       }
     }) => {
       state.itemsV2.forEach((i: ItemV2) => {
@@ -77,7 +84,7 @@ export const itemsSlice = createSlice({
     setErrorParagraph: (state, action: { payload: { paragraphId: string, errorCode: string } }) => {
       state.errorItems[action.payload.paragraphId] = action.payload.errorCode
     },
-    resolveErrorParagraph: (state, action: {payload: string})=> {
+    resolveErrorParagraph: (state, action: { payload: string }) => {
       delete state.errorItems[action.payload]
     },
     setItemToLoad: (state, action: { payload: string }) => {
