@@ -134,7 +134,7 @@ export function MoveableObject(props: MoveableObjectProps) {
                             </Tooltip>
                             :
                             <RedoOutlined spin={props.loading} />} /> : ""}
-                    <Popover
+                    {props.view == "final" && <Popover
                         content={<p>By locking your paragraph, the AI will only create a new paragraph when manually triggered.</p>}
                         title="Lock your paragraph!"
                         mouseEnterDelay={0.7}>
@@ -146,8 +146,7 @@ export function MoveableObject(props: MoveableObjectProps) {
                             onClick={() => props.onToggleLock && props.onToggleLock()}
                             icon={props.locked ? <LockFilled style={{ color: "red" }} /> : <UnlockOutlined />}>
                         </Button>
-
-                    </Popover>
+                    </Popover>}
                     <Dropdown destroyPopupOnHide
                         menu={{ items: dropdown.filter((i) => i.show).map(i => i.item) }}
                         trigger={['click']}
@@ -169,7 +168,16 @@ export function MoveableObject(props: MoveableObjectProps) {
                     <div className="moveableContent loadingOverlay">
                         <LoadingOutlined spin={true} />
                     </div> : ""}
-                <div className="moveableContent">{props.children}</div>
+                <Dropdown destroyPopupOnHide
+                    menu={{ items: dropdown.filter((i) => i.show).map(i => i.item) }}
+                    trigger={['contextMenu']}
+                    dropdownRender={(menu) => (
+                        <div style={contentStyle}>
+                            {React.cloneElement(menu as React.ReactElement, { style: menuStyle })}
+                        </div>
+                    )}>
+                    <div className="moveableContent">{props.children}</div>
+                </Dropdown>
             </div>
         </ div >)
 }
