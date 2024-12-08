@@ -153,7 +153,6 @@ export const updateItemLocked = createAsyncThunk(
             thunkAPI.dispatch(updateItemsV2({ items: beforeItems }))
             return
         }
-        else console.log(updatedItem)
         return updatedItem
     }
 )
