@@ -24,18 +24,45 @@
         // border-bottom: 1px #ddd solid;
         color: #888;
 
-
-        .headerElements {
-            display: flex;
-            justify-content: space-between;
+        .StepIndicator {
             width: 100%;
+            height: 0.3em;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas: "idea outline final";
 
+            .view {
+                background-color: green;
+            }
+
+            .idea {
+                grid-area: idea;
+            }
+
+            .outline {
+                grid-area: outline;
+            }
+
+            .final {
+                grid-area: final;
+            }
+        }
+        .viewIndicator{
+            padding: 0.4em;
+        }
+        .headerElements {
             position: fixed;
             top: 0;
             left: 0;
             background-color: white;
             z-index: 100;
+            width: 100%;
 
+            .topRow {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
 
             .sidebarButton {
                 grid-area: left;

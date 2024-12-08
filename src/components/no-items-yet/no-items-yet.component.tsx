@@ -10,7 +10,7 @@ interface NoItemsYetComponentProps {
 
 export function NoItemsYetComponent(props: NoItemsYetComponentProps) {
     return <div className="noItemsYetComponent">
-        <h1>Looks like you do have a new Project</h1>
+        <h1>Looks like you just created a brand new project!</h1>
         <p>Let's start with creating a new header or paragraph</p>
         <Space className="buttonList">
             <Button type="dashed" icon={<PlusOutlined />} onClick={() => props.onNewHeader()}>

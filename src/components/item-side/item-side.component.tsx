@@ -11,21 +11,22 @@ import { updateItemLocked, updateItemTypeAsync } from "../../app/items.slice/ite
 import { AppDispatch } from "../../app/store";
 import { getActiveFocusSide, getActiveFocusIndex } from "../../app/items.slice/item.slice.selectors";
 import { ItemQAPopup } from "../item-qa-popup/item-qa-popup.component";
+import { Views } from "../../app/ui.slice/view.states";
+import { handleKeyDownInEditor } from "../../services/keymap.service";
 
 interface ItemsComponentProps {
     item: ItemV2,
-    final: boolean
-    onNewItem: (index: number) => void
+    view: Views
 
     onChange: (item: ItemV2, newText: string) => void
     onCommitChange: (item: ItemV2, newText: string) => void
-    onDelete: (item: ItemV2) => void
 
     onRegenerate?: (item: ItemV2) => void
 
     loading: boolean
     error?: string
     placeholder?: string
+    forcePlaceholder?: boolean
 
     autofocus: boolean
     index: number
@@ -39,7 +40,11 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     const [isQAPopup, showQAPopup] = useState(false)
 
     const dispatch = useDispatch<AppDispatch>()
-    const editorRef = useRef<ReactQuill | null>(null); useRef()
+    const editorRef = useRef<ReactQuill | null>(null);
+
+    const activeFocusSide = useSelector(getActiveFocusSide)
+    const activeFocusIndex = useSelector(getActiveFocusIndex)
+
 
     const onTextChange = (newText: string) => {
 
@@ -48,13 +53,14 @@ export function ItemSideComponent(props: ItemsComponentProps) {
         setWasChanged(false)
     }
 
-    const activeFocusSide = useSelector(getActiveFocusSide)
-    const activeFocusIndex = useSelector(getActiveFocusIndex)
-
-
-    const onLocalTextChange = (newText: string, final: boolean) => {
+    const onLocalTextChange = (newText: string) => {
         if (newText !== content) {
-            props.onChange({ ...props.item, [final ? "final" : "outline"]: newText }, newText)
+            props.onChange({ ...props.item, [props.view]: newText }, newText)
+
+            const manuelChange = content && Math.abs(newText.length - content.length) == 1
+            if (props.view === "final" && manuelChange) {
+                dispatch(updateItemLocked({ item: props.item, newLocked: true }))
+            }
         }
 
         if (newText === "<p># </p>") {
@@ -65,7 +71,6 @@ export function ItemSideComponent(props: ItemsComponentProps) {
         }
         setWasChanged(true)
         dispatch(setActiveFocusIndex(props.index!))
-
     }
     useEffect(() => {
         if (props.autofocus) {
@@ -77,22 +82,30 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     }, [activeFocusSide, activeFocusIndex])
 
     useEffect(() => {
-        if (editorRef.current) editorRef.current.getEditor().root.dataset.placeholder = active ? props.placeholder : "";
-
+        if (editorRef.current) {
+            editorRef.current.getEditor().root.dataset.placeholder = active || props.forcePlaceholder ? props.placeholder : ""
+        };
     }, [editorRef, active]);
 
-    const content = props.final ? props.item.final : props.item.outline
+    const onQAOpenChange = (val: boolean) => {
+        showQAPopup(val)
+        console.log("focus", props.view, props.index)
+        setTimeout(() => dispatch(setActiveFocus({ side: props.view, index: props.index })), 1)
+    }
+
+
+    const content = props.item[props.view]
     return <div className={"itemSideComponent " + (props.locked ? "locked" : "")}>
         <MoveableObject
             error={props.error}
-            type={"Paragraph"}
-            onDelete={() => props.onDelete(props.item)}
+            view={props.view}
+            index={props.index}
+            item={props.item}
             onRedo={() => props.onRegenerate && props.onRegenerate(props.item)}
             showRedo={!!props.onRegenerate}
             loading={props.loading}
-            onNew={() => props.onNewItem(props.index + 1)}
-            locked={props.final && props.item.locked}
-            showLocked={props.final}
+            locked={props.view == "final" && props.item.locked}
+            showLocked={props.view == "final"}
             onToggleLock={() => dispatch(updateItemLocked({ item: props.item, newLocked: !props.item.locked }))}
             showQA={() => showQAPopup(true)}
         >
@@ -100,8 +113,8 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                 show={isQAPopup}
                 item={props.item}
                 onLocalTextChange={onLocalTextChange}
-                final={props.final}
-                onOpenChange={(val) => showQAPopup(val)} >
+                view={props.view}
+                onOpenChange={onQAOpenChange} >
                 {/*// @ts-ignore */}
                 <ReactQuill theme={null}
                     className={"quill-editor " + (!!props.error ? "error-state" : "")}
@@ -112,28 +125,16 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                         setActive(true);
                     }}
                     onKeyDown={(e) => {
+                        if (e.ctrlKey && e.key === "k") {
+                            e.preventDefault()
+                            showQAPopup(true)
+                        }
                         if (e.ctrlKey && e.key === "Enter") {
+                            e.preventDefault()
                             onTextChange(e.target.getHTML())
-                            props.onNewItem(props.index + 1)
-                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! + 1 }))
                         }
-                        if (e.ctrlKey && e.key === "Backspace" && e.target.getHTML() === "<p><br></p>") {
-                            props.onDelete(props.item)
-                            // dispatch(setActiveFocusIndex(props.index! - 1))
-                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! - 1 }))
-                        }
-                        if (e.ctrlKey && e.altKey && e.key == "ArrowDown") {
-                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! + 1 }))
-                        }
-                        if (e.ctrlKey && e.altKey && e.key == "ArrowUp") {
-                            dispatch(setActiveFocus({ side: props.final ? "final" : "outline", index: props.index! - 1 }))
-                        }
-                        if (e.ctrlKey && e.altKey && e.key == "ArrowRight" && !props.final) {
-                            dispatch(setActiveFocus({ side: "final", index: props.index! }))
-                        }
-                        if (e.ctrlKey && e.altKey && e.key == "ArrowLeft" && props.final) {
-                            dispatch(setActiveFocus({ side: "outline", index: props.index! }))
-                        }
+                        handleKeyDownInEditor(e, props.index, props.item, props.view)
+
                     }}
                     onBlur={(_0, _1, editor) => {
                         dispatch(setActiveFocus({ side: null, index: null }))
@@ -146,8 +147,7 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                             }
                         }, 2)
                     }}
-                    placeholder={active ? props.item.item_id : ""}
-                    onChange={(val) => onLocalTextChange(val, props.final)}
+                    onChange={(val) => onLocalTextChange(val)}
                 ></ReactQuill>
             </ItemQAPopup>
         </MoveableObject >

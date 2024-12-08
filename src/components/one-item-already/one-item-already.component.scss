@@ -1,0 +1,22 @@
+.oneItemAlready {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .indication {
+        display: flex;
+        justify-content: space-around;
+        padding: 1em;
+        width: 100%;
+    }
+
+    .stepDescription {
+        max-width:25em ;
+        div:first-child {
+            font-size: 1.5em;
+        }
+        div:nth-child(2) {}
+    }
+}

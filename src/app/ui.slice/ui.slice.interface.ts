@@ -1,5 +1,6 @@
 import { User } from "@supabase/supabase-js";
 import { Chapter, Item, ItemV2, Profile, Project } from "../supabaseClient";
+import { StepsType } from "./view.states";
 
 export interface UiState {
     count: number,
@@ -24,4 +25,8 @@ export interface UiState {
 
     // The paragraph ids which are loading
     loadingFinalTexts: string[]
+
+
+    // view
+    step: StepsType
 }

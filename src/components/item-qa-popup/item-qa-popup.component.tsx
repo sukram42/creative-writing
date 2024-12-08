@@ -1,17 +1,18 @@
 import { Button, Input, InputRef, Popover } from "antd";
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { feedback2item } from "../../app/ai.slice/ai.slice.async";
 import { ItemV2 } from "../../app/supabaseClient";
-import { InfoCircleOutlined, RollbackOutlined } from "@ant-design/icons";
+import { BulbOutlined, InfoCircleOutlined, RollbackOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
 import "./item-qa-popup.component.scss"
+import { Views } from "../../app/ui.slice/view.states";
 interface ItemQAPopupProps {
     item: ItemV2,
     show: boolean,
-    final: boolean,
-    onLocalTextChange: (newText: string, final: boolean) => void
+    view: Views,
+    onLocalTextChange: (newText: string, view: Views) => void
     onOpenChange: (val: boolean) => void
 
     children: ReactNode
@@ -31,6 +32,12 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
         setQueryText("")
     }
 
+    useEffect(() => {
+        console.log(searchRef)
+        setTimeout(()=>searchRef.current?.focus(), 0.1)
+    }, [props.show])
+
+
     const onOpenChange = (val: boolean) => {
         if (!val) {
             reset()
@@ -40,22 +47,28 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
 
     const onPrompt = (prompt: string) => {
         setLoading(true)
-        const text = props.final ? props.item.final : props.item.outline
+        const text = props.item[props.view]
         setOldText(text)
         feedback2item({
             text: text || "",
             query: prompt,
-            type: props.final ? "paragraph" : "outline"
+            type: props.view
         })
-            .then((result) => { props.onLocalTextChange(result.result, props.final); return result })
+            .then((result) => { props.onLocalTextChange(result.result, props.view); return result })
             .then(() => setLoading(false))
     }
 
     const revert = () => {
         if (!oldText) return
-        props.onLocalTextChange(oldText, props.final)
+        props.onLocalTextChange(oldText, props.view)
         setOldText(null)
     }
+
+    const doExample = (example: string) => {
+        setQueryText(example)
+        onPrompt(example)
+    }
+
 
     return <Popover
         trigger="click"
@@ -71,12 +84,29 @@ export function ItemQAPopup(props: ItemQAPopupProps) {
                     loading={isLoading}
                     value={queryText}
                     onChange={(e) => setQueryText(e.target.value)}
+                    onKeyDown={(e)=>e.key==="Escape" && onOpenChange(false)}
                     suffix={
-                        <Button type="text" size="small" icon={<InfoCircleOutlined />}>
-                        </Button>
+                        <Popover trigger={["click", "hover"]} title={<><BulbOutlined /> AI Refinement </>}
+                            content={<p>Ask the AI something about your outline or paragraph. <br />Please check the output of the model.</p>}>
+                            <Button type="text" size="small" icon={<InfoCircleOutlined />}>
+                            </Button>
+                        </Popover>
                     }
                     enterButton />
                 <div className='acceptButtons'>
+                    {!oldText && <div className={"examples"}>
+                        <Button
+                            color="default"
+                            onClick={() => doExample("Add examples")}
+                            shape="round">
+                            Add more examples
+                        </Button>
+                        <Button color="default"
+                            shape="round"
+                            onClick={() => doExample("Make it more concise")}>
+                            Make it more concise
+                        </Button>
+                    </div>}
                     {!!oldText && <Button type="text" disabled={isLoading} size="small" onClick={() => revert()} icon={<RollbackOutlined />}>
                         Revert
                     </Button>}
