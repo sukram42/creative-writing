@@ -13,7 +13,7 @@ export function ParagraphDescription() {
 export function OutlineDescription() {
     return <Description
         column={[2]}
-        description={`In this column you find the final paragraph which was generated based on your outline.`}
+        description={`In this column, you can create the outline for the different paragraphs. How do you want set up your argument?`}
         header={"Outline"}>
     </Description>
 }
@@ -21,7 +21,7 @@ export function OutlineDescription() {
 export function IdeaDescription() {
     return <Description
         column={[1]}
-        description={`In this column you find the final paragraph which was generated based on your outline.`}
+        description={`The column is your idiation space. Scope the main story line of your text.`}
         header={"Rough Idea"}>
     </Description>
 }

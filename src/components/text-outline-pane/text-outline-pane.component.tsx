@@ -10,10 +10,11 @@ import { getItemsV2 } from "../../app/items.slice/item.slice.selectors"
 import { createNewItem, loadItemsV2 } from "../../app/items.slice/item.slice.async"
 import { ItemType, ItemV2 } from "../../app/supabaseClient"
 import { NoItemsYetComponent } from "../no-items-yet/no-items-yet.component"
-import { getActiveProject, getLoadProject, getViews } from "../../app/ui.slice/ui.slice.selectors"
+import { getActiveProject, getLoadProject, getStep, getViews } from "../../app/ui.slice/ui.slice.selectors"
 import { ProjectHeader } from "../project-header/project-header.component"
 import { Divider } from "antd"
 import { Item } from "../newItemTest/item/item.component"
+import { OneItemAlready } from "../one-item-already/one-item-already.component"
 
 
 
@@ -25,9 +26,9 @@ export function TextOutlinePane() {
   const activeProject = useSelector(getActiveProject)
   const dispatch = useDispatch<AppDispatch>()
 
+  const step = useSelector(getStep)
   const views = useSelector(getViews)
   const itemEmpty = (item: ItemV2) => {
-    console.log(views)
     for (let view of views) {
       if (![null, "", "<p><br></p>"].includes(item[view])) {
         return false
@@ -48,9 +49,11 @@ export function TextOutlinePane() {
   return <div className="textOutlinePaneComponent">
     {!!activeProject ? <ProjectHeader project={activeProject} /> : ""}
     <Divider style={{ margin: 0 }}></Divider>
-    {items.length === 0 && !loadingProject ? <NoItemsYetComponent
-      onNewParagraph={() => dispatch(createNewItem({ idx: 0, type: "PARAGRAPH" }))}
-      onNewHeader={() => dispatch(createNewItem({ idx: 0, type: "H1" }))}></NoItemsYetComponent> : ""}
+    {items.length === 0 && !loadingProject ?
+      <NoItemsYetComponent
+        onNewParagraph={() => dispatch(createNewItem({ idx: 0, type: "PARAGRAPH" }))}
+        onNewHeader={() => dispatch(createNewItem({ idx: 0, type: "H1" }))}>
+      </NoItemsYetComponent> : ""}
     {loadingProject ? <div className="loadingBar"><LoadingOutlined color="green" spin={true}></LoadingOutlined></div> : ""}
     {!activeProjectId ? <Navigate to={"/"}></Navigate> : ""}
     {items.length > 0 ?
@@ -70,5 +73,6 @@ export function TextOutlinePane() {
           onButtonClick={(index: number, type: ItemType) => dispatch(createNewItem({ idx: index, type }))} />
       </div>
     )}
+    {items.length === 1 && !loadingProject && <OneItemAlready step={step} />}
   </div>
 }

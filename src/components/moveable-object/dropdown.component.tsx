@@ -85,7 +85,7 @@ export function MoveableDropdown(props: MoveableDropdownProps) {
             show: props.view == "final",
             item:
             {
-                label: (<div className="menuItem"><p>{props.locked ? "Unlock Paragraph" : "Lock Paragraph"}</p></div>),
+                label: (<div className="menuItem"><p>{props.locked ? "Unlock Paragraph" : "Lock Paragraph"}</p><div>Ctrl+L</div></div>),
                 key: "2",
                 onClick: () => props.onToggleLock && props.onToggleLock(),
                 icon: props.locked ? <LockOutlined></LockOutlined> : <UnlockOutlined></UnlockOutlined>,
@@ -95,7 +95,7 @@ export function MoveableDropdown(props: MoveableDropdownProps) {
         {
             show: props.view !== "idea",
             item: {
-                label: <div className="menuItem"><p>AI Refinement</p></div>,
+                label: <div className="menuItem"><p>AI Refinement</p><div>Ctrl+K</div></div>,
                 key: "3",
                 onClick: () => props.showQA && props.showQA(),
                 icon: <BulbOutlined />,

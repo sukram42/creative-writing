@@ -17,6 +17,7 @@ interface IdeaComponentProps {
     loading: boolean
     error?: string
     placeholder?: string
+    forcePlaceholder?: boolean
 
     autofocus: boolean
     index: number
@@ -62,6 +63,13 @@ export function Idea(props: IdeaComponentProps) {
             }
         }
     }, [activeFocusSide, activeFocusIndex])
+
+    useEffect(() => {
+        if (editorRef.current) {
+            editorRef.current.getEditor().root.dataset.placeholder = active || props.forcePlaceholder ? props.placeholder : ""
+        };
+    }, [editorRef, active]);
+
 
     return <div className={"itemSideComponent"}>
         <MoveableObject

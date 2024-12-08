@@ -26,6 +26,7 @@ interface ItemsComponentProps {
     loading: boolean
     error?: string
     placeholder?: string
+    forcePlaceholder?: boolean
 
     autofocus: boolean
     index: number
@@ -55,6 +56,11 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     const onLocalTextChange = (newText: string) => {
         if (newText !== content) {
             props.onChange({ ...props.item, [props.view]: newText }, newText)
+
+            const manuelChange = Math.abs(newText.length - content.length) == 1
+            if (props.view === "final" && manuelChange) {
+                dispatch(updateItemLocked({ item: props.item, newLocked: true }))
+            }
         }
 
         if (newText === "<p># </p>") {
@@ -76,8 +82,9 @@ export function ItemSideComponent(props: ItemsComponentProps) {
     }, [activeFocusSide, activeFocusIndex])
 
     useEffect(() => {
-        if (editorRef.current) editorRef.current.getEditor().root.dataset.placeholder = active ? props.placeholder : "";
-
+        if (editorRef.current) {
+            editorRef.current.getEditor().root.dataset.placeholder = active || props.forcePlaceholder ? props.placeholder : ""
+        };
     }, [editorRef, active]);
 
     const onQAOpenChange = (val: boolean) => {
@@ -140,7 +147,6 @@ export function ItemSideComponent(props: ItemsComponentProps) {
                             }
                         }, 2)
                     }}
-                    placeholder={active ? props.item.item_id : ""}
                     onChange={(val) => onLocalTextChange(val)}
                 ></ReactQuill>
             </ItemQAPopup>

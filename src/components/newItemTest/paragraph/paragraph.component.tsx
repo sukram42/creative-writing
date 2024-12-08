@@ -8,7 +8,7 @@ import { ItemType, ItemV2 } from "../../../app/supabaseClient";
 import { createNewItem, updateItemTextV2Async } from "../../../app/items.slice/item.slice.async";
 import { updateItemTextV2 } from "../../../app/items.slice/item.slice";
 import { outline2textCompletion } from "../../../app/ai.slice/ai.slice.async";
-import { getActiveFocusIndex, getActiveFocusSide, getErrorItems, getLoadingItems } from "../../../app/items.slice/item.slice.selectors";
+import { getActiveFocusIndex, getActiveFocusSide, getErrorItems, getItemCount, getLoadingItems } from "../../../app/items.slice/item.slice.selectors";
 import { getViews } from "../../../app/ui.slice/ui.slice.selectors";
 import { Idea } from "../../idea/idea.component";
 
@@ -17,6 +17,7 @@ export function Paragraph(props: ItemProps) {
 
     const dispatch = useDispatch<AppDispatch>()
 
+    const itemCount = useSelector(getItemCount)
     const loadingItems = new Set(useSelector(getLoadingItems))
     const error = useSelector(getErrorItems);
     const hasError = Object.keys(error).includes(props.item.item_id);
@@ -51,7 +52,8 @@ export function Paragraph(props: ItemProps) {
                         {views.includes("idea") &&
                             <Idea
                                 autofocus={activeFocusSide === "idea" && props.index == activeFocusIndex}
-                                placeholder="This is the right place to write the outline in bullet points!"
+                                forcePlaceholder={itemCount === 1}
+                                placeholder="Explain what this column is for."
                                 item={props.item}
                                 onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "idea", newText); }}
                                 onChange={(item: ItemV2, newText: string) => { changeText(item, "idea", newText); }}
@@ -60,18 +62,20 @@ export function Paragraph(props: ItemProps) {
                         }
                         {views.includes("outline") &&
                             <ItemSideComponent
+                                forcePlaceholder={itemCount === 1}
                                 autofocus={activeFocusSide === "outline" && props.index == activeFocusIndex}
-                                placeholder="This is the right place to write the outline in bullet points!"
+                                placeholder={`- Here comes your paragraph outline in bullets`}
                                 item={props.item}
                                 view="outline"
                                 onCommitChange={(item: ItemV2, newText: string) => { commitChange(item, "outline", newText); }}
                                 onChange={(item: ItemV2, newText: string) => { changeText(item, "outline", newText); }}
                                 index={props.index!}
                                 loading={false} />}
-                        {views.includes("final") &&
+                    {views.includes("final") &&
                             <ItemSideComponent
+                                forcePlaceholder={itemCount === 1}
                                 autofocus={activeFocusSide === "final" && props.index == activeFocusIndex}
-                                placeholder="<- Start writing the outline on he left to generate the final text!"
+                                placeholder="As soon as you added the outline on the right, a paragraph will appear."
                                 item={props.item}
                                 view="final"
                                 locked={true || props.item.locked}
