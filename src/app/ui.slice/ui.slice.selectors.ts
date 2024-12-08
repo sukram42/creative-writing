@@ -1,4 +1,5 @@
 import { RootState } from "../store";
+import { StepMapping } from "./view.states";
 
 export const getCounter = (state: RootState) => state.ui.count
 
@@ -19,3 +20,7 @@ export const getDocumentDrawerState = (state: RootState) => state.ui.documentDra
 export const getRawDrawerState = (state: RootState) => state.ui.rawDrawerOpen
 
 export const getItemsV2 = (state: RootState) => state.ui.itemsV2
+
+
+export const getStep = (state: RootState) => state.ui.step
+export const getViews = (state: RootState) => StepMapping[state.ui.step]

@@ -1,14 +1,12 @@
 import { Button } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import "./divider.component.scss"
+import { ItemType } from "../../app/supabaseClient"
 
-enum ItemType {
-    "PARAGRAPH",
-    "H1"
-}
 interface DividerComponentProps {
     onButtonClick: (index: number, type: ItemType) => void
-    buttonCaption: string,
+    buttonCaptionParagraph: string,
+    buttonCaptionHeader: string,
     index: number
 }
 
@@ -19,7 +17,11 @@ export function DividerComponent(props: DividerComponentProps) {
                 <Button shape="round"
                     size="small"
                     icon={<PlusOutlined />}
-                    onClick={() => props.onButtonClick(props.index, ItemType.PARAGRAPH)}>{props.buttonCaption}</Button>
+                    onClick={() => props.onButtonClick(props.index, "H1")}>{props.buttonCaptionHeader}</Button>
+                <Button shape="round"
+                    size="small"
+                    icon={<PlusOutlined />}
+                    onClick={() => props.onButtonClick(props.index, "PARAGRAPH")}>{props.buttonCaptionParagraph}</Button>
             </div>
             <div className="dividerLine"></div>
         </div>

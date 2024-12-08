@@ -10,6 +10,6 @@ export interface ItemsState {
     errorItems: Record<string, string>
     
     // What side are we currently editing?
-    activeFocusSide: "outline" | "final" | null
+    activeFocusSide: "outline" | "final" | "idea" | null
     activeFocusIndex: number | null
 }

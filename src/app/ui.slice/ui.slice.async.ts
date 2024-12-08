@@ -316,8 +316,7 @@ export const loadItemsV2 = createAsyncThunk(
         if (error) {
             console.error(error.message)
             return
-        }
-        console.log(data)
+        } 
         thunkAPI.dispatch(setItemsV2({ items: data }))
     }
 )

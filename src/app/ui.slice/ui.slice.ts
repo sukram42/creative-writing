@@ -4,6 +4,7 @@ import { getChaptersByProject, upsertChapterTitle, upsertItemText } from "./ui.s
 import { Chapter, Item, ItemV2, Profile, Project } from "../supabaseClient"
 import { v4 as uuidv4 } from 'uuid';
 import { User } from "@supabase/supabase-js";
+import { StepsType } from "./view.states";
 
 
 
@@ -26,7 +27,9 @@ const initialState: UiState = {
   chapters: [],
   items: {},
 
-  loadingFinalTexts: []
+  loadingFinalTexts: [],
+
+  step: "finalizing"
 }
 
 export const uiSlice = createSlice({
@@ -155,8 +158,10 @@ export const uiSlice = createSlice({
       state.items[action.payload.chapter] = action.payload.items
     },
     setItemsV2(state, action: { payload: { items: ItemV2[] } }) {
-      console.log("payload", action.payload)
       state.itemsV2 = action.payload.items;
+    },
+    setStep(state, action: { payload: StepsType }) {
+      state.step = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -215,4 +220,5 @@ export const { addToCount,
   setProfile,
   updateProjectName,
   setItemsV2,
-  updateItems } = uiSlice.actions
+  updateItems,
+  setStep } = uiSlice.actions

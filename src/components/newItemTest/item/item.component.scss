@@ -1,11 +1,6 @@
 .chapterComponent {
-    .doubleSide {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas: "left right";
-
-        padding: 0.5em;
-
+    .itemSide {
+        padding: 0 5rem;
 
         $border-general: 2px;
         border: $border-general solid rgba(0, 0, 0, 0);
@@ -14,10 +9,19 @@
             border: $border-general solid #f1f1f1;
             background-color: #f9f9f9;
         }
-
         &>* {
             flex-grow: 1;
         }
+    }
+
+    .singleSide {
+        display: flex;
+    }
+
+    .doubleSide {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "left right";
 
         &:first-child {
             grid-area: left;

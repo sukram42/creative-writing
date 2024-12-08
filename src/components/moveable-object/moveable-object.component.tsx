@@ -1,94 +1,45 @@
 
 import "./moveable-object.component.scss"
-import { BulbOutlined, DeleteOutlined, HolderOutlined, LoadingOutlined, LockOutlined, PlusOutlined, RedoOutlined, UnlockOutlined, WarningFilled } from "@ant-design/icons"
-import { Button, Dropdown, MenuProps, Tooltip, theme } from "antd"
-import React from "react"
-const { useToken } = theme;
+import { HolderOutlined, LoadingOutlined, LockFilled, PlusOutlined, RedoOutlined, UnlockOutlined, WarningFilled } from "@ant-design/icons"
+import { Button, Popover, Tooltip } from "antd"
+import { useDispatch } from "react-redux";
+import { createNewItem } from "../../app/items.slice/item.slice.async";
+import { ItemV2 } from "../../app/supabaseClient";
+import { Views } from "../../app/ui.slice/view.states";
+import { MoveableDropdown } from "./dropdown.component";
+import { AppDispatch } from "../../app/store";
 interface MoveableObjectProps {
     children: JSX.Element | JSX.Element[]
-    type: string
-    onDelete?: () => void
+    index: number,
+    item: ItemV2
+    view: Views,
+
     onRedo?: () => void
     showRedo?: boolean
     loading?: boolean,
     error?: string,
-    onNew: () => void
+
     locked?: boolean
     showLocked?: boolean
     onToggleLock?: () => void
-
-    showQA?:()=>void
+    showQA?: () => void
 }
 
 export function MoveableObject(props: MoveableObjectProps) {
+    const dispatch = useDispatch<AppDispatch>();
 
-
-    const { token } = useToken();
-    const dropdown: MenuProps['items'] = [
-        {
-            label: <a onClick={() => props.onNew()}>New Paragraph</a>,
-            key: "0",
-            icon: <PlusOutlined />
-        },
-        {
-            type: 'divider',
-        },
-        {
-            label: <a onClick={() => props.onDelete && props.onDelete()}>Delete</a>,
-            key: '1',
-            icon: <DeleteOutlined />,
-            danger: true,
-        }
-    ];
-
-    const contentStyle: React.CSSProperties = {
-        backgroundColor: token.colorBgElevated,
-        borderRadius: token.borderRadiusLG,
-        boxShadow: token.boxShadowSecondary,
-    };
-
-    const menuStyle: React.CSSProperties = {
-        boxShadow: 'none',
-    };
     return (
         <div className="moveableObject">
             <div className="toolbar">
-                {props.showLocked &&
-                    <Tooltip title="When you lock the paragraph, we do not generate new versions of it.">
-                        <div className={"lockingToolbar " + (props.locked ? "currentlyLocked" : "")}>
-                            {props.locked ? <LockOutlined onClick={() => props.onToggleLock && props.onToggleLock()}></LockOutlined> : <UnlockOutlined onClick={() => props.onToggleLock && props.onToggleLock()}></UnlockOutlined>}
-                        </div>
-                    </Tooltip>
-                }
+                {/* <div className="viewDescription">Paragraph</div> */}
                 <div className="buttonBar">
-                    {/* I am not proud of this: */}
-                    {!props.showRedo ? <Button
-                        type="text"
-                        size="small"
-                        style={{ visibility: props.showRedo ? "visible" : "hidden" }}
-                        disabled={!props.showRedo}
-                        onClick={() => { if (props.onRedo) props.onRedo() }}
-                        icon={<RedoOutlined />} /> : ""}
                     <Button
                         type="text"
                         size="small"
-                        onClick={() => { if (!!props.onNew) props.onNew() }}
-                        icon={<PlusOutlined />} />
-                    <Button
-                        type="text"
-                        size="small"
-                        onClick={() => {props.showQA && props.showQA()}}
-                        icon={<BulbOutlined />} />
-                    <Dropdown menu={{ items: dropdown }} trigger={['click']} dropdownRender={(menu) => (
-                        <div style={contentStyle}>
-                            {React.cloneElement(menu as React.ReactElement, { style: menuStyle })}
-                        </div>
-                    )}>
-                        <Button
-                            type="text"
-                            size="small"
-                            icon={<HolderOutlined />} />
-                    </Dropdown>
+                        onClick={() => {
+                            dispatch(createNewItem({ idx: props.index, type: "PARAGRAPH" }))
+                        }}
+                        icon={< PlusOutlined />} />
                     {props.showRedo ? <Button
                         type="text"
                         size="small"
@@ -101,15 +52,53 @@ export function MoveableObject(props: MoveableObjectProps) {
                             </Tooltip>
                             :
                             <RedoOutlined spin={props.loading} />} /> : ""}
+                    {props.view == "final" && <Popover
+                        content={<p>By locking your paragraph, the AI will only create a new paragraph when manually triggered.</p>}
+                        title="Lock your paragraph!"
+                        mouseEnterDelay={0.7}>
+                        <Button
+                            type="text"
+                            danger={props.locked}
+                            size="small"
+                            className={props.locked ? "lockedIcon" : ""}
+                            onClick={() => props.onToggleLock && props.onToggleLock()}
+                            icon={props.locked ? <LockFilled style={{ color: "red" }} /> : <UnlockOutlined />}>
+                        </Button>
+                    </Popover>}
+                    <MoveableDropdown
+                        index={props.index}
+                        item={props.item}
+                        view={props.view}
+                        onToggleLock={props.onToggleLock}
+                        showQA={props.showQA}
+                        locked={props.locked}
+                        trigger={["click"]}
+                    >
+                        <Button
+                            type="text"
+                            size="small"
+                            icon={<HolderOutlined />} />
+                    </MoveableDropdown>
 
                 </div>
             </div>
             <div className="textContent" >
+
                 {props.loading ?
                     <div className="moveableContent loadingOverlay">
                         <LoadingOutlined spin={true} />
                     </div> : ""}
-                <div className="moveableContent">{props.children}</div>
+                <MoveableDropdown
+                    trigger={["contextMenu"]}
+                    index={props.index}
+                    item={props.item}
+                    view={props.view}
+                    onToggleLock={props.onToggleLock}
+                    showQA={props.showQA}
+                    locked={props.locked}
+                >
+                    <div className="moveableContent">{props.children}</div>
+                </MoveableDropdown>
             </div>
         </ div >)
 }
