@@ -137,10 +137,10 @@ export const uiSlice = createSlice({
         }
       })
     },
-    updateActiveProject(state, action: { payload: Project }) {
+    updateActiveProject(state, action: { payload: Project | null}) {
       state.activeProject = action.payload
     },
-    updateActiveProjectId(state, action: { payload: string }) {
+    updateActiveProjectId(state, action: { payload: string | null }) {
       state.activeProjectId = action.payload
     },
     updateItem(state, action: { payload: { item: Item } }) {

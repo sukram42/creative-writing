@@ -13,7 +13,7 @@ import { NewProjectFormValues } from "../../components/new-project-form/new-proj
 import { NewProjectForm } from "../../components/new-project-form/new-project-form.component"
 import { Project } from "../../app/supabaseClient"
 import { ProjectInfo } from "../../components/project-info/project-info.component"
-import { setShowSidebar } from "../../app/ui.slice/ui.slice"
+import { setShowSidebar, setStep, updateActiveProject } from "../../app/ui.slice/ui.slice"
 import moment from 'moment';
 
 export function ProjectView() {
@@ -33,6 +33,9 @@ export function ProjectView() {
     useEffect(() => {
         dispatch(setShowSidebar(false))
         dispatch(loadProjects())
+
+        dispatch(updateActiveProject(null))
+        dispatch(setStep("outlining"))
     }, []);
 
 
