@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux"
 import { Project } from "../../app/supabaseClient"
 import "./project-header.component.scss"
-import { Button, Typography } from "antd"
+import { Badge, Button, Popover, Typography } from "antd"
 import { updateProjectField, updateProjectNameAsync } from "../../app/ui.slice/ui.slice.async"
 import { AppDispatch } from "../../app/store"
 import { FileOutlined, SettingOutlined } from "@ant-design/icons"
@@ -32,10 +32,14 @@ export function ProjectHeader(props: ProjectHeaderProps) {
                         }))
                     },
                     triggerType: ["text"],
-                }}>{props.project.description || "Click to add a description"}</Typography.Paragraph>
-            <Button icon={<SettingOutlined />} type="text" onClick={() => dispatch(setDocumentDrawerOpen(true))}>
-                Configure
-            </Button>
+                }}>{props.project.description}</Typography.Paragraph>
+            <Popover mouseEnterDelay={1} title="Configure your text" content={<p>To be able to generate the perfect paragraphs we need more information on the text! <br /> This information you can fill in here. <br /> <br />{!props.project.description && "You see this red dot, because you did not yet provide a description."}</p>}>
+                <Badge dot={!props.project.description}>
+                    <Button icon={<SettingOutlined />} type="text" onClick={() => dispatch(setDocumentDrawerOpen(true))}>
+                        Configure
+                    </Button>
+                </Badge>
+            </Popover>
             <Button icon={<FileOutlined />} type="text" onClick={() => dispatch(setRawDrawerOpen(true))}>
                 View
             </Button>

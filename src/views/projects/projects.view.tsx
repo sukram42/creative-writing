@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import "./project.view.scss"
 import { AppDispatch } from "../../app/store"
 import { Button, Drawer, Table } from "antd"
-import { createProject, deleteProject, loadProjects } from "../../app/ui.slice/ui.slice.async"
+import { createProject, deleteProject, loadProjects, setActiveProject } from "../../app/ui.slice/ui.slice.async"
 import { getActiveProjectId, getAreProjectsLoading, getProjects } from "../../app/ui.slice/ui.slice.selectors"
 import { useEffect, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
@@ -13,7 +13,7 @@ import { NewProjectFormValues } from "../../components/new-project-form/new-proj
 import { NewProjectForm } from "../../components/new-project-form/new-project-form.component"
 import { Project } from "../../app/supabaseClient"
 import { ProjectInfo } from "../../components/project-info/project-info.component"
-import { setShowSidebar } from "../../app/ui.slice/ui.slice"
+import { setShowSidebar, setStep, updateActiveProject } from "../../app/ui.slice/ui.slice"
 import moment from 'moment';
 
 export function ProjectView() {
@@ -33,6 +33,9 @@ export function ProjectView() {
     useEffect(() => {
         dispatch(setShowSidebar(false))
         dispatch(loadProjects())
+
+        dispatch(updateActiveProject(null))
+        dispatch(setStep("outlining"))
     }, []);
 
 
